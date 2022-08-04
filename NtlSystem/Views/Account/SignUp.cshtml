@@ -1,0 +1,262 @@
+﻿@using NtlSystem.Models;
+@model NtlSystem.Models.TNtlUser
+
+@{
+    ViewBag.Title = "Sign Up Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+}
+
+<style>
+    .logo_img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 200px;
+        width: 200px;
+    }
+
+    .div_width {
+        height: 100%;
+        width: 330px;
+    }
+
+    /* Desktop */
+    @@media (min-width: 768px) {
+        .div_width {
+            height: 100%;
+            width: 600px;
+        }
+    }
+
+    .btn_div div {
+        margin-right: 10px;
+    }
+
+        .btn_div div:last-child {
+            margin-right: 0px;
+        }
+</style>
+
+<div class="header_style h2">
+    <strong>NTL Asia Portal</strong>
+</div>
+
+<div class="d-flex align-items-center justify-content-center mt-3">
+    <div>
+        <div class="my-2">
+            <img src="~/Content/Images/ntl_logo.png" alt="NTL Asia Portal Login Logo Image" class="logo_img" />
+        </div>
+
+        <div id="checkUsernameDiv">
+            <div class="border border-dark p-3 div_width">
+                <div class="h4">
+                    NTL Asia Portal
+                </div>
+                @using (Html.BeginForm("CheckUsernameNotExist", "Account", FormMethod.Post, new { @Id = "checkUsernameForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="my-2">
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="username" class="col-form-label">Username</label>
+                            </div>
+                            <div class="col-9">
+                                @Html.TextBoxFor(model => model.username, new { @Class = "form-control", @Type = "text", @Required = "true" })
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="text-danger" id="checkUsernameErrorDiv"></div>
+            </div>
+            <div class="my-2">
+                <div class="d-flex btn_div">
+                    <div class="col-2">
+                        @Html.ActionLink("Back", "Login", "Account", null, new { @Class = "btn btn-dark w-100" })
+                    </div>
+                    <div class="col-4">
+                        <button id="checkUsernameBtn" form="checkUsernameForm" type="submit"
+                                class="btn btn-outline-dark w-100" disabled>
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="signUpDiv">
+            <div class="border border-dark p-3 div_width">
+                <div class="h4">
+                    NTL Asia Portal
+                </div>
+
+                @using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { @Id = "signUpForm" }))
+                {
+                    @Html.HiddenFor(model => model.username)
+                    <div class="my-2">
+                        <div class="row align-items-center">
+                            <div class="col-3">
+                                <label for="password" class="col-form-label">Password</label>
+                            </div>
+                            <div class="col-9">
+                                @Html.TextBoxFor(model => model.password, new { @Class = "form-control", @Type = "password", @Required = "true" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-2">
+                        <div class="row align-items-center">
+                            <div class="col-3">
+                                <label for="repeatPassword" class="col-form-label">Repeat Password</label>
+                            </div>
+                            <div class="col-9">
+                                @Html.TextBox("repeatPassword", "", new { @Class = "form-control", @Type = "password", @Required = "true" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="my-2">
+                        <div class="row align-items-center">
+                            <div class="col-3">
+                                <label for="email" class="col-form-label">Email</label>
+                            </div>
+                            <div class="col-9">
+                                @Html.TextBoxFor(model => model.email_address, new { @Class = "form-control", @Type = "email", @Required = "true" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Change to Form Select -->
+                    <div class="my-2">
+                        <div class="row align-items-center">
+                            <div class="col-3">
+                                <label for="userRole" class="col-form-label">User Role</label>
+                            </div>
+                            <div class="col-9">
+                                @Html.DevExpress().ComboBox(settings => {
+                                    settings.Name = "role";
+                                    settings.Width = Unit.Percentage(100);
+                                    settings.SelectedIndex = 0;
+                                    settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                                    settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+                                    settings.Properties.TextField = "name";
+                                    settings.Properties.ValueField = "id";
+                                    settings.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.OnHover;
+                                    settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                                }).BindList(db.TNtlRoles.ToList()).GetHtml()
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="text-danger" id="signUpErrorDiv"></div>
+            </div>
+            <div class="my-2">
+                <div class="d-flex btn_div">
+                    <div class="col-2">
+                        <button id="backToCheckUsernameBtn" class="btn btn-dark w-100" type="button">Back</button>
+                    </div>
+                    <div class="col-4">
+                        <button id="signUpBtn" form="signUpForm" type="submit" class="btn btn-success w-100"
+                                disabled>
+                            Sign Up
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+
+        let signUpDiv = $("#signUpDiv"), checkUsernameDiv = $("#checkUsernameDiv");
+
+        // Initialization
+        signUpDiv.css("display", "none");
+
+        // Check Input
+        $("form[id='checkUsernameForm'] input[name='username']").on("change", _ => {
+            let username = $("form[id='checkUsernameForm'] input[name='username']").val();
+            $("#checkUsernameBtn").attr("disabled", username.length <= 0);
+        });
+
+        // Check Username Form
+        let checkUsernameForm = $("form[id='checkUsernameForm']");
+        const checkUsername_actionLink = checkUsernameForm.attr("action");
+        const checkUsername_methodType = checkUsernameForm.attr("method");
+
+        checkUsernameForm.submit(e => {
+            e.preventDefault();
+            $.ajax({
+                url: checkUsername_actionLink,
+                type: checkUsername_methodType,
+                data: checkUsernameForm.serialize(),
+                success: response => {
+                    let username = $("form[id='checkUsernameForm'] input[name='username']").val();
+                    if (response.toLowerCase() === "false") {
+                        $("form[id='checkUsernameForm'] input[name='username']").val("");
+                        $("#checkUsernameErrorDiv").html(`Error! Username '${username}' already exist in the database!`);
+                        setTimeout(_ => {
+                            $("#checkUsernameErrorDiv").html("");
+                        }, 2000);
+                    } else {
+                        $("form[id='signUpForm'] input[name='username']").val(username);
+                        checkUsernameDiv.css("display", "none");
+                        signUpDiv.css("display", "block");
+                    }
+                }
+            });
+        });
+
+        function checkSignUpForm() {
+            let pswd = $(`${signUpFormID} input[name='password']`).val(),
+                rpt_pswd = $(`${signUpFormID} input[name='repeatPassword']`).val(),
+                email = $(`${signUpFormID} input[name='email_address']`).val();
+
+            let error_str = (pswd != rpt_pswd && pswd != "" && rpt_pswd != "") ? "Error! Both passwords are not the same!" : "";
+            $("#signUpErrorDiv").html(error_str);
+
+            console.log(pswd != rpt_pswd || email.length <= 0);
+
+            $("#signUpBtn").attr("disabled", pswd != rpt_pswd || email.length <= 0);
+        }
+
+        // Sign Up Form
+        const signUpFormID = "form[id='signUpForm']";
+        let signUpForm = $(signUpFormID);
+        const signUp_actionLink = signUpForm.attr("action");
+        const signUp_methodType = signUpForm.attr("method");
+
+        // New Password
+        $(`${signUpFormID} input[name='password']`).on("change", _ => checkSignUpForm());
+
+        // Repeat Password
+        $(`${signUpFormID} input[name='repeatPassword']`).on("change", _ => checkSignUpForm());
+
+        // Email
+        $(`${signUpFormID} input[name='email_address']`).on("change", _ => checkSignUpForm());
+
+        signUpForm.submit(e => {
+            e.preventDefault();
+
+            $.ajax({
+                url: signUp_actionLink,
+                type: signUp_methodType,
+                data: signUpForm.serialize(),
+                success: response => {
+                    window.location.href = response;
+                }
+            });
+        });
+
+        // Back To CheckUsernameForm
+        $("#backToCheckUsernameBtn").on("click", _ => {
+            checkUsernameDiv.css("display", "block");
+            signUpDiv.css("display", "none");
+        });
+
+    });
+</script>
+

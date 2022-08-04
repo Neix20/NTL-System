@@ -1,0 +1,70 @@
+﻿@using NtlSystem.Models;
+@using System.Collections.Generic;
+@model List<TNtlSummaryItem>
+
+@{
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+
+    Dictionary<int, string> statusDict = new Dictionary<int, string>();
+
+    db.TNtlStatus.ToList().ForEach(obj =>
+    {
+        statusDict.Add(obj.id, obj.name);
+    });
+}
+
+<div class="w-100 my-3 text-center">
+    <button class="btn btn-danger" id="dlSummaryBtn">Download</button>
+</div>
+
+<div id="summary_pdf">
+    <section>
+        <div class="card border-0">
+            <div class="border border-dark">
+                <table class="table table-borderless text-center">
+                    <thead>
+                        <tr class="bg-dark">
+                            <th colspan="6" class="text-white h2">Job Order Listing</th>
+                        </tr>
+                        <tr>
+                            <th>No.</th>
+                            <th>SKU</th>
+                            <th>Name</th>
+                            <th>Height</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int ind = 0; ind < Model.ToList().Count; ind++)
+                        {
+                            var summaryItem = Model.ElementAt(ind);
+                            string no = $"{ind + 1}.";
+                            <tr>
+                                <td>@no</td>
+                                <td>@summaryItem.sku</td>
+                                <td>@summaryItem.name</td>
+                                <td>@Convert.ToInt32(summaryItem.height)cm</td>
+                                <td>@Convert.ToInt32(summaryItem.quantity)</td>
+                                <td>@statusDict[(int) summaryItem.status_id]</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+                
+        </div>
+    </section>
+</div>
+
+<script>
+    $("#dlSummaryBtn").on("click", e => {
+        let date = new Date();
+        let fileName = `Summary_listing_${genFileName(date)}`;
+        createPDF("summary_pdf", fileName);
+        console.log("Successfully Generated Summary Listing!");
+        // setTimeout(_ => { location.reload(); }, 5000);
+    });
+</script>
+

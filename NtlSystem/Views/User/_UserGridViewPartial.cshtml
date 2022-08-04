@@ -1,0 +1,74 @@
+@using NtlSystem.Models;
+
+@{
+    var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "UserGridView";
+        settings.CallbackRouteValues = new { Controller = "User", Action = "UserGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "User", Action = "UserGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "User", Action = "UserGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "User", Action = "UserGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.Width = Unit.Percentage(100);
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = false;
+
+        settings.KeyFieldName = "id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsSearchPanel.Visible = true;
+
+        // Username
+        settings.Columns.Add(col => {
+            col.FieldName = "username";
+            col.Caption = "Username";
+            (col.PropertiesEdit as TextEditProperties).ValidationSettings.RequiredField.IsRequired = true;
+        });
+
+        // Password
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "password";
+            col.Caption = "Password";
+            (col.PropertiesEdit as TextEditProperties).ValidationSettings.RequiredField.IsRequired = true;
+        });
+
+        // Email
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "email_address";
+            col.Caption = "Email Address";
+            (col.PropertiesEdit as TextEditProperties).ValidationSettings.RequiredField.IsRequired = true;
+        });
+
+        // Header Set Center
+        settings.Styles.Header.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Header.VerticalAlign = VerticalAlign.Middle;
+
+        // Cell Styles Center
+        settings.Styles.Cell.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Cell.VerticalAlign = VerticalAlign.Middle;
+
+        // Setting Detail Grid
+        settings.SettingsDetail.AllowOnlyOneMasterRowExpanded = true;
+        settings.SettingsDetail.ShowDetailRow = true;
+
+        settings.SetDetailRowTemplateContent(c =>
+        {
+            Html.RenderAction("UserRoleGridViewPartial", "UserRole", new { user_id = DataBinder.Eval(c.DataItem, "id") });
+        });
+    });
+
+    if (ViewData["EditError"] != null){
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

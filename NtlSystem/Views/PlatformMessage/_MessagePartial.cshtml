@@ -1,0 +1,23 @@
+﻿@using NtlSystem.Models;
+@using System.Collections.Generic;
+@model List<TNtlCustomerChat>
+
+@foreach (var chat in Model)
+{
+    string float_term = chat.sender_type.Equals("client") ? "float-start" : "float-end";
+    string class_term = chat.sender_type.Equals("client") ? "other-message" : "my-message";
+    string msg = (chat.msg_type.Equals("Image")) ? $"<img src='{chat.message}' alt='' />" : chat.message;
+
+    msg = msg.Trim('"');
+
+    <div class="row">
+        <div class="col">
+            <div class="@float_term" style="height: fit-content;">
+                <div class="message @class_term">
+                    @(new HtmlString(msg))
+                </div>
+                <div class="message-data-time">@chat.created_date</div>
+            </div>
+        </div>
+    </div>
+}

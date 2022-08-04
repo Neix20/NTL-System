@@ -1,0 +1,193 @@
+@using NtlSystem.Models;
+@using System.Collections.Generic;
+
+@{
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+
+    Dictionary<int, string> detailDict = new Dictionary<int, string>();
+    db.TNtlDetails.ToList().ForEach(it =>
+    {
+        detailDict.Add(it.id, it.last_updated_by);
+    });
+
+    Dictionary<int, Decimal?> productPriceDict = new Dictionary<int, decimal?>();
+    db.TNtlProducts.ToList().ForEach(it =>
+    {
+        productPriceDict.Add(it.id, it.sell_price);
+    });
+
+    int roomUnitTypeId = DbStoredProcedure.GetUnitTypeID("room");
+
+    var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "OrderItemGridView";
+        settings.CallbackRouteValues = new { Controller = "OrderItem", Action = "OrderItemGridViewPartial", order_id = ViewData["order_id"] };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "OrderItem", Action = "OrderItemGridViewPartialAddNew", order_id = ViewData["order_id"] };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "OrderItem", Action = "OrderItemGridViewPartialUpdate", order_id = ViewData["order_id"] };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "OrderItem", Action = "OrderItemGridViewPartialDelete", order_id = ViewData["order_id"] };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.Width = Unit.Percentage(100);
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsSearchPanel.Visible = true;
+
+        // Product Name
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "product_id";
+            col.Caption = "Product SKU";
+
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties prop = col.PropertiesEdit as ComboBoxProperties;
+            prop.DataSource = db.TNtlProducts.ToList();
+            prop.TextField = "SKU";
+            prop.ValueField = "id";
+            prop.ClearButton.DisplayMode = ClearButtonDisplayMode.OnHover;
+            prop.ValidationSettings.RequiredField.IsRequired = true;
+        });
+
+        // UOM
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "uom_id";
+            col.Caption = "UOM";
+
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties prop = col.PropertiesEdit as ComboBoxProperties;
+            prop.DataSource = db.TNtlUoms.ToList();
+            prop.TextField = "name";
+            prop.ValueField = "id";
+            prop.ClearButton.DisplayMode = ClearButtonDisplayMode.OnHover;
+            prop.ValidationSettings.RequiredField.IsRequired = true;
+        });
+
+        // Unit Price
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "unit_price";
+            col.Caption = "Unit Price";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "C";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Quantity
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "quantity";
+            col.Caption = "Quantity";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Integer;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+        });
+
+        // Total Price
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "total_price";
+            col.Caption = "Total Price";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "C";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Unit
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "unit_id";
+            col.Caption = "Unit";
+
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties prop = col.PropertiesEdit as ComboBoxProperties;
+            prop.DataSource = db.TNtlUnits.Where(it => it.unit_type_id == roomUnitTypeId).ToList();
+            prop.TextField = "name";
+            prop.ValueField = "id";
+            prop.ClearButton.DisplayMode = ClearButtonDisplayMode.OnHover;
+            prop.ValidationSettings.RequiredField.IsRequired = true;
+        });
+
+        // Total Usage 
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "total_usage";
+            col.Caption = "Total Usage";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "N2";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Remark
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "remark";
+            col.Caption = "Note";
+        });
+
+        // Details
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Last Updated By";
+            col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        settings.CustomUnboundColumnData = (s, e) =>
+        {
+            if (e.Column.FieldName.Equals("Last Updated By"))
+            {
+                int detail_id = int.Parse(e.GetListSourceFieldValue("detail_id").ToString());
+                e.Value = detailDict[detail_id];
+            };
+        };
+
+        // Header Set Center
+        settings.Styles.Header.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Header.VerticalAlign = VerticalAlign.Middle;
+
+        // Cell Styles Center
+        settings.Styles.Cell.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Cell.VerticalAlign = VerticalAlign.Middle;
+
+    });
+
+    if (ViewData["EditError"] != null){
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

@@ -1,0 +1,119 @@
+﻿@using NtlSystem.Models;
+@using System.Collections.Generic;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string uName = (User.Identity.IsAuthenticated) ? User.Identity.Name : "Admin";
+
+    List<string> permissionList = DbStoredProcedure.GetPermissionFromUser(uName);
+
+    IDictionary<string, string> titleDict = new Dictionary<string, string>();
+    foreach(var permission in permissionList)
+    {
+        titleDict.Add(permission, Regex.Replace(permission, @"([A-Z])", " $1"));
+
+        if (permission.Equals("JobOrderPostgres"))
+        {
+            titleDict["JobOrderPostgres"] = "Tasks";
+        }
+
+        if (permission.Equals("JobBatch"))
+        {
+            titleDict["JobBatch"] = "Job Orders";
+        }
+
+        if (permission.Equals("PlatformMessage"))
+        {
+            titleDict["PlatformMessage"] = "Messages";
+        }
+    }
+
+}
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+
+<!-- Header -->
+<header class="topbar" data-navbarbg="skin5">
+    <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+        <div class="navbar-header" data-logobg="skin6">
+            <a class="navbar-brand" style="color: black;">
+                [Place Logo Here]
+            </a>
+        </div>
+
+        <div class="navbar-collapse collapse" data-navbarbg="skin5">
+            <ul class="navbar-nav ms-auto d-flex align-items-center">
+                <li>
+                    <div class="profile-pic">
+                        <img src="~/Content/Images/default_male.jpg" alt="user-img" width="36" class="img-circle">
+                        <span class="text-white font-medium">@uName</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<!-- Side Bar -->
+<aside class="left-sidebar" data-sidebarbg="skin6" style="overflow-y: auto; overflow-x: hidden">
+    <div class="scroll-sidebar">
+        <nav class="sidebar-nav">
+            <div id="link-list">
+                <ul>
+                    <li class="sidebar-item">
+                        <div class="p-3">
+                            <div class="form-outline">
+                                <input type="text" placeholder="Search Links..." class="search form-control" />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list">
+                    @foreach(var kvp in titleDict)
+                    {
+                        <li class="sidebar-item">
+                            @Html.ActionLink(kvp.Value, "Index", kvp.Key, null, new { @Class = "sidebar-link" })
+                        </li>
+                    }
+                    <li class="sidebar-item">
+                        @Html.ActionLink("Sign Out", "SignOut", "Account", null, new { @Class = "sidebar-link" })
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</aside>
+
+<div class="page-wrapper">
+
+    <div class="page-breadcrumb bg-white">
+        <div class="row align-items-center">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                @RenderBody()
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="footer text-center">
+        Powered by ISSM Ver <a href="">@System.Configuration.ConfigurationManager.AppSettings["Version"]</a>
+    </footer>
+</div>
+
+<script>
+    var options = {
+        valueNames: ["sidebar-link"]
+    };
+
+    var linkList = new List('link-list', options);
+</script>
+

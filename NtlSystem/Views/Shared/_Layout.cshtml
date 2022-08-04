@@ -1,0 +1,113 @@
+﻿@{
+    string uName = (User.Identity.IsAuthenticated) ? User.Identity.Name : "Admin";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>@ViewBag.Title</title>
+
+    <link rel="icon" type="image/png" href="~/Content/Images/ntl_logo.png" />
+
+    @Styles.Render("~/Content/css/layout")
+    @Styles.Render("~/Content/css/bootstrap")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jsPDF")
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.HtmlEditor },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.GridView },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.PivotGrid },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Chart },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Report },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Scheduler },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.TreeList },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.RichEdit },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Spreadsheet },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.SpellChecker }
+    )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new Script { ExtensionSuite = ExtensionSuite.HtmlEditor },
+        new Script { ExtensionSuite = ExtensionSuite.GridView },
+        new Script { ExtensionSuite = ExtensionSuite.PivotGrid },
+        new Script { ExtensionSuite = ExtensionSuite.Editors },
+        new Script { ExtensionSuite = ExtensionSuite.Chart },
+        new Script { ExtensionSuite = ExtensionSuite.Report },
+        new Script { ExtensionSuite = ExtensionSuite.Scheduler },
+        new Script { ExtensionSuite = ExtensionSuite.TreeList },
+        new Script { ExtensionSuite = ExtensionSuite.RichEdit },
+        new Script { ExtensionSuite = ExtensionSuite.Spreadsheet },
+        new Script { ExtensionSuite = ExtensionSuite.SpellChecker }
+    )
+
+    <style>
+        .footer_style {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: grey;
+            color: white;
+            text-align: center;
+        }
+
+        .header_style {
+            text-align: center;
+            font-size: 30pt;
+            margin-top: -5px;
+            margin-bottom: -10px;
+        }
+
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+
+    <!--Custom JavaScript -->
+    <script>
+        $(function() {
+            // ============================================================== 
+            // Resize all elements
+            // ============================================================== 
+            $("body").trigger("resize");
+            $(".page-wrapper").trigger("resize");
+            
+            //****************************
+            /* This is for the mini-sidebar if width is less then 1170*/
+            //**************************** 
+            var setsidebartype = function() {
+                var width = (window.innerWidth > 0) ? window.innerWidth : this.screen.width;
+                if (width < 1170) {
+                    $("#main-wrapper").attr("data-sidebartype", "mini-sidebar");
+                } else {
+                    $("#main-wrapper").attr("data-sidebartype", "full");
+                }
+            };
+        
+            $(window).ready(setsidebartype);
+            $(window).on("resize", setsidebartype);
+        });
+    </script>
+</head>
+
+<body>
+   <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5">
+        @RenderBody()
+    </div>
+</body>
+</html>

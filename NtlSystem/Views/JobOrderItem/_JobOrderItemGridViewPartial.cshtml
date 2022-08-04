@@ -1,0 +1,173 @@
+@using NtlSystem.Models;
+@using System.Collections.Generic;
+
+@{
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+
+    Dictionary<int, string> detailDict = new Dictionary<int, string>();
+    db.TNtlDetails.ToList().ForEach(it =>
+    {
+        detailDict.Add(it.id, it.last_updated_by);
+    });
+
+    var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = $"JobOrderItemGridView_{ViewData["order_id"]}";
+        settings.CallbackRouteValues = new { Controller = "JobOrderItem", Action = "JobOrderItemGridViewPartial", order_id = ViewData["order_id"] };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "JobOrderItem", Action = "JobOrderItemGridViewPartialAddNew", order_id = ViewData["order_id"] };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "JobOrderItem", Action = "JobOrderItemGridViewPartialUpdate", order_id = ViewData["order_id"] };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "JobOrderItem", Action = "JobOrderItemGridViewPartialDelete", order_id = ViewData["order_id"] };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.Width = Unit.Percentage(100);
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = false;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = false;
+
+        settings.KeyFieldName = "id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsSearchPanel.Visible = true;
+
+        // Name
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "name";
+            col.Caption = "Name";
+        });
+
+        // SKU
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "sku";
+            col.Caption = "SKU";
+        });
+
+        // Width
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "width";
+            col.Caption = "Width";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "N2";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Height
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "height";
+            col.Caption = "Height";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "N2";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Quantity
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "quantity";
+            col.Caption = "Quantity";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Integer;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.DisplayFormatString = "N0";
+        });
+
+        // UOM
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "uom";
+            col.Caption = "UOM";
+        });
+
+        // Unit Price
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "unit_price";
+            col.Caption = "Unit Price";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "C";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Total Price
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "total_price";
+            col.Caption = "Total Price";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "C";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Details
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Last Updated By";
+            col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        settings.CustomUnboundColumnData = (s, e) =>
+        {
+            if (e.Column.FieldName.Equals("Last Updated By"))
+            {
+                int detail_id = int.Parse(e.GetListSourceFieldValue("detail_id").ToString());
+                e.Value = detailDict[detail_id];
+            };
+        };
+
+        // Header Set Center
+        settings.Styles.Header.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Header.VerticalAlign = VerticalAlign.Middle;
+
+        // Cell Styles Center
+        settings.Styles.Cell.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Cell.VerticalAlign = VerticalAlign.Middle;
+
+    });
+
+    if (ViewData["EditError"] != null){
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

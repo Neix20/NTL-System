@@ -1,0 +1,141 @@
+﻿@model NtlSystem.Models.TNtlProduct
+@using NtlSystem.Models;
+
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_NavLayout.cshtml";
+
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+}
+
+<div class="white-box">
+    <div class="border border-dark">
+        <div class="row">
+            <div class="col">
+                <div class="bg-dark text-center h1 text-white">@ViewBag.Title</div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("ProductGridViewPartialAddNew", "Product", FormMethod.Post, new { @Enctype = "multipart/form-data", @Id = "productForm" }))
+            {
+            @Html.AntiForgeryToken()
+
+            <div class="row m-2">
+                <div class="col">
+                    <label>Product Image: </label>
+                    @Html.TextBox("product_image", "", new { @Class = "form-control", @Type = "file", @Required = "true" })
+                </div>
+                <div class="col">
+                    <label>Unit of Material: </label>
+                    @Html.DevExpress().ComboBox(settings =>
+               {
+                   settings.Name = "uom_id";
+                   settings.Width = Unit.Percentage(100);
+                   settings.SelectedIndex = 0;
+                   settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                   settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+                   settings.Properties.TextField = "name";
+                   settings.Properties.ValueField = "id";
+                   settings.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.OnHover;
+                   settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
+               }).BindList(db.TNtlUoms.ToList()).GetHtml()
+                </div>
+            </div>
+
+                <div class="row m-2">
+                    <div class="col input_req">
+                        <label>Name: </label>
+                        @Html.TextBox("name", "", new { @Class = "form-control", @type = "text", @Required = "true" })
+                    </div>
+                    <div class="col">
+                        <label>SKU Code: </label>
+                        @Html.TextBox("sku", "", new { @Class = "form-control", @type = "text", @Placeholder = "Optional" })
+                    </div>
+                </div>
+
+                <div class="to_remove">
+                    <div class="row m-2">
+                        <div class="col">
+                            <label>Cost Price: </label>
+                            @Html.DevExpress().SpinEdit(settings =>
+                   {
+                       settings.Name = "buy_price";
+                       settings.Width = Unit.Percentage(100);
+                       settings.Properties.MinValue = 0;
+                       settings.Properties.MaxValue = 10000000;
+                       settings.Properties.Increment = 0.1M;
+                       settings.Properties.DisplayFormatString = "C";
+                   }).GetHtml()
+                        </div>
+                        <div class="col">
+                            <label>Sell Price: </label>
+                            @Html.DevExpress().SpinEdit(settings =>
+                   {
+                       settings.Name = "sell_price";
+                       settings.Width = Unit.Percentage(100);
+                       settings.Properties.MinValue = 0;
+                       settings.Properties.MaxValue = 10000000;
+                       settings.Properties.Increment = 0.1M;
+                       settings.Properties.DisplayFormatString = "C";
+                   }).GetHtml()
+                        </div>
+                    </div>
+
+                </div>
+        }
+
+        <div class="row mt-3 mx-2">
+            <div class="col text-end">
+                <button type="submit" class="btn btn-success" form="productForm">Submit Form</button>
+            </div>
+        </div>
+
+        <div class="row mx-2 mb-2">
+            <div class="col">
+                <div id="productFormResp">
+                    @Html.Action("ProductGridViewPartial")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+        $(function () {
+            // Submit Product
+            let productForm = $("form[id='productForm']");
+            const productForm_actionLink = productForm.attr("action");
+            const productForm_methodType = productForm.attr("method");
+
+            productForm.submit(e => {
+                e.preventDefault();
+
+                let input_valArr = [...document.getElementsByClassName("input_req")]
+                .map((node, ind) => node.querySelector("input[type=text]").value)
+                .map(node => (node == "") ? 0 : 1);
+                let submit_flag = Math.min(...input_valArr);
+
+                if (!submit_flag) {
+                    alert("Not all necessary inputs are filled in!");
+                } else {
+                    let fData = new FormData(productForm[0]);
+
+                    $.ajax({
+                        url: productForm_actionLink,
+                        type: productForm_methodType,
+                        enctype: 'multipart/form-data',
+                        processData: false,  // Important!
+                        contentType: false,
+                        cache: false,
+                        data: fData,
+                        success: resp => {
+                            $("#productFormResp").html(resp);
+                            alert("Product has been inserted successfully!");
+                            productForm.find("input[type=text], input[type=file], textarea").val("");
+                        }
+                    });
+                }
+            });
+        });
+</script>
+

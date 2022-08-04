@@ -1,0 +1,85 @@
+@using NtlSystem.Models;
+@using System.Collections.Generic;
+
+@{
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+
+    var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "DetailGridView";
+        settings.CallbackRouteValues = new { Controller = "Detail", Action = "DetailGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Detail", Action = "DetailGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Detail", Action = "DetailGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Detail", Action = "DetailGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.Width = Unit.Percentage(100);
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsSearchPanel.Visible = true;
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "id";
+            col.UnboundType = DevExpress.Data.UnboundColumnType.Integer;
+            col.Visible = false;
+            col.ReadOnly = true;
+        });
+
+        settings.Columns.Add("name").Caption = "Name";
+        settings.Columns.Add("remark").Caption = "Remarks";
+        settings.Columns.Add("created_by").Caption = "Created By";
+
+        // Created Date
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "created_date";
+            column.Caption = "Created Timestamp";
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            column.PropertiesEdit.DisplayFormatString = "yyyy-MM-dd";
+
+            DateEditProperties prop = column.PropertiesEdit as DateEditProperties;
+            prop.DisplayFormatString = "yyyy-MM-dd";
+            prop.DisplayFormatInEditMode = true;
+        });
+
+        settings.Columns.Add("last_updated_by").Caption = "Last Updated By";
+
+        // Updated Date
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "last_updated_date";
+            column.Caption = "Last Updated Timestamp";
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            column.PropertiesEdit.DisplayFormatString = "yyyy-MM-dd";
+
+            DateEditProperties prop = column.PropertiesEdit as DateEditProperties;
+            prop.DisplayFormatString = "yyyy-MM-dd";
+            prop.DisplayFormatInEditMode = true;
+        });
+
+        // Header Set Center
+        settings.Styles.Header.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Header.VerticalAlign = VerticalAlign.Middle;
+
+        // Cell Styles Center
+        settings.Styles.Cell.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Cell.VerticalAlign = VerticalAlign.Middle;
+    });
+
+    if (ViewData["EditError"] != null){
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

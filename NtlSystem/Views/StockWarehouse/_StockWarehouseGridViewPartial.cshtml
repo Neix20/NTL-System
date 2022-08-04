@@ -1,0 +1,112 @@
+@using NtlSystem.Models;
+@using System.Collections.Generic;
+
+@{
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+
+    Dictionary<int, string> detailDict = new Dictionary<int, string>();
+    db.TNtlDetails.ToList().ForEach(it =>
+    {
+        detailDict.Add(it.id, it.last_updated_by);
+    });
+
+    var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "StockWarehouse";
+        settings.CallbackRouteValues = new { Controller = "StockWarehouse", Action = "StockWarehouseGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "StockWarehouse", Action = "StockWarehouseGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "StockWarehouse", Action = "StockWarehouseGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "StockWarehouse", Action = "StockWarehouseGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.Width = Unit.Percentage(100);
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsSearchPanel.Visible = true;
+
+        // Image
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "image";
+            col.Caption = "Image";
+            col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            col.PropertiesEdit.EncodeHtml = false;
+            col.ReadOnly = true;
+        });
+
+        settings.Columns.Add("name").Caption = "Stock Warehouse";
+        settings.Columns.Add("email_address").Caption = "Email Address";
+        settings.Columns.Add("phone_number").Caption = "Phone Number";
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Address";
+            col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+        });
+
+        // Last Updated By
+        settings.Columns.Add(columns =>
+        {
+            columns.FieldName = "last_updated_by";
+            columns.Caption = "Last Updated By";
+            columns.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            columns.ReadOnly = true;
+        });
+
+        settings.CustomUnboundColumnData = (s, e) =>
+        {
+            if (e.Column.FieldName.Equals("Address"))
+            {
+                List<String> tmpList = new List<String>()
+                {
+                    e.GetListSourceFieldValue("address_line_1").ToString(),
+                    e.GetListSourceFieldValue("address_line_2").ToString(),
+                    e.GetListSourceFieldValue("city").ToString(),
+                    e.GetListSourceFieldValue("zip_code").ToString(),
+                    e.GetListSourceFieldValue("state").ToString(),
+                    e.GetListSourceFieldValue("country").ToString()
+                };
+                e.Value = String.Join(", ", tmpList.ToArray());
+
+            };
+
+            if (e.Column.FieldName == "image")
+            {
+                int stock_warehouse_id = int.Parse(e.GetListSourceFieldValue("id").ToString());
+                string stock_warehouse_title = e.GetListSourceFieldValue("name").ToString();
+                string file_path = Path.Combine(new string[] { "/Content/StockWarehouseImages", $"{stock_warehouse_id}_{stock_warehouse_title}.png" });
+                e.Value = $"<img src='{file_path}' style='height: 50px; width: 50px' alt='[ Missing Image ]' />";
+            }
+
+            if (e.Column.FieldName == "last_updated_by")
+            {
+                int detail_id = int.Parse(e.GetListSourceFieldValue("detail_id").ToString());
+                e.Value = detailDict[detail_id];
+            };
+        };
+
+        // Header Set Center
+        settings.Styles.Header.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Header.VerticalAlign = VerticalAlign.Middle;
+
+        // Cell Styles Center
+        settings.Styles.Cell.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Cell.VerticalAlign = VerticalAlign.Middle;
+    });
+
+    if (ViewData["EditError"] != null){
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

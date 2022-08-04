@@ -1,0 +1,342 @@
+﻿@using NtlSystem.Models;
+@using System.Collections.Generic;
+@model List<mCustomerMsg>
+
+@{
+    ViewBag.Title = "Message";
+    Layout = "~/Views/Shared/_NavLayout.cshtml";
+
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+
+    // Dictionary
+    Dictionary<int, string> platformDict = new Dictionary<int, string>();
+    db.TNtlPlatforms.ToList().ForEach(it => platformDict.Add(it.id, it.name));
+}
+
+<style>
+    .chat-app {
+        background: #fff;
+        transition: .5s;
+        position: relative;
+        width: 100%;
+    }
+
+        .chat-app .people-list {
+            width: 280px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 7;
+        }
+
+        .chat-app .chat {
+            margin-left: 280px;
+            border-left: 1px solid #eaeaea;
+        }
+
+    .people-list {
+        -moz-transition: .5s;
+        -o-transition: .5s;
+        -webkit-transition: .5s;
+        transition: .5s;
+    }
+
+        .people-list .chat-list li {
+            padding: 10px 15px;
+            list-style: none;
+            border-radius: 3px;
+        }
+
+            .people-list .chat-list li:hover {
+                background: #efefef;
+                cursor: pointer;
+            }
+
+        .people-list .chat-list .active {
+            background: #efefef;
+        }
+
+        .people-list .chat-list .name {
+            font-size: 15px;
+        }
+
+        .people-list .chat-list img {
+            width: 45px;
+            border-radius: 50%;
+        }
+
+        .people-list img {
+            float: left;
+            border-radius: 50%;
+        }
+
+        .people-list .about {
+            float: left;
+            padding-left: 8px;
+        }
+
+        .people-list .status {
+            color: #999;
+            font-size: 13px;
+        }
+
+    .chat .chat-history {
+        padding: 20px;
+        border-bottom: 2px solid #fff;
+        height: 70%;
+        overflow-y: auto;
+    }
+
+        .chat .chat-history .message {
+            color: #444;
+            padding: 10px;
+            line-height: 26px;
+            font-size: 16px;
+            border-radius: 7px;
+            width: fit-content;
+        }
+
+        .chat .chat-history .other-message {
+            background: #efefef;
+        }
+
+        .chat .chat-history .my-message {
+            background: #e8f1f3;
+            text-align: right;
+        }
+
+        .chat .chat-history .message-data-time {
+            color: #434651;
+            padding-left: 6px;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+    .chat .chat-message {
+        height: 15%;
+    }
+
+    .chat {
+        height: 480px;
+        overflow-y: hidden;
+    }
+
+    .notification {
+        position: relative;
+    }
+
+    .notification-item {
+        font-size: 12px;
+        color: white;
+        height: 20px;
+        width: 20px;
+        border-radius: 5px;
+    }
+
+    body {
+        overflow-y: hidden;
+    }
+</style>
+
+<div class="row" style="width: 100%;">
+    <div class="col">
+
+        <div class="chat-app">
+
+            <div class="people-list">
+                <div class="d-flex align-items-end px-3" style="height: 30px">
+                    <div style="font-size: 12px; color: gray">Recent</div>
+                </div>
+                <ul class="list-unstyled chat-list mt-2">
+                    @foreach (var obj in Model)
+                    {
+                        <li class="person clearfix">
+                            <img src="~/Content/Images/default_male.jpg" alt="avatar">
+
+                            <div id="customer_id" style="display: none;">@obj.customer.id</div>
+
+                            <div class="about">
+                                <div class="name">@obj.customer.name</div>
+                                <div class="status">@platformDict[(int)obj.customer.platform_id]</div>
+                            </div>
+
+                            <!-- Notification -->
+                            @if (obj.notification > 0)
+                            {
+                                <div class="notification float-end">
+                                    <div class="notification-item bg-danger text-center">@obj.notification</div>
+                                </div>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <div class="chat">
+                <div class="chat-history mt-3" id="chat-history">
+
+                </div>
+
+                <div class="chat-message">
+                    <div class="px-3">
+                        <textarea class="form-control"></textarea>
+                        <div style="font-size: 12px; color: gray;">
+                            <span>Press Shift + Enter to start a new line</span>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="float-end">
+                                    <button id="submitBtn" class="btn btn-primary" disabled onclick="submitMsg()">Send Msg</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    Date.prototype.monthNames = [
+        "January", "February", "March",
+        "April", "May", "June",
+        "July", "August", "September",
+        "October", "November", "December"
+    ];
+
+    Date.prototype.getMonthName = function () {
+        return this.monthNames[this.getMonth()];
+    };
+
+    Date.prototype.getShortMonthName = function () {
+        return this.getMonthName().substr(0, 3);
+    };
+
+    formatNum = (x) => (x < 10) ? `0${x}` : `${x}`;
+
+    // Function: Get Date
+    function getTimeDate() {
+        let dt = new Date();
+        return `${dt.getDate()} ${dt.getShortMonthName()} ${dt.getFullYear()}, ${dt.getHours()}:${formatNum(dt.getMinutes())}`;
+    }
+
+    let userList = document.querySelectorAll(".person");
+
+    userList.forEach(elem => {
+        elem.addEventListener("click", e => {
+            // Add Or Remove Gray Background
+            document.querySelectorAll(".person").forEach(elem => elem.classList.remove("active"));
+            e.currentTarget.classList.add("active");
+
+            // Add or Remove Notification
+            let notiElem = e.currentTarget.querySelector(".notification");
+            if (notiElem != null) {
+                notiElem.remove();
+            }
+
+            let customer_id = e.currentTarget.querySelector("#customer_id").innerText;
+
+            // Change Message Container
+            (async () => {
+                const resp = await fetch(`/PlatformMessage/MessengerPartial`, {
+                    method: "POST",
+                    credentials: 'same-origin', // include, *same-origin, omit
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "customer_id": customer_id
+                    })
+                });
+
+                let data = await resp.text();
+                document.querySelector("#chat-history").innerHTML = data;
+            })();
+
+            // Update Message Read Status
+            (async () => {
+                const resp = await fetch(`/PlatformMessage/UpdateNotificationStatus`, {
+                    method: "POST",
+                    credentials: 'same-origin', // include, *same-origin, omit
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "customer_id": customer_id
+                    })
+                });
+
+                let data = await resp.text();
+                console.log(data);
+            })();
+        });
+    });
+
+    // Submit Btn
+    let submitBtn = document.querySelector("#submitBtn");
+
+    // Text Area
+    let txtArea = document.querySelector("textarea");
+    txtArea.addEventListener("change", e => {
+        let value = txtArea.value;
+        if (value == "") {
+            submitBtn.setAttribute("disabled", "");
+        } else {
+            submitBtn.removeAttribute("disabled");
+        }
+    });
+
+    // Press Enter to Submit Message
+    txtArea.addEventListener("keyup", e => {
+        if(e.keyCode == 13 && !e.shiftKey){
+            let value = txtArea.value;
+
+            // Use Regex To Match for Whitespace
+            value = value.replace(/\s*/, "");
+
+            if(value != ""){
+                submitMsg();
+            } else {
+                console.log("Value is Empty!");
+            }
+        } 
+    });
+
+    // Add To Message Container when Submit Btn is Clicked
+    function submitMsg() {
+        // Make Post Request to Server to Add Chat Item
+        let msg = txtArea.value;
+
+        let customer_id = document.querySelector(".active #customer_id").innerText;
+
+        (async () => {
+            const resp = await fetch("/PlatformMessage/AddMessage", {
+                method: "POST",
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: msg,
+                    created_date: getTimeDate(),
+                    msg_type: "Text",
+                    sender_type: "sender",
+                    customer_id: customer_id
+                })
+            });
+
+            let data = await resp.text();
+
+            document.querySelector("#chat-history").innerHTML += data;
+        })();
+
+        txtArea.value = "";
+        submitBtn.setAttribute("disabled", "");
+    }
+
+</script>

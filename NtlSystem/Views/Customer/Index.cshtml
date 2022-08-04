@@ -1,0 +1,113 @@
+﻿@using NtlSystem.Models;
+
+@{
+    ViewBag.Title = "Customer";
+    Layout = "~/Views/Shared/_NavLayout.cshtml";
+
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+}
+
+<div class="white-box">
+    <div class="border border-dark">
+        <div class="row">
+            <div class="col">
+                <div class="bg-dark text-center h1 text-white">@ViewBag.Title</div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("CustomerGridViewPartialAddNew", "Customer", FormMethod.Post, new { @Id = "customerForm" }))
+        {
+
+            <div class="to_remove">
+                <div class="row m-2">
+                    <div class="col">
+                        <label>Platform Name: </label>
+                        @Html.DevExpress().ComboBox(settings =>
+                   {
+                       settings.Name = "platform_id";
+                       settings.Width = Unit.Percentage(106);
+                       settings.SelectedIndex = 0;
+                       settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                       settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+                       settings.Properties.TextField = "name";
+                       settings.Properties.ValueField = "id";
+                       settings.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.OnHover;
+                       settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                   }).BindList(db.TNtlPlatforms.ToList()).GetHtml()
+                    </div>
+                    <div class="col">
+                        <label>Email Address: </label>
+                        @Html.TextBox("email_address", "", new { @Class = "form-control", @Type = "text", @Required = "true" })
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <label>Name: </label>
+                        @Html.TextBox("name", "", new { @Class = "form-control", @Type = "text", @Required = "true" })
+                    </div>
+                    <div class="col">
+                        <label>Phone Number: </label>
+                        @Html.TextBox("phone_number", "", new { @Class = "form-control", @Type = "text", @Required = "true" })
+                    </div>
+                </div>
+
+                <div class="row m-2">
+                    <div class="col">
+                        <label>Address: </label>
+                        @Html.TextBox("address", "", new { @Class = "form-control", @Type = "text", @Required = "true" })
+                    </div>
+                </div>
+
+            </div>
+
+                
+                }
+
+                <div class="row mt-3 mx-2">
+                    <div class="col">
+                        <button type="submit" class="btn btn-success" form="customerForm">Submit Form</button>
+                    </div>
+                </div>
+
+                <div class="row mx-2 mb-2">
+                    <div class="col">
+                        <div id="customerFormResp">
+                            @Html.Action("CustomerGridViewPartial")
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+</div>
+
+<script type="text/javascript">
+        $(function () {
+            let cForm = $("form[id='customerForm']");
+            const cForm_actionLink = cForm.attr("action");
+            const cForm_methodType = cForm.attr("method");
+
+            cForm.submit(e => {
+                e.preventDefault();
+
+                let input_valArr = [...document.getElementById("customerForm").querySelectorAll("input[type=text]")]
+                                        .map(node => (node.value === "") ? 0 : 1);
+                let submit_flag = Math.min(...input_valArr);
+
+                if (!submit_flag) {
+                    alert("Not all necessary inputs have been filled in!");
+                } else {
+                    $.ajax({
+                        url: cForm_actionLink,
+                        type: cForm_methodType,
+                        data: cForm.serialize(),
+                        success: resp => {
+                            $("#customerFormResp").html(resp);
+                            alert("Customer has been inserted successfully!");
+                            $(".to_remove").find("input[type=text], input[type=file], textarea").val("");
+                        }
+                    });
+                }
+            });
+        });
+</script>
+

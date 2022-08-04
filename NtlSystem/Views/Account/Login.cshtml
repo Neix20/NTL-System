@@ -1,0 +1,126 @@
+﻿@model NtlSystem.Models.TNtlUser
+
+@{
+    ViewBag.Title = "Login Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .logo_img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 200px;
+        width: 200px;
+    }
+
+    .div_width {
+        height: 100%;
+        width: 330px;
+    }
+
+    /* Desktop */
+    @@media (min-width: 768px) {
+        .div_width {
+            height: 100%;
+            width: 600px;
+        }
+    }
+
+    .btn_div div {
+        margin-right: 10px;
+    }
+
+    .btn_div div:last-child {
+        margin-right: 0px;
+    }
+</style>
+
+<div class="header_style h2">
+    <strong>NTL Asia Portal</strong>
+</div>
+
+<div class="d-flex align-items-center justify-content-center mt-3">
+    <div>
+        <div class="my-2">
+            <img src="~/Content/Images/ntl_logo.png" alt="NTL Asia Portal Login Logo Image" class="logo_img" />
+        </div>
+
+        <div class="border border-dark p-3 div_width">
+            <div class="h4">
+                NTL Asia Portal
+            </div>
+            @using (Html.BeginForm("Login", "Account", new { returnUrl = Request.QueryString["ReturnUrl"] }, FormMethod.Post, new { @Id = "loginForm" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="my-2">
+                    <div class="row align-items-center">
+                        <div class="col-3">
+                            <label for="username" class="col-form-label">Username</label>
+                        </div>
+                        <div class="col-9">
+                            @Html.TextBoxFor(model => model.username, new { @Class = "form-control", @Type = "text", @Required = "true" })
+                        </div>
+                    </div>
+                    <div class="mt-2"></div>
+                    <div class="row align-items-center">
+                        <div class="col-3">
+                            <label for="password" class="col-form-label">Password</label>
+                        </div>
+                        <div class="col-9">
+                            @Html.TextBoxFor(model => model.password, new { @Class = "form-control", @Type = "password", @Required = "true" })
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="text-danger" id="loginErrorDiv">@ViewData["login_error"]</div>
+        </div>
+
+        <div class="my-2">
+            <div class="d-flex btn_div">
+                <div class="col-2">
+                    <button class="btn btn-primary w-100" form="loginForm" type="submit">Login</button>
+                </div>
+                <div class="col-6">
+                    @Html.ActionLink("Forgot password", "ForgotPassword", "Account", null, new { @Class = "btn btn-danger w-100" })
+                </div>
+                <div class="col-4">
+                    @Html.ActionLink("Sign Up", "SignUp", "Account", null, new { @Class = "btn btn-success w-100" })
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        let loginFormStr = `form[id='loginForm']`, loginForm = $(loginFormStr);
+        const loginForm_actionLink = loginForm.attr("action");
+        const loginForm_methodType = loginForm.attr("method");
+
+        loginForm.submit(e => {
+            e.preventDefault();
+            $.ajax({
+                url: loginForm_actionLink,
+                type: loginForm_methodType,
+                data: loginForm.serialize(),
+                success: response => {
+                    $(`${loginFormStr} input[name='username']`).val("");
+                    $(`${loginFormStr} input[name='password']`).val("");
+                    if (response.includes("Error")) {
+                        $("#loginErrorDiv").html(response);
+                        setTimeout(_ => {
+                            $("#loginErrorDiv").html("");
+                        }, 2000);
+                    }
+                    else {
+                        window.location.href = response;
+                    }
+                }
+            });
+        });
+    });
+</script>
+

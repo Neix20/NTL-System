@@ -1,0 +1,129 @@
+﻿@using NtlSystem.Models;
+
+@{
+    ViewBag.Title = "Stock Item";
+    Layout = "~/Views/Shared/_NavLayout.cshtml";
+
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+}
+
+<div class="p-3">
+    <div class="border border-dark">
+        <div class="row">
+            <div class="col">
+                <div class="bg-dark text-center h1 text-white">@ViewBag.Title</div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("StockItemGridViewPartialAddNew", "StockItem", FormMethod.Post, new { @Enctype = "multipart/form-data", @Id = "stockItemForm" }))
+            {
+            @Html.AntiForgeryToken()
+
+            <div class="row m-2">
+                <div class="col input_req">
+                    <label>Stock Warehouse: </label>
+                    @Html.DevExpress().ComboBox(settings =>
+                   {
+                       settings.Name = "stock_warehouse_id";
+                       settings.Width = Unit.Percentage(100);
+                       settings.SelectedIndex = 0;
+                       settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                       settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+                       settings.Properties.TextField = "name";
+                       settings.Properties.ValueField = "id";
+                       settings.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.OnHover;
+                       settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                   }).BindList(db.TNtlStockWarehouses.ToList()).GetHtml()
+                </div>
+                <div class="col">
+                    <label>Stock Item Image: </label>
+                    @Html.TextBox("stock_item_image", "", new { @Class = "form-control", @Type = "file", @Required = "true" })
+                </div>
+            </div>
+
+                <div class="row m-2">
+                    <div class="col input_req">
+                        <label>Product SKU: </label>
+                        @Html.DevExpress().ComboBox(settings =>
+                   {
+                       settings.Name = "product_id";
+                       settings.Width = Unit.Percentage(100);
+                       settings.SelectedIndex = 0;
+                       settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                       settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+                       settings.Properties.TextField = "SKU";
+                       settings.Properties.ValueField = "id";
+                       settings.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.OnHover;
+                       settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                   }).BindList(db.TNtlProducts.ToList()).GetHtml()
+                    </div>
+                    <div class="col">
+                        <label>Quantity: </label>
+                        @Html.DevExpress().SpinEdit(settings =>
+                   {
+                       settings.Name = "quantity";
+                       settings.Width = Unit.Percentage(100);
+                       settings.Properties.MinValue = 0;
+                       settings.Properties.MaxValue = 10000000;
+                       settings.Properties.Increment = 0.1M;
+                       settings.Properties.DecimalPlaces = 2;
+                       settings.Properties.DisplayFormatString = "N2";
+                   }).GetHtml()
+                    </div>
+                </div>
+        }
+
+        <div class="row mt-3 mx-2">
+            <div class="col">
+                <button type="submit" form="stockItemForm" class="btn btn-success">Submit Form</button>
+            </div>
+        </div>
+
+        <div class="row mx-2 mb-2">
+            <div class="col">
+                <div id="stockItemFormResp">
+                    @Html.Action("StockItemGridViewPartial")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+        $(function () {
+            let stockItemForm = $("form[id='stockItemForm']");
+            const stockItemForm_actionLink = stockItemForm.attr("action");
+            const stockItemForm_methodType = stockItemForm.attr("method");
+
+            stockItemForm.submit(e => {
+                e.preventDefault();
+
+                let input_valArr = [...document.getElementsByClassName("input_req")]
+                .map((node, ind) => node.querySelector("input[type=text]").value)
+                .map(node => (node == "") ? 0 : 1);
+                let submit_flag = Math.min(...input_valArr);
+
+                if (!submit_flag) {
+                    alert("Not all necessary inputs have been filled in!");
+                } else {
+                    let fData = new FormData(stockItemForm[0]);
+
+                    $.ajax({
+                        url: stockItemForm_actionLink,
+                        type: stockItemForm_methodType,
+                        enctype: 'multipart/form-data',
+                        processData: false,  // Important!
+                        contentType: false,
+                        cache: false,
+                        data: fData,
+                        success: resp => {
+                            $("#stockItemFormResp").html(resp);
+                            alert("Stock item has been inserted successfully!");
+                            stockItemForm.find("input[type=text], input[type=file], textarea").val("");
+                        }
+                    });
+                }
+            });
+        });
+</script>
+

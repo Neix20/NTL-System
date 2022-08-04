@@ -1,0 +1,96 @@
+﻿@using NtlSystem.Models;
+
+@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/_NavLayout.cshtml";
+
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+}
+
+<div class="white-box">
+    <div class="border border-dark">
+        <div class="row">
+            <div class="col">
+                <div class="bg-dark text-center h1 text-white">@ViewBag.Title</div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("OrderGridViewPartialAddNew", "Order", FormMethod.Post, new { @Id = "orderForm" }))
+            {
+            <div class="row m-2">
+                <div class="col">
+                    <label>Title: </label>
+                    @Html.TextBox("name", "", new { @Class = "form-control", @Type = "text", @Placeholder = "Optional", @Required = true })
+                </div>
+
+                <div class="col">
+                    <label>Placement Date: </label>
+                    @Html.DevExpress().DateEdit(settings =>
+                   {
+                       settings.Name = "created_date";
+                       settings.Properties.DisplayFormatString = "yyyy-MM-dd";
+                       settings.Width = Unit.Percentage(100);
+                   }).GetHtml()
+                </div>
+            </div>
+
+            <div class="row m-2">
+                <div class="col">
+                    <label>Customer: </label>
+                    @Html.DevExpress().ComboBox(settings =>
+               {
+                   settings.Name = "customer_id";
+                   settings.Width = Unit.Percentage(100);
+                   settings.SelectedIndex = 0;
+                   settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                   settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+                   settings.Properties.TextField = "name";
+                   settings.Properties.ValueField = "id";
+                   settings.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.OnHover;
+                   settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
+               }).BindList(db.TNtlCustomers.ToList()).GetHtml()
+                </div>
+
+                <div class="col">
+                </div>
+            </div>
+        }
+
+        <div class="row mt-3 mx-2">
+            <div class="col">
+                <button type="submit" form="orderForm" class="btn btn-success">Submit Form</button>
+            </div>
+        </div>
+
+        <div class="row m-2">
+            <div class="col">
+                <div id="orderFormResp">
+                    @Html.Action("OrderGridViewPartial")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+        $(function () {
+            let orderForm = $("form[id='orderForm']");
+            const orderForm_actionLink = orderForm.attr("action");
+            const orderForm_methodType = orderForm.attr("method");
+
+            orderForm.submit(e => {
+                e.preventDefault();
+
+                $.ajax({
+                    url: orderForm_actionLink,
+                    type: orderForm_methodType,
+                    data: orderForm.serialize(),
+                    success: resp => {
+                        $("#orderFormResp").html(resp);
+                        alert("Order has been successfully inserted!");
+                        orderForm.find("input[type=text], textarea").val("");
+                    }
+                })
+            });
+        });
+</script>

@@ -1,0 +1,160 @@
+@using NtlSystem.Models;
+@using System.Collections.Generic;
+
+@{
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+
+    Dictionary<int, string> detailDict = new Dictionary<int, string>();
+    db.TNtlDetails.ToList().ForEach(it =>
+    {
+        detailDict.Add(it.id, it.last_updated_by);
+    });
+
+    int c_sta_id = DbStoredProcedure.GetStatusID("Complete", "Job Order");
+
+    var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = $"JobOrderGridView_{ViewData["batch_id"]}";
+        settings.CallbackRouteValues = new { Controller = "JobOrder", Action = "JobOrderGridViewPartial", batch_id = ViewData["batch_id"] };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "JobOrder", Action = "JobOrderGridViewPartialAddNew", batch_id = ViewData["batch_id"] };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "JobOrder", Action = "JobOrderGridViewPartialUpdate", batch_id = ViewData["batch_id"] };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "JobOrder", Action = "JobOrderGridViewPartialDelete", batch_id = ViewData["batch_id"] };
+
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.Width = Unit.Percentage(100);
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = false;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = false;
+
+        settings.KeyFieldName = "id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsSearchPanel.Visible = true;
+
+        // Name
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "name";
+            col.Caption = "Title";
+        });
+
+        // Created Date
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "created_date";
+            col.Caption = "Placement Date";
+
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.PropertiesEdit.DisplayFormatString = "yyyy-MM-dd";
+
+            DateEditProperties prop = col.PropertiesEdit as DateEditProperties;
+            prop.DisplayFormatString = "yyyy-MM-dd";
+            prop.DisplayFormatInEditMode = true;
+        });
+
+        // Total Price
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "total_price";
+            col.Caption = "Total Price";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "C";
+        });
+
+        // Customer Name
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "customer_name";
+            col.Caption = "Customer";
+        });
+
+        // Status
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "status_id";
+            col.Caption = "Status";
+
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties prop = col.PropertiesEdit as ComboBoxProperties;
+            prop.DataSource = db.TNtlStatus.ToList();
+            prop.TextField = "name";
+            prop.ValueField = "id";
+            prop.ClearButton.DisplayMode = ClearButtonDisplayMode.OnHover;
+            prop.ValidationSettings.RequiredField.IsRequired = true;
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Complete Button
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Complete?";
+            col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            col.PropertiesEdit.EncodeHtml = false;
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Details
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Last Updated By";
+            col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        settings.CustomUnboundColumnData = (s, e) =>
+        {
+            if (e.Column.FieldName.Equals("Last Updated By"))
+            {
+                int detail_id = int.Parse(e.GetListSourceFieldValue("detail_id").ToString());
+                e.Value = detailDict[detail_id];
+            };
+
+            if (e.Column.FieldName.Equals("Complete?"))
+            {
+                int order_id = int.Parse(e.GetListSourceFieldValue("id").ToString());
+                int sta_id = int.Parse(e.GetListSourceFieldValue("status_id").ToString());
+                string to_disable = (sta_id == c_sta_id) ? "disabled" : "";
+
+                string js_func = "$.ajax({ url: '/JobOrder/CompleteOrder', type: 'Post', data: { 'order_id': '" + order_id + "' }, success: resp => { console.log(resp); location.reload(); } });";
+                e.Value = $"<button class='btn btn-outline-success' {to_disable} onclick=\"{js_func}\">Complete</button>";
+            }
+        };
+
+        // Header Set Center
+        settings.Styles.Header.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Header.VerticalAlign = VerticalAlign.Middle;
+
+        // Cell Styles Center
+        settings.Styles.Cell.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Cell.VerticalAlign = VerticalAlign.Middle;
+
+        // Grid Partial
+        settings.SettingsDetail.AllowOnlyOneMasterRowExpanded = true;
+        settings.SettingsDetail.ShowDetailRow = true;
+
+        settings.SetDetailRowTemplateContent(c =>
+        {
+            Html.RenderAction("JobOrderItemGridViewPartial", "JobOrderItem", new { order_id = DataBinder.Eval(c.DataItem, "odoo_sales_id") });
+        });
+    });
+
+    if (ViewData["EditError"] != null){
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

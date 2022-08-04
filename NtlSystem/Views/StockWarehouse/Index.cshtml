@@ -1,0 +1,137 @@
+﻿
+@model NtlSystem.Models.TNtlStockWarehouse
+
+@{
+    ViewBag.Title = "Stock Warehouse";
+    Layout = "~/Views/Shared/_NavLayout.cshtml";
+}
+
+<div class="p-3">
+    <div class="border border-dark">
+        <div class="row">
+            <div class="col">
+                <div class="bg-dark text-center h1 text-white">@ViewBag.Title</div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("StockWarehouseGridViewPartialAddNew", "StockWarehouse", FormMethod.Post, new { @Enctype = "multipart/form-data", @Id = "stockWarehouseForm" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="to_remove">
+                <div class="row m-2">
+                    <div class="col">
+                        <label>Stock Warehouse Title: </label>
+                        @Html.TextBox("name", "", new { @Class = "form-control", @Type = "text", @Required = "true" })
+                    </div>
+                    <div class="col">
+                        <label>Stock Warehouse Image: </label>
+                        @Html.TextBox("warehouse_image", "", new { @Class = "form-control", @Type = "file", @Required = "true" })
+                    </div>
+                </div>
+
+                <div class="row m-2">
+                    <div class="col">
+                        <label>Email Address: </label>
+                        @Html.TextBox("email_address", "", new { @Class = "form-control", @Type = "text", @Required = "true" })
+                    </div>
+                    <div class="col">
+                        <label>Phone Number: </label>
+                        @Html.TextBox("phone_number", "", new { @Class = "form-control", @Type = "text", @Required = "true" })
+                    </div>
+                </div>
+
+                <div class="row m-2">
+                    <div class="col">
+                        <label>Address Line 1: </label>
+                        @Html.TextBox("address_line_1", "", new { @Class = "form-control", @Type = "text", @Required = "true" })
+                    </div>
+                    <div class="col">
+                        <label>Address Line 2: </label>
+                        @Html.TextBox("address_line_2", "", new { @Class = "form-control", @Type = "text", @Required = "true" })
+                    </div>
+                </div>
+
+                <div class="row m-2">
+                    <div class="col">
+                        <label>City: </label>
+                        @Html.TextBox("city", "", new { @Class = "form-control", @Type = "text", @Required = "true" })
+                    </div>
+                    <div class="col">
+                        <label>Zip Code: </label>
+                        @Html.DevExpress().SpinEdit(settings =>
+                   {
+                       settings.Name = "zip_code";
+                       settings.Width = Unit.Percentage(100);
+                       settings.Properties.MinValue = 10000;
+                       settings.Properties.MaxValue = 99999;
+                   }).GetHtml()
+                    </div>
+                </div>
+
+                <div class="row m-2">
+                    <div class="col">
+                        <label>State: </label>
+                        @Html.TextBox("state", "", new { @Class = "form-control", @Type = "text", @Required = "true" })
+                    </div>
+                    <div class="col">
+                        <label>Country: </label>
+                        @Html.TextBox("country", "", new { @Class = "form-control", @Type = "text", @Required = "true" })
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row mt-3 mx-2">
+            <div class="col">
+                <button type="submit" class="btn btn-success" form="stockWarehouseForm">Submit Form</button>
+            </div>
+        </div>
+
+        <div class="row mx-2 mb-2">
+            <div class="col">
+                <div id="stockWarehouseFormResp">
+                    @Html.Action("StockWarehouseGridViewPartial")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        let swForm = $("form[id='stockWarehouseForm']");
+        const swForm_actionLink = swForm.attr("action");
+        const swForm_methodType = swForm.attr("method");
+
+        swForm.submit(e => {
+            e.preventDefault();
+
+            let input_valArr = [...document.getElementById("stockWarehouseForm").querySelectorAll("input[type=text]")].map(node => (node.value === "") ? 0 : 1);
+            let submit_flag = Math.min(...input_valArr);
+
+            if (!submit_flag) {
+                alert("Not all inputs have been filled in!");
+            } else {
+                let fData = new FormData(swForm[0]);
+
+                $.ajax({
+                    url: swForm_actionLink,
+                    type: swForm_methodType,
+                    enctype: 'multipart/form-data',
+                    processData: false,  // Important!
+                    contentType: false,
+                    cache: false,
+                    data: fData,
+                    success: resp => {
+                        $("#stockWarehouseFormResp").html(resp);
+                        alert("Stock Warehouse has been successfully inserted!");
+                        $(".to_remove").find("input[type=text], input[type=file], textarea").val("");
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+

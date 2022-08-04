@@ -1,0 +1,97 @@
+@using NtlSystem.Models;
+@using System.Collections.Generic;
+
+@{
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+
+    Dictionary<int, string> detailDict = new Dictionary<int, string>();
+    db.TNtlDetails.ToList().ForEach(it =>
+    {
+        detailDict.Add(it.id, it.last_updated_by);
+    });
+
+    var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "PlatformGridView";
+        settings.CallbackRouteValues = new { Controller = "Platform", Action = "PlatformGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Platform", Action = "PlatformGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Platform", Action = "PlatformGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Platform", Action = "PlatformGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.Width = Unit.Percentage(100);
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsSearchPanel.Visible = true;
+
+        settings.Columns.Add("name").Caption = "Name";
+
+        settings.Columns.Add(col => {
+            col.FieldName = "link";
+            col.Caption = "Link";
+
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+
+            TextBoxProperties prop = col.PropertiesEdit as TextBoxProperties;
+            prop.ValidationSettings.RequiredField.IsRequired = true;
+        });
+
+        // Link [Make it Hyperlink using A Tag]
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "HyperLink";
+            col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            col.PropertiesEdit.EncodeHtml = false;
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Last Updated By
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Last Updated By";
+            col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        settings.CustomUnboundColumnData = (s, e) =>
+        {
+            if (e.Column.FieldName.Equals("Last Updated By"))
+            {
+                int detail_id = int.Parse(e.GetListSourceFieldValue("detail_id").ToString());
+                e.Value = detailDict[detail_id];
+            };
+
+            if (e.Column.FieldName.Equals("HyperLink"))
+            {
+                string name = e.GetListSourceFieldValue("name").ToString();
+                string link = e.GetListSourceFieldValue("link").ToString();
+                e.Value = $"<a href='https://{link}'>{name}</a>";
+            }
+        };
+
+        // Header Set Center
+        settings.Styles.Header.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Header.VerticalAlign = VerticalAlign.Middle;
+
+        // Cell Styles Center
+        settings.Styles.Cell.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Cell.VerticalAlign = VerticalAlign.Middle;
+    });
+
+    if (ViewData["EditError"] != null){
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

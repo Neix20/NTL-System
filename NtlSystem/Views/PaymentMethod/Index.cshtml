@@ -1,0 +1,28 @@
+﻿@using NtlSystem.Models;
+
+@{
+    ViewBag.Title = "Payment Method";
+    Layout = "~/Views/Shared/_NavLayout.cshtml";
+
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+}
+
+<div class="p-3">
+    <div class="border border-dark">
+        <div class="row">
+            <div class="col">
+                <div class="bg-dark text-center h1 text-white">@ViewBag.Title</div>
+            </div>
+        </div>
+
+        <div class="row m-2">
+            <div class="col">
+                <div id="PaymentMethodFormContent">
+                    @Html.Action("PaymentMethodGridViewPartial")
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

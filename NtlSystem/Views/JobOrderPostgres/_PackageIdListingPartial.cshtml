@@ -1,0 +1,68 @@
+﻿@using NtlSystem.Models.JobOrderModels;
+@using System.Collections.Generic;
+@model List<mPackageId>
+
+<div class="my-3">
+    <div class="h3">Package Listing Summary: </div>
+</div>
+
+@using (Html.BeginForm("PackageListingPartial", "JobOrderPostgres", FormMethod.Post, new { @Id= "generatePackageListingForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+<div class="list-group">
+    @foreach (var obj in Model)
+    {
+        <button type="button" class="list-group-item list-group-item-action" onclick="downloadPdf(@obj.id)">@obj.name</button>
+    }
+</div>
+
+<div id="package_pdf" style="display: none;"></div>
+
+<script>
+    //let genPackageListingForm = document.querySelector("form[id='generatePackageListingForm']");
+
+    //genPackageListingForm_actionLink = genPackageListingForm.getAttribute("action");
+    //genPackageListingForm_methodType = genPackageListingForm.getAttribute("method");
+
+    let genPackageListingForm = $("form[id='generatePackageListingForm']");
+
+    genPackageListingForm_actionLink = genPackageListingForm.attr("action");
+    genPackageListingForm_methodType = genPackageListingForm.attr("method");
+
+    function downloadPdf(order_id) {
+        $.ajax({
+            url: genPackageListingForm_actionLink,
+            type: genPackageListingForm_methodType,
+            data: {"order_id": order_id},
+            success: resp => {
+                $("#package_pdf").html(resp);
+
+                let date = new Date();
+                let fileName = `Package_Listing_${genFileName(date)}`;
+
+                createPDF("package_pdf", fileName);
+
+                console.log(`Successfully Generated Package Listing for Order ${order_id}!`);
+            }
+        });
+    }
+
+    //async function downloadPdf(order_id) {
+    //    let response = await fetch(`${genPackageListingForm_actionLink}?order_id=${order_id}`);
+    //    let package_html = await response.text();
+
+    //    $("#package_pdf").html(package_html);
+
+    //    let date = new Date();
+    //    let fileName = `${date.getFullYear()}${formatTD(date.getMonth() + 1)}${formatTD(date.getDate())}_${formatTD(formatHR(date.getHours()))}${formatTD(date.getMinutes())}${formatTD(date.getSeconds())}${formatAMPM(date.getHours())}_package_listing`;
+
+    //    createPDF("package_pdf", fileName);
+
+    //    console.log(`Successfully Generated Package Listing for Order ${order_id}!`);
+
+
+    //}
+</script>
+

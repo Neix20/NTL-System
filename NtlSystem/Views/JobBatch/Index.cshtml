@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Job Batch";
+    Layout = "~/Views/Shared/_NavLayout.cshtml";
+}
+
+<div class="white-box">
+    <div class="border border-dark">
+        <div class="row">
+            <div class="col">
+                <div class="bg-dark text-center h1 text-white">@ViewBag.Title</div>
+            </div>
+        </div>
+    
+        <div class="row m-2">
+            <div class="col">
+                <div id="JobBatchFormContent">
+                    @Html.Action("JobBatchGridViewPartial")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
