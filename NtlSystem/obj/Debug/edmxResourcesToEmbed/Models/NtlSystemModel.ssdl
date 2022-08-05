@@ -399,6 +399,7 @@
     <Property Name="name" Type="varchar(max)" />
     <Property Name="sku" Type="varchar" MaxLength="50" />
     <Property Name="quantity" Type="decimal" Precision="10" Scale="6" />
+    <Property Name="used" Type="decimal" Precision="10" Scale="6" />
     <Property Name="length" Type="decimal" Precision="10" Scale="6" />
     <Property Name="width" Type="decimal" Precision="10" Scale="6" />
     <Property Name="height" Type="decimal" Precision="10" Scale="6" />
@@ -1161,6 +1162,7 @@
     <Parameter Name="name" Type="varchar(max)" Mode="In" />
     <Parameter Name="sku" Type="varchar" Mode="In" />
     <Parameter Name="quantity" Type="decimal" Mode="In" />
+    <Parameter Name="used" Type="decimal" Mode="In" />
     <Parameter Name="length" Type="decimal" Mode="In" />
     <Parameter Name="width" Type="decimal" Mode="In" />
     <Parameter Name="height" Type="decimal" Mode="In" />
@@ -1174,6 +1176,7 @@
     <Parameter Name="name" Type="varchar(max)" Mode="In" />
     <Parameter Name="sku" Type="varchar" Mode="In" />
     <Parameter Name="quantity" Type="decimal" Mode="In" />
+    <Parameter Name="used" Type="decimal" Mode="In" />
     <Parameter Name="length" Type="decimal" Mode="In" />
     <Parameter Name="width" Type="decimal" Mode="In" />
     <Parameter Name="height" Type="decimal" Mode="In" />

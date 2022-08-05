@@ -1004,35 +1004,6 @@
       <Parameter Name="batch_id" Mode="In" Type="Int32" />
       <Parameter Name="detail_id" Mode="In" Type="Int32" />
     </FunctionImport>
-    <EntitySet Name="TNtlSummaryItems" EntityType="NTLModel.TNtlSummaryItem" />
-    <FunctionImport Name="NSP_TNtlSummaryItem_Delete">
-      <Parameter Name="id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="NSP_TNtlSummaryItem_Insert">
-      <Parameter Name="name" Mode="In" Type="String" />
-      <Parameter Name="sku" Mode="In" Type="String" />
-      <Parameter Name="quantity" Mode="In" Type="Decimal" />
-      <Parameter Name="length" Mode="In" Type="Decimal" />
-      <Parameter Name="width" Mode="In" Type="Decimal" />
-      <Parameter Name="height" Mode="In" Type="Decimal" />
-      <Parameter Name="created_date" Mode="In" Type="DateTime" />
-      <Parameter Name="completed_date" Mode="In" Type="DateTime" />
-      <Parameter Name="status_id" Mode="In" Type="Int32" />
-      <Parameter Name="detail_id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="NSP_TNtlSummaryItem_Update">
-      <Parameter Name="id" Mode="In" Type="Int32" />
-      <Parameter Name="name" Mode="In" Type="String" />
-      <Parameter Name="sku" Mode="In" Type="String" />
-      <Parameter Name="quantity" Mode="In" Type="Decimal" />
-      <Parameter Name="length" Mode="In" Type="Decimal" />
-      <Parameter Name="width" Mode="In" Type="Decimal" />
-      <Parameter Name="height" Mode="In" Type="Decimal" />
-      <Parameter Name="created_date" Mode="In" Type="DateTime" />
-      <Parameter Name="completed_date" Mode="In" Type="DateTime" />
-      <Parameter Name="status_id" Mode="In" Type="Int32" />
-      <Parameter Name="detail_id" Mode="In" Type="Int32" />
-    </FunctionImport>
     <EntitySet Name="TNtlOrders" EntityType="NTLModel.TNtlOrder" />
     <FunctionImport Name="NSP_TNtlOrder_Delete">
       <Parameter Name="id" Mode="In" Type="Int32" />
@@ -1195,6 +1166,37 @@
       <Parameter Name="remark" Mode="In" Type="String" />
       <Parameter Name="detail_id" Mode="In" Type="Int32" />
     </FunctionImport>
+    <EntitySet Name="TNtlSummaryItems" EntityType="NTLModel.TNtlSummaryItem" />
+    <FunctionImport Name="NSP_TNtlSummaryItem_Delete">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="NSP_TNtlSummaryItem_Insert">
+      <Parameter Name="name" Mode="In" Type="String" />
+      <Parameter Name="sku" Mode="In" Type="String" />
+      <Parameter Name="quantity" Mode="In" Type="Decimal" />
+      <Parameter Name="used" Mode="In" Type="Decimal" />
+      <Parameter Name="length" Mode="In" Type="Decimal" />
+      <Parameter Name="width" Mode="In" Type="Decimal" />
+      <Parameter Name="height" Mode="In" Type="Decimal" />
+      <Parameter Name="created_date" Mode="In" Type="DateTime" />
+      <Parameter Name="completed_date" Mode="In" Type="DateTime" />
+      <Parameter Name="status_id" Mode="In" Type="Int32" />
+      <Parameter Name="detail_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="NSP_TNtlSummaryItem_Update">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+      <Parameter Name="name" Mode="In" Type="String" />
+      <Parameter Name="sku" Mode="In" Type="String" />
+      <Parameter Name="quantity" Mode="In" Type="Decimal" />
+      <Parameter Name="used" Mode="In" Type="Decimal" />
+      <Parameter Name="length" Mode="In" Type="Decimal" />
+      <Parameter Name="width" Mode="In" Type="Decimal" />
+      <Parameter Name="height" Mode="In" Type="Decimal" />
+      <Parameter Name="created_date" Mode="In" Type="DateTime" />
+      <Parameter Name="completed_date" Mode="In" Type="DateTime" />
+      <Parameter Name="status_id" Mode="In" Type="Int32" />
+      <Parameter Name="detail_id" Mode="In" Type="Int32" />
+    </FunctionImport>
   </EntityContainer>
   <EntityType Name="TNtlStatu">
     <Key>
@@ -1244,22 +1246,6 @@
     <Property Name="odoo_status_id" Type="Int32" />
     <Property Name="status_id" Type="Int32" />
     <Property Name="batch_id" Type="Int32" />
-    <Property Name="detail_id" Type="Int32" />
-  </EntityType>
-  <EntityType Name="TNtlSummaryItem">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="sku" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="quantity" Type="Decimal" Precision="10" Scale="6" />
-    <Property Name="length" Type="Decimal" Precision="10" Scale="6" />
-    <Property Name="width" Type="Decimal" Precision="10" Scale="6" />
-    <Property Name="height" Type="Decimal" Precision="10" Scale="6" />
-    <Property Name="created_date" Type="DateTime" Precision="3" />
-    <Property Name="completed_date" Type="DateTime" Precision="3" />
-    <Property Name="status_id" Type="Int32" />
     <Property Name="detail_id" Type="Int32" />
   </EntityType>
   <EntityType Name="TNtlOrder">
@@ -1350,6 +1336,23 @@
     <Property Name="total_usage" Type="Decimal" Precision="10" Scale="6" />
     <Property Name="uom_id" Type="Int32" />
     <Property Name="remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="detail_id" Type="Int32" />
+  </EntityType>
+  <EntityType Name="TNtlSummaryItem">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="sku" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="quantity" Type="Decimal" Precision="10" Scale="6" />
+    <Property Name="used" Type="Decimal" Precision="10" Scale="6" />
+    <Property Name="length" Type="Decimal" Precision="10" Scale="6" />
+    <Property Name="width" Type="Decimal" Precision="10" Scale="6" />
+    <Property Name="height" Type="Decimal" Precision="10" Scale="6" />
+    <Property Name="created_date" Type="DateTime" Precision="3" />
+    <Property Name="completed_date" Type="DateTime" Precision="3" />
+    <Property Name="status_id" Type="Int32" />
     <Property Name="detail_id" Type="Int32" />
   </EntityType>
 </Schema>

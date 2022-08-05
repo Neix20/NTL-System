@@ -18,6 +18,7 @@ namespace NtlSystem.Models
         public string name { get; set; }
         public string sku { get; set; }
         public Nullable<decimal> quantity { get; set; }
+        public Nullable<decimal> used { get; set; }
         public Nullable<decimal> length { get; set; }
         public Nullable<decimal> width { get; set; }
         public Nullable<decimal> height { get; set; }
@@ -25,5 +26,9 @@ namespace NtlSystem.Models
         public Nullable<System.DateTime> completed_date { get; set; }
         public Nullable<int> status_id { get; set; }
         public Nullable<int> detail_id { get; set; }
+
+        public override String ToString() {
+            return $"{name} {sku} {width} {height} {quantity} {used}";
+        }
     }
 }

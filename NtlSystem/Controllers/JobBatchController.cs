@@ -69,12 +69,24 @@ namespace NtlSystem.Controllers
             // Complete All Job Order within Job Batch
             int joc_sta_id = DbStoredProcedure.GetStatusID("complete", "Job Order");
 
-            JobOrderController jcController = new JobOrderController();
+            db.TNtlJobOrders.Where(it => it.batch_id == item.id).ToList().ForEach(jobOrder => {
+                jobOrder.status_id = joc_sta_id;
+                DbStoredProcedure.JobOrderUpdate(jobOrder, username);
 
-            db.TNtlJobOrders.Where(it => it.batch_id == item.id).ToList().ForEach(it => {
-                it.status_id = joc_sta_id;
-                jcController.CompleteOrder(it.id);
-                DbStoredProcedure.JobOrderUpdate(it, username);
+                db.TNtlJobOrderItems.Where(it => it.order_id == jobOrder.odoo_sales_id).ToList().ForEach(it => {
+                    var jobOrderItem = it;
+                    string jo_key = GeneralFunc.GenJobOrderItemKey(jobOrderItem); 
+
+                    db.TNtlSummaryItems.ToList().ForEach(sItem => {
+                        string key = GeneralFunc.GenSummaryItemKey(sItem);
+
+                        if(key.Equals(jo_key)) {
+                            sItem.used += jobOrderItem.quantity;
+                            DbStoredProcedure.SummaryItemUpdate(sItem, username);
+                        }
+                    });
+
+                });
             });
 
             DbStoredProcedure.JobBatchUpdate(item, username);

@@ -36,13 +36,13 @@
         <EntityTypeShape EntityType="NTLModel.TNtlStatu" Width="1.5" PointX="15.375" PointY="0.75" />
         <EntityTypeShape EntityType="NTLModel.TNtlCustomerChat" Width="1.5" PointX="15.375" PointY="14.75" />
         <EntityTypeShape EntityType="NTLModel.TNtlJobOrder" Width="1.5" PointX="0.75" PointY="7.75" />
-        <EntityTypeShape EntityType="NTLModel.TNtlSummaryItem" Width="1.5" PointX="17.375" PointY="0.75" />
         <EntityTypeShape EntityType="NTLModel.TNtlOrder" Width="1.5" PointX="0.75" PointY="17.75" />
         <EntityTypeShape EntityType="NTLModel.TNtlUnitType" Width="1.5" PointX="9.375" PointY="17.75" />
         <EntityTypeShape EntityType="NTLModel.TNtlWindow" Width="1.5" PointX="17.375" PointY="11.75" />
         <EntityTypeShape EntityType="NTLModel.TNtlWindowUnit" Width="1.5" PointX="11.375" PointY="17.75" />
         <EntityTypeShape EntityType="NTLModel.TNtlUnit" Width="1.5" PointX="17.375" PointY="4.75" />
         <EntityTypeShape EntityType="NTLModel.TNtlOrderItem" Width="1.5" PointX="17.375" PointY="15.75" />
+        <EntityTypeShape EntityType="NTLModel.TNtlSummaryItem" Width="1.5" PointX="13.375" PointY="18.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

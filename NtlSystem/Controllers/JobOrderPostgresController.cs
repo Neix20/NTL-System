@@ -68,7 +68,8 @@ namespace NtlSystem.Controllers
                 ls = dao.GetAllClsDataQuery(PostgresDal, query);
 
                 // Generate List of mJobOrder item List
-                summaryItemList = ls.Select(obj => GeneralFunc.GenerateSummaryListing(obj.data)).ToList();
+                var tmpItemList = ls.Select(obj => GeneralFunc.GenerateSummaryListing(obj.data)).ToList();
+                summaryItemList.AddRange(tmpItemList);
 
                 // Add Job Batch
                 JobBatchModel = new TNtlJobBatch();
@@ -113,7 +114,8 @@ namespace NtlSystem.Controllers
                 // Fix Duplicate
                 foreach (var obj in summaryItemList)
                 {
-                    string key = $"{obj.sku}-{obj.height.ToString()}-{obj.width.ToString()}";
+                    string key = GeneralFunc.GenSummaryItemKey(obj);
+
                     if (summaryItemDict.ContainsKey(key))
                     {
                         summaryItemDict[key].quantity += obj.quantity;
@@ -130,38 +132,67 @@ namespace NtlSystem.Controllers
                     summaryItemList.Add(kvp.Value);
                 }
 
-                summaryItemList.ForEach(obj => DbStoredProcedure.SummaryItemInsert(obj, username));
+                // Create Dictionary of Summary Item With Unique Key
+                summaryItemDict = new Dictionary<string, TNtlSummaryItem>();
+
+
+                db.TNtlSummaryItems.ToList().ForEach(it =>
+                {
+                    string key = GeneralFunc.GenSummaryItemKey(it);
+                    Debug.WriteLine(key);
+                    summaryItemDict[key] = it;
+                });
+
+                summaryItemList.ForEach(item =>
+                {
+                    string key = GeneralFunc.GenSummaryItemKey(item);
+                    if (summaryItemDict.ContainsKey(key))
+                    {
+                        // Update Quantity
+                        var obj = summaryItemDict[key];
+                        obj.quantity = item.quantity;
+                        DbStoredProcedure.SummaryItemUpdate(obj, username);
+
+                        item = obj;
+                    }
+                    else
+                    {
+                        // Create New Item
+                        DbStoredProcedure.SummaryItemInsert(item, username);
+                    }
+
+                });
             }
 
-            // Create Manufacturing Orders
-            mOdooMan model = new mOdooMan();
+            // // Create Manufacturing Orders
+            // mOdooMan model = new mOdooMan();
 
-            // Set Stock Name
-            model.stock_name = "Stock";
+            // // Set Stock Name
+            // model.stock_name = "Stock";
 
-            // Set Company Name
-            model.company_name = "YourCompany";
+            // // Set Company Name
+            // model.company_name = "YourCompany";
 
-            List<mOdooManProduct> product = summaryItemList
-                .Where(it => it.status_id == si_inc_sta_id)
-                .GroupBy(it => it.sku)
-                .Select(it => new mOdooManProduct()
-                {
-                    sku = it.First().sku,
-                    qty = it.Sum(x => (x.quantity * x.width * x.height / 100 / 100))
-                }).ToList();
+            // List<mOdooManProduct> product = summaryItemList
+            //     .Where(it => it.status_id == si_inc_sta_id)
+            //     .GroupBy(it => it.sku)
+            //     .Select(it => new mOdooManProduct()
+            //     {
+            //         sku = it.First().sku,
+            //         qty = it.Sum(x => (x.quantity * x.width * x.height / 100 / 100))
+            //     }).ToList();
 
-            // Remove Product Code 'FGSTSB150'
-            // product = product.Where(it => !it.sku.Equals("FGSTSB150")).ToList();
+            // // Remove Product Code 'FGSTSB150'
+            // // product = product.Where(it => !it.sku.Equals("FGSTSB150")).ToList();
 
-            // Set Product List
-            model.product = product;
+            // // Set Product List
+            // model.product = product;
 
-            // Call Manufacture Order API
-            string json = JsonConvert.SerializeObject(model);
+            // // Call Manufacture Order API
+            // string json = JsonConvert.SerializeObject(model);
 
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var result = client.PostAsync("http://localhost:8069/odoo_controller/addMO", content).Result;
+            // var content = new StringContent(json, Encoding.UTF8, "application/json");
+            // var result = client.PostAsync("http://localhost:8069/odoo_controller/addMO", content).Result;
 
             return PartialView("_SummaryListingPartial", summaryItemList);
         }

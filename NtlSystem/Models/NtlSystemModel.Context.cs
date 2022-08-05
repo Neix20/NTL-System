@@ -58,13 +58,13 @@ namespace NtlSystem.Models
         public virtual DbSet<TNtlStatu> TNtlStatus { get; set; }
         public virtual DbSet<TNtlCustomerChat> TNtlCustomerChats { get; set; }
         public virtual DbSet<TNtlJobOrder> TNtlJobOrders { get; set; }
-        public virtual DbSet<TNtlSummaryItem> TNtlSummaryItems { get; set; }
         public virtual DbSet<TNtlOrder> TNtlOrders { get; set; }
         public virtual DbSet<TNtlUnitType> TNtlUnitTypes { get; set; }
         public virtual DbSet<TNtlWindow> TNtlWindows { get; set; }
         public virtual DbSet<TNtlWindowUnit> TNtlWindowUnits { get; set; }
         public virtual DbSet<TNtlUnit> TNtlUnits { get; set; }
         public virtual DbSet<TNtlOrderItem> TNtlOrderItems { get; set; }
+        public virtual DbSet<TNtlSummaryItem> TNtlSummaryItems { get; set; }
     
         public virtual int NSP_TNtlAttribute_Delete(Nullable<int> id)
         {
@@ -2347,109 +2347,6 @@ namespace NtlSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_TNtlJobOrder_Update", idParameter, nameParameter, codeParameter, created_dateParameter, client_order_refParameter, sub_total_priceParameter, discount_feeParameter, tax_priceParameter, total_priceParameter, customer_idParameter, customer_nameParameter, customer_streetParameter, customer_street2Parameter, customer_zip_codeParameter, customer_cityParameter, customer_stateParameter, customer_countryParameter, odoo_sales_idParameter, odoo_status_idParameter, status_idParameter, batch_idParameter, detail_idParameter);
         }
     
-        public virtual int NSP_TNtlSummaryItem_Delete(Nullable<int> id)
-        {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("id", id) :
-                new ObjectParameter("id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_TNtlSummaryItem_Delete", idParameter);
-        }
-    
-        public virtual int NSP_TNtlSummaryItem_Insert(string name, string sku, Nullable<decimal> quantity, Nullable<decimal> length, Nullable<decimal> width, Nullable<decimal> height, Nullable<System.DateTime> created_date, Nullable<System.DateTime> completed_date, Nullable<int> status_id, Nullable<int> detail_id)
-        {
-            var nameParameter = name != null ?
-                new ObjectParameter("name", name) :
-                new ObjectParameter("name", typeof(string));
-    
-            var skuParameter = sku != null ?
-                new ObjectParameter("sku", sku) :
-                new ObjectParameter("sku", typeof(string));
-    
-            var quantityParameter = quantity.HasValue ?
-                new ObjectParameter("quantity", quantity) :
-                new ObjectParameter("quantity", typeof(decimal));
-    
-            var lengthParameter = length.HasValue ?
-                new ObjectParameter("length", length) :
-                new ObjectParameter("length", typeof(decimal));
-    
-            var widthParameter = width.HasValue ?
-                new ObjectParameter("width", width) :
-                new ObjectParameter("width", typeof(decimal));
-    
-            var heightParameter = height.HasValue ?
-                new ObjectParameter("height", height) :
-                new ObjectParameter("height", typeof(decimal));
-    
-            var created_dateParameter = created_date.HasValue ?
-                new ObjectParameter("created_date", created_date) :
-                new ObjectParameter("created_date", typeof(System.DateTime));
-    
-            var completed_dateParameter = completed_date.HasValue ?
-                new ObjectParameter("completed_date", completed_date) :
-                new ObjectParameter("completed_date", typeof(System.DateTime));
-    
-            var status_idParameter = status_id.HasValue ?
-                new ObjectParameter("status_id", status_id) :
-                new ObjectParameter("status_id", typeof(int));
-    
-            var detail_idParameter = detail_id.HasValue ?
-                new ObjectParameter("detail_id", detail_id) :
-                new ObjectParameter("detail_id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_TNtlSummaryItem_Insert", nameParameter, skuParameter, quantityParameter, lengthParameter, widthParameter, heightParameter, created_dateParameter, completed_dateParameter, status_idParameter, detail_idParameter);
-        }
-    
-        public virtual int NSP_TNtlSummaryItem_Update(Nullable<int> id, string name, string sku, Nullable<decimal> quantity, Nullable<decimal> length, Nullable<decimal> width, Nullable<decimal> height, Nullable<System.DateTime> created_date, Nullable<System.DateTime> completed_date, Nullable<int> status_id, Nullable<int> detail_id)
-        {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("id", id) :
-                new ObjectParameter("id", typeof(int));
-    
-            var nameParameter = name != null ?
-                new ObjectParameter("name", name) :
-                new ObjectParameter("name", typeof(string));
-    
-            var skuParameter = sku != null ?
-                new ObjectParameter("sku", sku) :
-                new ObjectParameter("sku", typeof(string));
-    
-            var quantityParameter = quantity.HasValue ?
-                new ObjectParameter("quantity", quantity) :
-                new ObjectParameter("quantity", typeof(decimal));
-    
-            var lengthParameter = length.HasValue ?
-                new ObjectParameter("length", length) :
-                new ObjectParameter("length", typeof(decimal));
-    
-            var widthParameter = width.HasValue ?
-                new ObjectParameter("width", width) :
-                new ObjectParameter("width", typeof(decimal));
-    
-            var heightParameter = height.HasValue ?
-                new ObjectParameter("height", height) :
-                new ObjectParameter("height", typeof(decimal));
-    
-            var created_dateParameter = created_date.HasValue ?
-                new ObjectParameter("created_date", created_date) :
-                new ObjectParameter("created_date", typeof(System.DateTime));
-    
-            var completed_dateParameter = completed_date.HasValue ?
-                new ObjectParameter("completed_date", completed_date) :
-                new ObjectParameter("completed_date", typeof(System.DateTime));
-    
-            var status_idParameter = status_id.HasValue ?
-                new ObjectParameter("status_id", status_id) :
-                new ObjectParameter("status_id", typeof(int));
-    
-            var detail_idParameter = detail_id.HasValue ?
-                new ObjectParameter("detail_id", detail_id) :
-                new ObjectParameter("detail_id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_TNtlSummaryItem_Update", idParameter, nameParameter, skuParameter, quantityParameter, lengthParameter, widthParameter, heightParameter, created_dateParameter, completed_dateParameter, status_idParameter, detail_idParameter);
-        }
-    
         public virtual int NSP_TNtlOrder_Delete(Nullable<int> id)
         {
             var idParameter = id.HasValue ?
@@ -3018,6 +2915,117 @@ namespace NtlSystem.Models
                 new ObjectParameter("detail_id", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_TNtlOrderItem_Update", idParameter, nameParameter, skuParameter, unit_priceParameter, quantityParameter, sub_total_priceParameter, tax_priceParameter, discount_feeParameter, total_priceParameter, voucher_noParameter, order_idParameter, product_idParameter, unit_idParameter, total_usageParameter, uom_idParameter, remarkParameter, detail_idParameter);
+        }
+    
+        public virtual int NSP_TNtlSummaryItem_Delete(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_TNtlSummaryItem_Delete", idParameter);
+        }
+    
+        public virtual int NSP_TNtlSummaryItem_Insert(string name, string sku, Nullable<decimal> quantity, Nullable<decimal> used, Nullable<decimal> length, Nullable<decimal> width, Nullable<decimal> height, Nullable<System.DateTime> created_date, Nullable<System.DateTime> completed_date, Nullable<int> status_id, Nullable<int> detail_id)
+        {
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var skuParameter = sku != null ?
+                new ObjectParameter("sku", sku) :
+                new ObjectParameter("sku", typeof(string));
+    
+            var quantityParameter = quantity.HasValue ?
+                new ObjectParameter("quantity", quantity) :
+                new ObjectParameter("quantity", typeof(decimal));
+    
+            var usedParameter = used.HasValue ?
+                new ObjectParameter("used", used) :
+                new ObjectParameter("used", typeof(decimal));
+    
+            var lengthParameter = length.HasValue ?
+                new ObjectParameter("length", length) :
+                new ObjectParameter("length", typeof(decimal));
+    
+            var widthParameter = width.HasValue ?
+                new ObjectParameter("width", width) :
+                new ObjectParameter("width", typeof(decimal));
+    
+            var heightParameter = height.HasValue ?
+                new ObjectParameter("height", height) :
+                new ObjectParameter("height", typeof(decimal));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var completed_dateParameter = completed_date.HasValue ?
+                new ObjectParameter("completed_date", completed_date) :
+                new ObjectParameter("completed_date", typeof(System.DateTime));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var detail_idParameter = detail_id.HasValue ?
+                new ObjectParameter("detail_id", detail_id) :
+                new ObjectParameter("detail_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_TNtlSummaryItem_Insert", nameParameter, skuParameter, quantityParameter, usedParameter, lengthParameter, widthParameter, heightParameter, created_dateParameter, completed_dateParameter, status_idParameter, detail_idParameter);
+        }
+    
+        public virtual int NSP_TNtlSummaryItem_Update(Nullable<int> id, string name, string sku, Nullable<decimal> quantity, Nullable<decimal> used, Nullable<decimal> length, Nullable<decimal> width, Nullable<decimal> height, Nullable<System.DateTime> created_date, Nullable<System.DateTime> completed_date, Nullable<int> status_id, Nullable<int> detail_id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var skuParameter = sku != null ?
+                new ObjectParameter("sku", sku) :
+                new ObjectParameter("sku", typeof(string));
+    
+            var quantityParameter = quantity.HasValue ?
+                new ObjectParameter("quantity", quantity) :
+                new ObjectParameter("quantity", typeof(decimal));
+    
+            var usedParameter = used.HasValue ?
+                new ObjectParameter("used", used) :
+                new ObjectParameter("used", typeof(decimal));
+    
+            var lengthParameter = length.HasValue ?
+                new ObjectParameter("length", length) :
+                new ObjectParameter("length", typeof(decimal));
+    
+            var widthParameter = width.HasValue ?
+                new ObjectParameter("width", width) :
+                new ObjectParameter("width", typeof(decimal));
+    
+            var heightParameter = height.HasValue ?
+                new ObjectParameter("height", height) :
+                new ObjectParameter("height", typeof(decimal));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var completed_dateParameter = completed_date.HasValue ?
+                new ObjectParameter("completed_date", completed_date) :
+                new ObjectParameter("completed_date", typeof(System.DateTime));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var detail_idParameter = detail_id.HasValue ?
+                new ObjectParameter("detail_id", detail_id) :
+                new ObjectParameter("detail_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_TNtlSummaryItem_Update", idParameter, nameParameter, skuParameter, quantityParameter, usedParameter, lengthParameter, widthParameter, heightParameter, created_dateParameter, completed_dateParameter, status_idParameter, detail_idParameter);
         }
     }
 }

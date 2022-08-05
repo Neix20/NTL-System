@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using NtlSystem.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -57,24 +58,44 @@ namespace NtlSystem.Controllers
         [HttpPost]
         public void CompleteOrder(int order_id)
         {
+            string username = (User.Identity.IsAuthenticated) ? User.Identity.Name : "Admin";
+
             // Set Job Order Status to Complete
             int c_sta_id = DbStoredProcedure.GetStatusID("complete", "Job Order");
 
             var item = db.TNtlJobOrders.Find(order_id);
             item.status_id = c_sta_id;
 
-            // Update Delivery
-            var data = new {
-                sale_order = item.code
-            };
+            // Update Summary Item Quantity
+            db.TNtlJobOrderItems.Where(it => it.order_id == item.odoo_sales_id).ToList().ForEach(jobOrderItem => {
+                string jo_key = GeneralFunc.GenJobOrderItemKey(jobOrderItem);
 
-            // Call Manufacture Order API
-            string json = JsonConvert.SerializeObject(data);
+                Debug.WriteLine(jo_key);
 
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var result = client.PostAsync("http://localhost:8069/odoo_controller/addDO", content).Result;
+                db.TNtlSummaryItems.ToList().ForEach(sItem => {
+                    string key = GeneralFunc.GenSummaryItemKey(sItem);
 
-            string username = (User.Identity.IsAuthenticated) ? User.Identity.Name : "Admin";
+                    Debug.WriteLine(key);
+
+                    if(key.Equals(jo_key)) {
+                        sItem.used += jobOrderItem.quantity;
+                        DbStoredProcedure.SummaryItemUpdate(sItem, username);
+                    }
+                });
+
+            });
+
+            // // Update Delivery
+            // var data = new {
+            //     sale_order = item.code
+            // };
+
+            // // Call Manufacture Order API
+            // string json = JsonConvert.SerializeObject(data);
+
+            // var content = new StringContent(json, Encoding.UTF8, "application/json");
+            // var result = client.PostAsync("http://localhost:8069/odoo_controller/addDO", content).Result;
+
             DbStoredProcedure.JobOrderUpdate(item, username);
         }
     }

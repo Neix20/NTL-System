@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Virtual Inventory";
+    Layout = "~/Views/Shared/_NavLayout.cshtml";
+}
+
+<div class="white-box">
+
+    <div class="row">
+        <div class="col">
+            <div class="float-end">
+                <button class="btn btn-primary" onclick={completeOdooProcess()}>Odoo Process</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="my-2"></div>
+
+    <div class="border border-dark">
+        <div class="row">
+            <div class="col">
+                <div class="bg-dark text-center h1 text-white">@ViewBag.Title</div>
+            </div>
+        </div>
+
+        <div class="row m-2">
+            <div class="col">
+                <div id="summaryItemFormContent">
+                    @Html.Action("SummaryItemGridViewPartial")
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function completeOdooProcess()
+    {
+        fetch("/SummaryItem/CompleteOdooProcess",
+        {
+            method: 'POST',
+            credentials: 'same-origin'
+        })
+        .then(resp => resp.text())
+        .then(resp => alert(resp));
+    }
+</script>
+
+

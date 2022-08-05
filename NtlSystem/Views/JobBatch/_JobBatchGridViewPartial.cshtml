@@ -37,14 +37,6 @@
         settings.SettingsBehavior.AllowSelectByRowClick = true;
         settings.SettingsSearchPanel.Visible = true;
 
-        settings.Columns.Add(col =>
-        {
-            col.FieldName = "id";
-            col.UnboundType = DevExpress.Data.UnboundColumnType.Integer;
-            col.Visible = false;
-            col.ReadOnly = true;
-        });
-
         settings.Columns.Add("name").Caption = "Batch No";
 
         // Created Date
@@ -72,7 +64,7 @@
 
             col.ColumnType = MVCxGridViewColumnType.ComboBox;
             ComboBoxProperties prop = col.PropertiesEdit as ComboBoxProperties;
-            prop.DataSource = db.TNtlStatus.ToList();
+            prop.DataSource = db.TNtlStatus.Where(it => it.type.ToLower().Equals("Job Batch")).ToList();
             prop.TextField = "name";
             prop.ValueField = "id";
             prop.ClearButton.DisplayMode = ClearButtonDisplayMode.OnHover;

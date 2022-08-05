@@ -410,6 +410,8 @@
     <Content Include="Views\WindowUnit\_WindowUnitGridViewPartial.cshtml" />
     <Content Include="Views\Unit\_UnitTreeListPartial.cshtml" />
     <Content Include="Views\WindowUnit\Index.cshtml" />
+    <Content Include="Views\SummaryItem\Index.cshtml" />
+    <Content Include="Views\SummaryItem\_SummaryItemGridViewPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -448,6 +450,7 @@
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\StockItemController.cs" />
     <Compile Include="Controllers\StockWarehouseController.cs" />
+    <Compile Include="Controllers\SummaryItemController.cs" />
     <Compile Include="Controllers\UnitController.cs" />
     <Compile Include="Controllers\UnitTypeController.cs" />
     <Compile Include="Controllers\UomController.cs" />

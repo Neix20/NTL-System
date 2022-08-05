@@ -404,6 +404,7 @@
           <Property Name="name" Type="varchar(max)" />
           <Property Name="sku" Type="varchar" MaxLength="50" />
           <Property Name="quantity" Type="decimal" Precision="10" Scale="6" />
+          <Property Name="used" Type="decimal" Precision="10" Scale="6" />
           <Property Name="length" Type="decimal" Precision="10" Scale="6" />
           <Property Name="width" Type="decimal" Precision="10" Scale="6" />
           <Property Name="height" Type="decimal" Precision="10" Scale="6" />
@@ -1166,6 +1167,7 @@
           <Parameter Name="name" Type="varchar(max)" Mode="In" />
           <Parameter Name="sku" Type="varchar" Mode="In" />
           <Parameter Name="quantity" Type="decimal" Mode="In" />
+          <Parameter Name="used" Type="decimal" Mode="In" />
           <Parameter Name="length" Type="decimal" Mode="In" />
           <Parameter Name="width" Type="decimal" Mode="In" />
           <Parameter Name="height" Type="decimal" Mode="In" />
@@ -1179,6 +1181,7 @@
           <Parameter Name="name" Type="varchar(max)" Mode="In" />
           <Parameter Name="sku" Type="varchar" Mode="In" />
           <Parameter Name="quantity" Type="decimal" Mode="In" />
+          <Parameter Name="used" Type="decimal" Mode="In" />
           <Parameter Name="length" Type="decimal" Mode="In" />
           <Parameter Name="width" Type="decimal" Mode="In" />
           <Parameter Name="height" Type="decimal" Mode="In" />
@@ -2365,35 +2368,6 @@
             <Parameter Name="batch_id" Mode="In" Type="Int32" />
             <Parameter Name="detail_id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="TNtlSummaryItems" EntityType="NTLModel.TNtlSummaryItem" />
-          <FunctionImport Name="NSP_TNtlSummaryItem_Delete">
-          <Parameter Name="id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="NSP_TNtlSummaryItem_Insert">
-            <Parameter Name="name" Mode="In" Type="String" />
-            <Parameter Name="sku" Mode="In" Type="String" />
-            <Parameter Name="quantity" Mode="In" Type="Decimal" />
-            <Parameter Name="length" Mode="In" Type="Decimal" />
-            <Parameter Name="width" Mode="In" Type="Decimal" />
-            <Parameter Name="height" Mode="In" Type="Decimal" />
-            <Parameter Name="created_date" Mode="In" Type="DateTime" />
-            <Parameter Name="completed_date" Mode="In" Type="DateTime" />
-            <Parameter Name="status_id" Mode="In" Type="Int32" />
-            <Parameter Name="detail_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="NSP_TNtlSummaryItem_Update">
-            <Parameter Name="id" Mode="In" Type="Int32" />
-            <Parameter Name="name" Mode="In" Type="String" />
-            <Parameter Name="sku" Mode="In" Type="String" />
-            <Parameter Name="quantity" Mode="In" Type="Decimal" />
-            <Parameter Name="length" Mode="In" Type="Decimal" />
-            <Parameter Name="width" Mode="In" Type="Decimal" />
-            <Parameter Name="height" Mode="In" Type="Decimal" />
-            <Parameter Name="created_date" Mode="In" Type="DateTime" />
-            <Parameter Name="completed_date" Mode="In" Type="DateTime" />
-            <Parameter Name="status_id" Mode="In" Type="Int32" />
-            <Parameter Name="detail_id" Mode="In" Type="Int32" />
-          </FunctionImport>
           <EntitySet Name="TNtlOrders" EntityType="NTLModel.TNtlOrder" />
           <FunctionImport Name="NSP_TNtlOrder_Delete">
           <Parameter Name="id" Mode="In" Type="Int32" />
@@ -2517,7 +2491,7 @@
           </FunctionImport>
           <EntitySet Name="TNtlOrderItems" EntityType="NTLModel.TNtlOrderItem" />
           <FunctionImport Name="NSP_TNtlOrderItem_Delete">
-            <Parameter Name="id" Mode="In" Type="Int32" />
+          <Parameter Name="id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="NSP_TNtlOrderItem_Insert">
             <Parameter Name="name" Mode="In" Type="String" />
@@ -2554,6 +2528,37 @@
             <Parameter Name="total_usage" Mode="In" Type="Decimal" />
             <Parameter Name="uom_id" Mode="In" Type="Int32" />
             <Parameter Name="remark" Mode="In" Type="String" />
+            <Parameter Name="detail_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="TNtlSummaryItems" EntityType="NTLModel.TNtlSummaryItem" />
+          <FunctionImport Name="NSP_TNtlSummaryItem_Delete">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="NSP_TNtlSummaryItem_Insert">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="sku" Mode="In" Type="String" />
+            <Parameter Name="quantity" Mode="In" Type="Decimal" />
+            <Parameter Name="used" Mode="In" Type="Decimal" />
+            <Parameter Name="length" Mode="In" Type="Decimal" />
+            <Parameter Name="width" Mode="In" Type="Decimal" />
+            <Parameter Name="height" Mode="In" Type="Decimal" />
+            <Parameter Name="created_date" Mode="In" Type="DateTime" />
+            <Parameter Name="completed_date" Mode="In" Type="DateTime" />
+            <Parameter Name="status_id" Mode="In" Type="Int32" />
+            <Parameter Name="detail_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="NSP_TNtlSummaryItem_Update">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="sku" Mode="In" Type="String" />
+            <Parameter Name="quantity" Mode="In" Type="Decimal" />
+            <Parameter Name="used" Mode="In" Type="Decimal" />
+            <Parameter Name="length" Mode="In" Type="Decimal" />
+            <Parameter Name="width" Mode="In" Type="Decimal" />
+            <Parameter Name="height" Mode="In" Type="Decimal" />
+            <Parameter Name="created_date" Mode="In" Type="DateTime" />
+            <Parameter Name="completed_date" Mode="In" Type="DateTime" />
+            <Parameter Name="status_id" Mode="In" Type="Int32" />
             <Parameter Name="detail_id" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
@@ -2605,22 +2610,6 @@
           <Property Name="odoo_status_id" Type="Int32" />
           <Property Name="status_id" Type="Int32" />
           <Property Name="batch_id" Type="Int32" />
-          <Property Name="detail_id" Type="Int32" />
-        </EntityType>
-        <EntityType Name="TNtlSummaryItem">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="sku" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="quantity" Type="Decimal" Precision="10" Scale="6" />
-          <Property Name="length" Type="Decimal" Precision="10" Scale="6" />
-          <Property Name="width" Type="Decimal" Precision="10" Scale="6" />
-          <Property Name="height" Type="Decimal" Precision="10" Scale="6" />
-          <Property Name="created_date" Type="DateTime" Precision="3" />
-          <Property Name="completed_date" Type="DateTime" Precision="3" />
-          <Property Name="status_id" Type="Int32" />
           <Property Name="detail_id" Type="Int32" />
         </EntityType>
         <EntityType Name="TNtlOrder">
@@ -2711,6 +2700,23 @@
           <Property Name="total_usage" Type="Decimal" Precision="10" Scale="6" />
           <Property Name="uom_id" Type="Int32" />
           <Property Name="remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="detail_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TNtlSummaryItem">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="sku" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="quantity" Type="Decimal" Precision="10" Scale="6" />
+          <Property Name="used" Type="Decimal" Precision="10" Scale="6" />
+          <Property Name="length" Type="Decimal" Precision="10" Scale="6" />
+          <Property Name="width" Type="Decimal" Precision="10" Scale="6" />
+          <Property Name="height" Type="Decimal" Precision="10" Scale="6" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="completed_date" Type="DateTime" Precision="3" />
+          <Property Name="status_id" Type="Int32" />
           <Property Name="detail_id" Type="Int32" />
         </EntityType>
       </Schema>
@@ -3225,26 +3231,6 @@
           <FunctionImportMapping FunctionImportName="NSP_TNtlJobOrder_Delete" FunctionName="NTLModel.Store.NSP_TNtlJobOrder_Delete" />
           <FunctionImportMapping FunctionImportName="NSP_TNtlJobOrder_Insert" FunctionName="NTLModel.Store.NSP_TNtlJobOrder_Insert" />
           <FunctionImportMapping FunctionImportName="NSP_TNtlJobOrder_Update" FunctionName="NTLModel.Store.NSP_TNtlJobOrder_Update" />
-          <EntitySetMapping Name="TNtlSummaryItems">
-            <EntityTypeMapping TypeName="NTLModel.TNtlSummaryItem">
-              <MappingFragment StoreEntitySet="TNtlSummaryItem">
-                <ScalarProperty Name="detail_id" ColumnName="detail_id" />
-                <ScalarProperty Name="status_id" ColumnName="status_id" />
-                <ScalarProperty Name="completed_date" ColumnName="completed_date" />
-                <ScalarProperty Name="created_date" ColumnName="created_date" />
-                <ScalarProperty Name="height" ColumnName="height" />
-                <ScalarProperty Name="width" ColumnName="width" />
-                <ScalarProperty Name="length" ColumnName="length" />
-                <ScalarProperty Name="quantity" ColumnName="quantity" />
-                <ScalarProperty Name="sku" ColumnName="sku" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Delete" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Delete" />
-          <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Insert" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Insert" />
-          <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Update" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Update" />
           <EntitySetMapping Name="TNtlOrders">
             <EntityTypeMapping TypeName="NTLModel.TNtlOrder">
               <MappingFragment StoreEntitySet="TNtlOrder">
@@ -3359,6 +3345,27 @@
           <FunctionImportMapping FunctionImportName="NSP_TNtlOrderItem_Delete" FunctionName="NTLModel.Store.NSP_TNtlOrderItem_Delete" />
           <FunctionImportMapping FunctionImportName="NSP_TNtlOrderItem_Insert" FunctionName="NTLModel.Store.NSP_TNtlOrderItem_Insert" />
           <FunctionImportMapping FunctionImportName="NSP_TNtlOrderItem_Update" FunctionName="NTLModel.Store.NSP_TNtlOrderItem_Update" />
+          <EntitySetMapping Name="TNtlSummaryItems">
+            <EntityTypeMapping TypeName="NTLModel.TNtlSummaryItem">
+              <MappingFragment StoreEntitySet="TNtlSummaryItem">
+                <ScalarProperty Name="detail_id" ColumnName="detail_id" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="completed_date" ColumnName="completed_date" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="height" ColumnName="height" />
+                <ScalarProperty Name="width" ColumnName="width" />
+                <ScalarProperty Name="length" ColumnName="length" />
+                <ScalarProperty Name="used" ColumnName="used" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="sku" ColumnName="sku" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Delete" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Delete" />
+          <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Insert" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Insert" />
+          <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Update" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Update" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

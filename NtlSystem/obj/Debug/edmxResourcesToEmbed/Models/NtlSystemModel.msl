@@ -507,26 +507,6 @@
     <FunctionImportMapping FunctionImportName="NSP_TNtlJobOrder_Delete" FunctionName="NTLModel.Store.NSP_TNtlJobOrder_Delete" />
     <FunctionImportMapping FunctionImportName="NSP_TNtlJobOrder_Insert" FunctionName="NTLModel.Store.NSP_TNtlJobOrder_Insert" />
     <FunctionImportMapping FunctionImportName="NSP_TNtlJobOrder_Update" FunctionName="NTLModel.Store.NSP_TNtlJobOrder_Update" />
-    <EntitySetMapping Name="TNtlSummaryItems">
-      <EntityTypeMapping TypeName="NTLModel.TNtlSummaryItem">
-        <MappingFragment StoreEntitySet="TNtlSummaryItem">
-          <ScalarProperty Name="detail_id" ColumnName="detail_id" />
-          <ScalarProperty Name="status_id" ColumnName="status_id" />
-          <ScalarProperty Name="completed_date" ColumnName="completed_date" />
-          <ScalarProperty Name="created_date" ColumnName="created_date" />
-          <ScalarProperty Name="height" ColumnName="height" />
-          <ScalarProperty Name="width" ColumnName="width" />
-          <ScalarProperty Name="length" ColumnName="length" />
-          <ScalarProperty Name="quantity" ColumnName="quantity" />
-          <ScalarProperty Name="sku" ColumnName="sku" />
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="id" ColumnName="id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Delete" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Delete" />
-    <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Insert" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Insert" />
-    <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Update" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Update" />
     <EntitySetMapping Name="TNtlOrders">
       <EntityTypeMapping TypeName="NTLModel.TNtlOrder">
         <MappingFragment StoreEntitySet="TNtlOrder">
@@ -641,5 +621,26 @@
     <FunctionImportMapping FunctionImportName="NSP_TNtlOrderItem_Delete" FunctionName="NTLModel.Store.NSP_TNtlOrderItem_Delete" />
     <FunctionImportMapping FunctionImportName="NSP_TNtlOrderItem_Insert" FunctionName="NTLModel.Store.NSP_TNtlOrderItem_Insert" />
     <FunctionImportMapping FunctionImportName="NSP_TNtlOrderItem_Update" FunctionName="NTLModel.Store.NSP_TNtlOrderItem_Update" />
+    <EntitySetMapping Name="TNtlSummaryItems">
+      <EntityTypeMapping TypeName="NTLModel.TNtlSummaryItem">
+        <MappingFragment StoreEntitySet="TNtlSummaryItem">
+          <ScalarProperty Name="detail_id" ColumnName="detail_id" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="completed_date" ColumnName="completed_date" />
+          <ScalarProperty Name="created_date" ColumnName="created_date" />
+          <ScalarProperty Name="height" ColumnName="height" />
+          <ScalarProperty Name="width" ColumnName="width" />
+          <ScalarProperty Name="length" ColumnName="length" />
+          <ScalarProperty Name="used" ColumnName="used" />
+          <ScalarProperty Name="quantity" ColumnName="quantity" />
+          <ScalarProperty Name="sku" ColumnName="sku" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Delete" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Delete" />
+    <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Insert" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Insert" />
+    <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Update" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Update" />
   </EntityContainerMapping>
 </Mapping>

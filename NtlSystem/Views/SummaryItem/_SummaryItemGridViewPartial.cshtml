@@ -1,0 +1,177 @@
+@using NtlSystem.Models;
+@using System.Collections.Generic;
+@using System.Diagnostics;
+
+@{
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+
+    Dictionary<int, string> detailDict = new Dictionary<int, string>();
+    db.TNtlDetails.ToList().ForEach(it =>
+    {
+        detailDict.Add(it.id, it.last_updated_by);
+    });
+
+    int c_sta_id = DbStoredProcedure.GetStatusID("complete", "Summary Item");
+
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "SummaryItemGridView";
+        settings.CallbackRouteValues = new { Controller = "SummaryItem", Action = "SummaryItemGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "SummaryItem", Action = "SummaryItemGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "SummaryItem", Action = "SummaryItemGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "SummaryItem", Action = "SummaryItemGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.Width = Unit.Percentage(100);
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = false;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsSearchPanel.Visible = true;
+
+        // SKU
+        settings.Columns.Add(col => {
+            col.FieldName = "sku";
+            col.Caption = "SKU";
+        });
+
+        // Name
+        settings.Columns.Add(col => {
+            col.FieldName = "name";
+            col.Caption = "Name";
+        }); 
+
+        // Width
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "width";
+            col.Caption = "Width";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "N2";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Height
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "height";
+            col.Caption = "Height";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "N2";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Quantity
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "quantity";
+            col.Caption = "Quantity";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Integer;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.DisplayFormatString = "N0";
+        });
+        
+        // Used
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "used";
+            col.Caption = "Used";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Integer;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.DisplayFormatString = "N0";
+        });
+        
+        // Status
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "status_id";
+            col.Caption = "Status";
+
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties prop = col.PropertiesEdit as ComboBoxProperties;
+            prop.DataSource = db.TNtlStatus.Where(it => it.type.ToLower().Equals("Summary Item".ToLower())).ToList();
+            prop.TextField = "name";
+            prop.ValueField = "id";
+            prop.ClearButton.DisplayMode = ClearButtonDisplayMode.OnHover;
+            prop.ValidationSettings.RequiredField.IsRequired = true;
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Complete Button
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Complete?";
+            col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            col.PropertiesEdit.EncodeHtml = false;
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        settings.CustomUnboundColumnData = (s, e) => 
+        {
+            if (e.Column.FieldName.Equals("Complete?"))
+            {
+
+                int qty = Convert.ToInt32(e.GetListSourceFieldValue("quantity"));
+                int used = Convert.ToInt32(e.GetListSourceFieldValue("used"));
+
+                int summary_item_id = Convert.ToInt32(e.GetListSourceFieldValue("id").ToString());
+                int sta_id = Convert.ToInt32(e.GetListSourceFieldValue("status_id").ToString());
+                string to_disable = (sta_id == c_sta_id || qty < used) ? "disabled" : "";
+
+                string url = "/SummaryItem/CompleteSummaryItem";
+                string js_func = "$.ajax({ url: '" + url + "', type: 'Post', data: { 'summary_item_id': '" + summary_item_id + "' }, success: resp => { console.log(resp); location.reload(); } });";
+
+                e.Value = $"<button class='btn btn-outline-success' {to_disable} onclick=\"{js_func}\">Complete</button>";
+            }
+        };
+
+        // Header Set Center
+        settings.Styles.Header.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Header.VerticalAlign = VerticalAlign.Middle;
+
+        // Cell Styles Center
+        settings.Styles.Cell.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Cell.VerticalAlign = VerticalAlign.Middle;
+    });
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

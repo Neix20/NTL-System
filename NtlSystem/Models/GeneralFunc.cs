@@ -59,9 +59,25 @@ namespace NtlSystem.Models
             int inc_sta_id = DbStoredProcedure.GetStatusID("incomplete", "Summary Item");
             item.status_id = inc_sta_id;
 
+            item.used = 0;
+
             item.created_date = DateTime.Today;
 
             return item;
+        }
+
+        public static string GenSummaryItemKey(TNtlSummaryItem item) {
+            string sku = item.sku;
+            string height = Convert.ToInt32(item.height).ToString();
+            string width = Convert.ToInt32(item.width).ToString();
+            return $"{sku}-{height}-{width}";
+        }
+
+        public static string GenJobOrderItemKey(TNtlJobOrderItem item) {
+            string sku = item.sku;
+            string height = Convert.ToInt32(item.height).ToString();
+            string width = Convert.ToInt32(item.width).ToString();
+            return $"{sku}-{height}-{width}";
         }
     }
 }

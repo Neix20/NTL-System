@@ -753,7 +753,7 @@ namespace NtlSystem.Models
             DetailInsert($"SummaryItem: {item.name}", "", username, username);
             item.detail_id = GetID("TNtlDetail");
 
-            db.NSP_TNtlSummaryItem_Insert(item.name, item.sku, item.quantity, item.length, item.width, item.height, item.created_date, item.completed_date, item.status_id, item.detail_id);
+            db.NSP_TNtlSummaryItem_Insert(item.name, item.sku, item.quantity, item.used, item.length, item.width, item.height, item.created_date, item.completed_date, item.status_id, item.detail_id);
             db.SaveChanges();
         }
 
@@ -767,7 +767,7 @@ namespace NtlSystem.Models
 
             DetailUpdate(detail.id, detail.name, detail.remark, detail.created_by, detail.created_date, username);
 
-            db.NSP_TNtlSummaryItem_Update(item.id, item.name, item.sku, item.quantity, item.length, item.width, item.height, item.created_date, item.completed_date, item.status_id, item.detail_id);
+            db.NSP_TNtlSummaryItem_Update(item.id, item.name, item.sku, item.quantity, item.used, item.length, item.width, item.height, item.created_date, item.completed_date, item.status_id, item.detail_id);
             db.SaveChanges();
         }
 
