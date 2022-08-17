@@ -236,6 +236,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\all.css" />
+    <Content Include="Content\all.min.css" />
     <Content Include="Content\ample-layout.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -253,8 +255,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
-    <Content Include="Content\font-awesome.css" />
-    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\brands.css" />
+    <Content Include="Content\brands.min.css" />
+    <Content Include="Content\fontawesome.css" />
+    <Content Include="Content\fontawesome.min.css" />
     <Content Include="Content\Images\check1.png" />
     <Content Include="Content\Images\default_male.jpg" />
     <Content Include="Content\Images\homepage.png" />
@@ -263,7 +267,14 @@
     <Content Include="Content\Images\VT_logo.png" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery-ui.min.css" />
-    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\regular.css" />
+    <Content Include="Content\regular.min.css" />
+    <Content Include="Content\solid.css" />
+    <Content Include="Content\solid.min.css" />
+    <Content Include="Content\svg-with-js.css" />
+    <Content Include="Content\svg-with-js.min.css" />
+    <Content Include="Content\v4-shims.css" />
+    <Content Include="Content\v4-shims.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Models\NtlSystemModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -281,6 +292,20 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\fontawesome\all.js" />
+    <Content Include="Scripts\fontawesome\all.min.js" />
+    <Content Include="Scripts\fontawesome\brands.js" />
+    <Content Include="Scripts\fontawesome\brands.min.js" />
+    <Content Include="Scripts\fontawesome\conflict-detection.js" />
+    <Content Include="Scripts\fontawesome\conflict-detection.min.js" />
+    <Content Include="Scripts\fontawesome\fontawesome.js" />
+    <Content Include="Scripts\fontawesome\fontawesome.min.js" />
+    <Content Include="Scripts\fontawesome\regular.js" />
+    <Content Include="Scripts\fontawesome\regular.min.js" />
+    <Content Include="Scripts\fontawesome\solid.js" />
+    <Content Include="Scripts\fontawesome\solid.min.js" />
+    <Content Include="Scripts\fontawesome\v4-shims.js" />
+    <Content Include="Scripts\fontawesome\v4-shims.min.js" />
     <Content Include="Scripts\globalize.cultures.js" />
     <Content Include="Scripts\globalize.js" />
     <Content Include="Scripts\html2PDF.js" />
@@ -332,11 +357,6 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <Content Include="fonts\FontAwesome.otf" />
-    <Content Include="fonts\fontawesome-webfont.woff2" />
-    <Content Include="fonts\fontawesome-webfont.woff" />
-    <Content Include="fonts\fontawesome-webfont.ttf" />
-    <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Scripts\jquery-3.6.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.6.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -350,6 +370,21 @@
     <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\String.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\EmailAddress.cshtml" />
+    <Content Include="webfonts\fa-brands-400.svg" />
+    <Content Include="webfonts\fa-regular-400.svg" />
+    <Content Include="webfonts\fa-solid-900.svg" />
+    <Content Include="webfonts\fa-solid-900.woff2" />
+    <Content Include="webfonts\fa-solid-900.woff" />
+    <Content Include="webfonts\fa-solid-900.ttf" />
+    <Content Include="webfonts\fa-solid-900.eot" />
+    <Content Include="webfonts\fa-regular-400.woff2" />
+    <Content Include="webfonts\fa-regular-400.woff" />
+    <Content Include="webfonts\fa-regular-400.ttf" />
+    <Content Include="webfonts\fa-regular-400.eot" />
+    <Content Include="webfonts\fa-brands-400.woff2" />
+    <Content Include="webfonts\fa-brands-400.woff" />
+    <Content Include="webfonts\fa-brands-400.ttf" />
+    <Content Include="webfonts\fa-brands-400.eot" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
@@ -394,7 +429,6 @@
     <Content Include="Views\User\_UserGridViewPartial.cshtml" />
     <Content Include="Views\UserRole\_UserRoleGridViewPartial.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Shared\_ProductionLayout.cshtml" />
     <Content Include="Views\PlatformMessage\Index.cshtml" />
     <Content Include="Views\PlatformMessage\_MessagePartial.cshtml" />
     <Content Include="Views\PlatformMessage\_OwnMessagePartial.cshtml" />
@@ -412,6 +446,13 @@
     <Content Include="Views\WindowUnit\Index.cshtml" />
     <Content Include="Views\SummaryItem\Index.cshtml" />
     <Content Include="Views\SummaryItem\_SummaryItemGridViewPartial.cshtml" />
+    <Content Include="Views\Log\Index.cshtml" />
+    <Content Include="Views\Log\GetLog.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Dashboard\_dsiGridViewPartial.cshtml" />
+    <Content Include="Views\Dashboard\_mdpiGridViewPartial.cshtml" />
+    <Content Include="Views\Dashboard\_mswiGridViewPartial.cshtml" />
+    <Content Include="Views\Dashboard\_mciGridViewPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -428,6 +469,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DetailController.cs" />
     <Compile Include="Controllers\HomepageController.cs" />
     <Compile Include="Controllers\InvoiceController.cs" />
@@ -435,6 +477,7 @@
     <Compile Include="Controllers\JobOrderController.cs" />
     <Compile Include="Controllers\JobOrderItemController.cs" />
     <Compile Include="Controllers\JobOrderPostgresController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrderItemController.cs" />
     <Compile Include="Controllers\PaymentMethodController.cs" />
@@ -461,6 +504,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DashboardModels\mDashboardChatItem.cs" />
+    <Compile Include="Models\DashboardModels\mDashboardOdooStockItem.cs" />
+    <Compile Include="Models\DashboardModels\mDashboardProductItem.cs" />
+    <Compile Include="Models\DashboardModels\mDashboardSaleItem.cs" />
     <Compile Include="Models\mCustomerMsg.cs" />
     <Compile Include="Models\NtlSystemModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -617,7 +664,6 @@
     <Folder Include="Views\Invoice\" />
     <Folder Include="Views\ProductCategory\" />
     <Folder Include="Views\ProductSubCategory\" />
-    <Folder Include="Views\ShopeeAutomation\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

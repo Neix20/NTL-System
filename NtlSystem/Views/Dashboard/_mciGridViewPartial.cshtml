@@ -1,0 +1,153 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "mciGridView";
+        settings.CallbackRouteValues = new { Controller = "Dashboard", Action = "mciGridViewPartial" };
+
+        settings.KeyFieldName = "platform";
+
+        settings.Width = Unit.Percentage(100);
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        // Platform
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "platform";
+            col.Caption = "Platform";
+        });
+
+        // Total RunTime
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "todayRuntime";
+            col.Caption = "Today Runtime";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Integer;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.DisplayFormatString = "N0";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Unread Message
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "unread_msg";
+            col.Caption = "Unread Message";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Integer;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.DisplayFormatString = "N0";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Total RunTime
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "total_msg";
+            col.Caption = "Total Message";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Integer;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.DisplayFormatString = "N0";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Total RunTime
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "total_customer";
+            col.Caption = "Total Customer";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Integer;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.DisplayFormatString = "N0";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Total RunTime
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "opening_ticket";
+            col.Caption = "Opening Ticket";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Integer;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.DisplayFormatString = "N0";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Status
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "status";
+            col.Caption = "Stauts";
+        });
+
+        
+        // Last Runtime
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "lastRuntime";
+            col.Caption = "Last RunTime";
+
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.PropertiesEdit.DisplayFormatString = "yyyy-MM-dd HH:mm:ss";
+
+            DateEditProperties prop = col.PropertiesEdit as DateEditProperties;
+            prop.DisplayFormatString = "yyyy-MM-dd HH:mm:ss";
+            prop.DisplayFormatInEditMode = true;
+        });
+
+        // Last Runtime
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "lastMessageTime";
+            col.Caption = "Last MessageTime";
+
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.PropertiesEdit.DisplayFormatString = "yyyy-MM-dd HH:mm:ss";
+
+            DateEditProperties prop = col.PropertiesEdit as DateEditProperties;
+            prop.DisplayFormatString = "yyyy-MM-dd HH:mm:ss";
+            prop.DisplayFormatInEditMode = true;
+        });
+
+        // Header Set Center
+        settings.Styles.Header.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Header.VerticalAlign = VerticalAlign.Middle;
+
+        // Cell Styles Center
+        settings.Styles.Cell.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Cell.VerticalAlign = VerticalAlign.Middle;
+    });
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

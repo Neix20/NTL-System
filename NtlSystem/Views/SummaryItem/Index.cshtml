@@ -1,4 +1,7 @@
-﻿
+﻿@using NtlSystem.Models;
+@using System.Collections.Generic;
+@model List<TNtlSummaryItem>
+
 @{
     ViewBag.Title = "Virtual Inventory";
     Layout = "~/Views/Shared/_NavLayout.cshtml";
@@ -9,7 +12,8 @@
     <div class="row">
         <div class="col">
             <div class="float-end">
-                <button class="btn btn-primary" onclick={completeOdooProcess()}>Odoo Process</button>
+                <button class="btn btn-danger mr-3" onclick="downloadPDF()" >Download PDF</button>
+                <button class="btn btn-primary" onclick="completeOdooProcess()">Odoo Process</button>
             </div>
         </div>
     </div>
@@ -32,9 +36,60 @@
         </div>
     </div>
 
+    <div id="summary_pdf" style="display: none;">
+        <section>
+            <div class="card border-0">
+                <div class="border border-dark">
+                    <table class="table table-borderless text-center">
+                        <thead>
+                            <tr class="bg-dark">
+                                <th colspan="6" class="text-white h2">Job Order Listing</th>
+                            </tr>
+                            <tr>
+                                <th>No.</th>
+                                <th>SKU</th>
+                                <th>Name</th>
+                                <th>Height</th>
+                                <th>Quantity</th>
+                                <th>Done ?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int ind = 0; ind < Model.ToList().Count; ind++)
+                            {
+                                var summaryItem = Model.ElementAt(ind);
+                                string no = $"{ind + 1}.";
+                                <tr>
+                                    <td>@no</td>
+                                    <td>@summaryItem.sku</td>
+                                    <td>@summaryItem.name</td>
+                                    <td>@Convert.ToInt32(summaryItem.height)cm</td>
+                                    <td>@Convert.ToInt32(summaryItem.quantity)</td>
+                                    <td></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+    
+                    
+            </div>
+        </section>
+    </div>
+
 </div>
 
 <script>
+    const formatNum = (x) => (x < 10 ? `0${x}` : `${x}`);
+    
+    // Generate new Date()
+    function getDate() {
+        let dt = new Date();
+        let date = `${formatNum(dt.getDate())}/${formatNum(dt.getMonth())}/${formatNum(dt.getFullYear())}`;
+        let time = `${formatNum(dt.getHours())}:${formatNum(dt.getMinutes())}:${formatNum(dt.getSeconds())}`;
+        return `${date}_${time}`;
+    }
+
     function completeOdooProcess()
     {
         fetch("/SummaryItem/CompleteOdooProcess",
@@ -44,6 +99,12 @@
         })
         .then(resp => resp.text())
         .then(resp => alert(resp));
+    }
+
+    function downloadPDF() {
+        let fileName = `Summary_listing_${getDate()}`;
+        createPDF("summary_pdf", fileName);
+        console.log("Successfully Generated Summary Listing!");
     }
 </script>
 

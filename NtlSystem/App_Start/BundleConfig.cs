@@ -17,11 +17,13 @@ namespace NtlSystem.App_Start
 
             bundles.Add(new ScriptBundle("~/bundles/jsPDF").Include("~/Scripts/jspdf.min.js", "~/Scripts/html2PDF.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/fontAwesome").Include("~/Scripts/fontawesome/all.min.js"));
+
             bundles.Add(new StyleBundle("~/Content/css/layout").Include("~/Content/ample-layout.css"));
 
             bundles.Add(new StyleBundle("~/Content/css/bootstrap").Include("~/Content/bootstrap.min.css"));
 
-            bundles.Add(new StyleBundle("~/Content/css/fontAwesome").Include("~/Content/font-awesome.min.css"));
+            bundles.Add(new StyleBundle("~/Content/css/fontAwesome").Include("~/Content/all.min.css"));
         }
 
         internal static void RegisterBundles(object bundles)

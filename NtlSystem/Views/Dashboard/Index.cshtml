@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard Monitoring";
+    Layout = "~/Views/Shared/_NavLayout.cshtml";
+}
+
+<div class="white-box">
+
+    @Html.DevExpress().PageControl( settings => {
+    settings.Name = "TabControl";
+
+    settings.Width = Unit.Percentage(100);
+    settings.Height = Unit.Percentage(100);
+
+    settings.TabPages.Add("Sales Listing").SetContent(() => {
+        ViewContext.Writer.Write(
+            "<div class='px-3'>" +
+                "<div class='h4 fw-bold text-decoration-underline'>Chat Automation</div>" +
+                "<div class='my-3' id='ChatAutomationFormContent'>" +
+                @Html.Action("mciGridViewPartial") +
+                "</div>" +
+                "<div class='h4 fw-bold text-decoration-underline'>Sales Order</div>" +
+                "<div id='SaleOrderListingFormContent'>" +
+                    @Html.Action("dsiGridViewPartial") +
+                "</div>" +
+            "</div>"
+        );
+    });
+
+    settings.TabPages.Add("Product Listing").SetContent(() => {
+        ViewContext.Writer.Write(
+            "<div class='px-3'>" +
+                "<div class='h4 fw-bold text-decoration-underline'>Product Listing</div>" +
+                "<div id='ProductItemFormContent'> " +
+                    @Html.Action("mdpiGridViewPartial") +
+                "</div>" +
+            "</div>"
+        );
+    });
+
+    settings.TabPages.Add("Odoo Warehouse Stock Listing").SetContent(() => {
+        ViewContext.Writer.Write(
+            "<div class='px-3'>" +
+                "<div class='h4 fw-bold text-decoration-underline'>Warehouse Stock</div>" +
+                "<div id='OdooStockItemFormContent'> " +
+                    @Html.Action("mswiGridViewPartial") +
+                "</div>" +
+            "</div>"
+        );
+    });
+
+}).GetHtml()
+
+</div>

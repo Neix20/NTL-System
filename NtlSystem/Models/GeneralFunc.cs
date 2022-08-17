@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -79,5 +80,41 @@ namespace NtlSystem.Models
             string width = Convert.ToInt32(item.width).ToString();
             return $"{sku}-{height}-{width}";
         }
+
+        public static DateTime ConvertStrToDateTime(string dtStr)
+        {
+            CultureInfo provider = CultureInfo.InvariantCulture;
+            return DateTime.ParseExact(dtStr, "yyyy-MM-dd", provider);
+        }
+
+        public static string FormatNum(int n)
+        {
+            return (n < 10) ? $"0{n}" : $"{n}";
+        }
+
+        public static string GetStartDate(DateTime dt)
+        {
+            DateTime _dt = new DateTime(dt.Year, dt.Month, 1);
+            _dt = _dt.AddMonths(-1);
+            return $"{_dt.Year}-{FormatNum(_dt.Month)}-{FormatNum(_dt.Day)}";
+        }
+
+        public static string GetEndDate(DateTime dt)
+        {
+            DateTime _dt = new DateTime(dt.Year, dt.Month, 1);
+            _dt = _dt.AddDays(-1);
+            return $"{_dt.Year}-{FormatNum(_dt.Month)}-{FormatNum(_dt.Day)}";
+        }
+
+        public static string GetLastFiveDays(DateTime dt)
+        {
+            DateTime _dt = dt.AddDays(-5);
+            return $"{_dt.Year}-{FormatNum(_dt.Month)}-{FormatNum(_dt.Day)}";
+        }
+	    
+	    public static bool DateInRange(DateTime startDate, DateTime endDate, DateTime date){
+	    	return startDate <= date && date < endDate;
+	    }
+
     }
 }

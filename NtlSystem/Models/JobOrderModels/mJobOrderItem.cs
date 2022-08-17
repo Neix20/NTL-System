@@ -40,7 +40,7 @@ namespace NtlSystem.Models.JobOrderModels
 
             string itemDescription = dataDict["item_description"];
 
-            if (itemDescription.Contains("["))
+            if (itemDescription.Contains("|"))
             {
                 string rgx = @"\[(.*)\] (([A-Za-z -]*)((\d+)cm)?)(\|(\d+)cm)?(\|(\d+))?";
                 sku = Regex.Replace(itemDescription, rgx, "$1");
@@ -76,8 +76,6 @@ namespace NtlSystem.Models.JobOrderModels
                 tax_price = Convert.ToDecimal(dataDict["tax_price"]);
                 total_price = Convert.ToDecimal(dataDict["total_price"]);
             }
-
-            
 
             item_description = dataDict["item_description"];
         }

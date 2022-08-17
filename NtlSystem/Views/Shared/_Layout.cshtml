@@ -11,11 +11,17 @@
 
     <link rel="icon" type="image/png" href="~/Content/Images/ntl_logo.png" />
 
-    @Styles.Render("~/Content/css/layout")
     @Styles.Render("~/Content/css/bootstrap")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
+    @Styles.Render("~/Content/css/fontAwesome")
+    @Scripts.Render("~/bundles/fontAwesome")
+
     @Scripts.Render("~/bundles/jsPDF")
+
+    @Styles.Render("~/Content/css/layout")
+
 
     @Html.DevExpress().GetStyleSheets(
         new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
@@ -99,8 +105,11 @@
                 }
             };
         
-            $(window).ready(setsidebartype);
-            $(window).on("resize", setsidebartype);
+            // $(window).ready(setsidebartype);
+            // $(window).on("resize", setsidebartype);
+
+            // Set Mini SideBar by Default
+            $("#main-wrapper").attr("data-sidebartype", "mini-sidebar");
         });
     </script>
 </head>

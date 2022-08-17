@@ -1,0 +1,13 @@
+﻿@using System.Collections.Generic;
+@model List<string>
+
+@{
+    ViewBag.Title = "GetLog";
+}
+
+<div class="p-3">
+    @foreach(var line in Model)
+    {
+        <p>@line</p>
+    }
+</div>

@@ -1,0 +1,44 @@
+﻿@using System.Collections.Generic;
+@model List<String>
+
+@{
+    ViewBag.Title = "Logs";
+    Layout = "~/Views/Shared/_NavLayout.cshtml";
+}
+
+<div class="white-box">
+    <div class="border border-dark">
+        <div class="row">
+            <div class="col">
+                <div class="bg-dark text-center h1 text-white">@ViewBag.Title</div>
+            </div>
+        </div>
+
+        <div class="row m-2">
+            <div class="col">
+                <div id="log-list">
+                    <div class="p-3">
+                        <div class="form-outline">
+                            <input type="text" placeholder="Search Logs..." class="search form-control" />
+                        </div>
+                    </div>
+                    <ul class="list">
+                        @foreach(var item in Model)
+                        {
+                            <li class="list-group-item list-group-item-action">
+                                @Html.ActionLink(@item, "GetLog", "Log", new { filename = item }, new {@Class="log-item" })
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var logList = new List('log-list', {
+        valueNames: ["log-item"]
+    });
+</script>
+

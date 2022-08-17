@@ -37,8 +37,11 @@
 <header class="topbar" data-navbarbg="skin5">
     <nav class="navbar top-navbar navbar-expand-md navbar-dark">
         <div class="navbar-header" data-logobg="skin6">
-            <a class="navbar-brand" style="color: black;">
-                [Place Logo Here]
+            <a class="navbar-brand" style="background-color: #2F323E;">
+                <i class="fas fa-bars nav_icon logo-icon" onclick="toggleSidebar()" style="color: white;"></i>
+                <span class="logo-text">
+                    [Place Your Logo Here]
+                </span>
             </a>
         </div>
 
@@ -64,7 +67,7 @@
                     <li class="sidebar-item">
                         <div class="p-3">
                             <div class="form-outline">
-                                <input type="text" placeholder="Search Links..." class="search form-control" />
+                                <input type="text" placeholder="Search Links..." class="search form-control hide-menu" />
                             </div>
                         </div>
                     </li>
@@ -73,11 +76,17 @@
                     @foreach(var kvp in titleDict)
                     {
                         <li class="sidebar-item">
-                            @Html.ActionLink(kvp.Value, "Index", kvp.Key, null, new { @Class = "sidebar-link" })
+                            <a class="sidebar-link" href="/@kvp.Key">
+                                <i class="fas fa-link nav_icon"></i>
+                                <span class="hide-menu">@kvp.Value</span>
+                            </a>
                         </li>
                     }
                     <li class="sidebar-item">
-                        @Html.ActionLink("Sign Out", "SignOut", "Account", null, new { @Class = "sidebar-link" })
+                        <a class="sidebar-link" href="/Account/SignOut">
+                            <i class="fas fa-sign-out-alt nav_icon"></i>
+                            <span class="hide-menu">Sign Out</span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -115,5 +124,11 @@
     };
 
     var linkList = new List('link-list', options);
+
+    function toggleSidebar() {
+        let value = $("#main-wrapper").attr("data-sidebartype");
+        value = (value === "mini-sidebar") ? "full" : "mini-sidebar";
+        $("#main-wrapper").attr("data-sidebartype", value);
+    }
 </script>
 

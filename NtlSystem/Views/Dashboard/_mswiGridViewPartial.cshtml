@@ -1,0 +1,157 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "mswiGridView";
+        settings.CallbackRouteValues = new { Controller = "Dashboard", Action = "mswiGridViewPartial" };
+
+        settings.KeyFieldName = "sku";
+
+        settings.Width = Unit.Percentage(100);
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        // Show All Records
+        settings.SettingsPager.PageSize = 50;
+
+        // model
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "model";
+            col.Caption = "Model";
+        });
+
+        // Description
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "description";
+            col.Caption = "Description";
+        });
+
+        // sku
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "sku";
+            col.Caption = "SKU";
+        });
+
+        // w50
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "w50";
+            col.Caption = "w50";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "N2";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // w60
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "w60";
+            col.Caption = "w60";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "N2";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // w70
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "w70";
+            col.Caption = "w70";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "N2";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // w80
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "w80";
+            col.Caption = "w80";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "N2";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // w90
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "w90";
+            col.Caption = "w90";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "N2";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // w150
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "w150";
+            col.Caption = "w150";
+
+            col.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            SpinEditProperties prop = col.PropertiesEdit as SpinEditProperties;
+            prop.NumberType = SpinEditNumberType.Float;
+            prop.MinValue = 0;
+            prop.MaxValue = 10000000;
+            prop.Increment = 0.1M;
+            prop.DisplayFormatString = "N2";
+
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        // Header Set Center
+        settings.Styles.Header.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Header.VerticalAlign = VerticalAlign.Middle;
+
+        // Cell Styles Center
+        settings.Styles.Cell.HorizontalAlign = HorizontalAlign.Center;
+        settings.Styles.Cell.VerticalAlign = VerticalAlign.Middle;
+
+    });
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

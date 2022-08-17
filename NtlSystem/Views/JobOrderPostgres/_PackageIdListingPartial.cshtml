@@ -40,7 +40,7 @@
                 $("#package_pdf").html(resp);
 
                 let date = new Date();
-                let fileName = `Package_Listing_${genFileName(date)}`;
+                let fileName = `Package_Listing_${getDate()}`;
 
                 createPDF("package_pdf", fileName);
 

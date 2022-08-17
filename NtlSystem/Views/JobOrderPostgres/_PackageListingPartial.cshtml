@@ -77,27 +77,30 @@
         <div class="mt-3"></div>
 
         <table class="table table-borderless invoice_table">
-            <thead class="border-bottom bg-dark text-white">
-                <tr>
-                    <th>Description</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Taxes</th>
-                    <th>Total</th>
+            <thead class="border-bottom">
+                <tr class="bg-dark">
+                    <th class="text-white">Name</th>
+                    <th class="text-white">Width</th>
+                    <th class="text-white">Length</th>
+                    <th class="text-white">Quantity</th>
+                    <th class="text-white">Unit Price</th>
+                    <th class="text-white">Total</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var obj in Model.itemList)
             {
                     <tr>
-                        <td>@obj.item_description</td>
-                        <td>@GeneralFunc.ParseZero(obj.quantity) @obj.uom</td>
+                        <td>@obj.name</td>
+                        <td>@GeneralFunc.ParseZero(obj.width) CM</td>
+                        <td>@GeneralFunc.ParseZero(obj.height) CM</td>
+                        <td>@GeneralFunc.ParseZero(obj.quantity)</td>
                         <td>@GeneralFunc.ParseZero(obj.unit_price)</td>
-                        <td>@GeneralFunc.ParseZero(obj.tax_price)</td>
                         <td>@GeneralFunc.ParseZero(obj.total_price)</td>
                     </tr>
                 }
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -108,10 +111,12 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                     <td><strong>Tax Price</strong></td>
                     <td>@Model.order.tax_price</td>
                 </tr>
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

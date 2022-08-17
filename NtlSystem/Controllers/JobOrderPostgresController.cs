@@ -35,7 +35,7 @@ namespace NtlSystem.Controllers
 
             //string dbHost = "47.254.232.38";
             string dbHost = "localhost";
-            string dbName = "odoo15";
+            string dbName = "odoo_new";
             string dbUsername = "txe1";
             string dbPassword = "arf11234";
 
@@ -202,7 +202,7 @@ namespace NtlSystem.Controllers
         {
             //string dbHost = "47.254.232.38";
             string dbHost = "localhost";
-            string dbName = "odoo15";
+            string dbName = "odoo_new";
             string dbUsername = "txe1";
             string dbPassword = "arf11234";
 
@@ -226,7 +226,7 @@ namespace NtlSystem.Controllers
         {
             //string dbHost = "47.254.232.38";
             string dbHost = "localhost";
-            string dbName = "odoo15";
+            string dbName = "odoo_new";
             string dbUsername = "txe1";
             string dbPassword = "arf11234";
 
@@ -250,12 +250,15 @@ namespace NtlSystem.Controllers
             query = $"SELECT * FROM VNtlJobOrderItem WHERE order_id={order_id};";
             ls = dao.GetAllClsDataQuery(PostgresDal, query);
 
-            List<mJobOrderItem> itemList = ls.Select(obj =>
+            List<mJobOrderItem> itemList = new List<mJobOrderItem>();
+
+            for(int i = 0; i < ls.Count; i+=2)
             {
                 mJobOrderItem item = new mJobOrderItem();
-                item.PackageListing(obj.data);
-                return item;
-            }).ToList();
+                item.PackageListing(ls.ElementAt(i).data);
+                item.SummaryListing(ls.ElementAt(i + 1).data);
+                itemList.Add(item);
+            }
 
             mPackageListing model = new mPackageListing();
             model.order = orderList.FirstOrDefault(it => it.id == order_id);

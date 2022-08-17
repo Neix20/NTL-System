@@ -66,11 +66,15 @@
 <!-- To Copy End -->
 
 <script>
-    formatTD = x => (x < 10) ? `0${x}` : x + "";
-    formatAMPM = x => (x < 12) ? "AM" : "PM";
-    formatHR = x => (x >= 12) ? x % 12 : x;
-
-    genFileName = date => `${date.getFullYear()}${formatTD(date.getMonth() + 1)}${formatTD(date.getDate())}_${formatTD(date.getHours())}${formatTD(date.getMinutes())}${formatTD(date.getSeconds())}`;
+    const formatNum = (x) => (x < 10 ? `0${x}` : `${x}`);
+    
+    // Generate new Date()
+    function getDate() {
+        let dt = new Date();
+        let date = `${formatNum(dt.getDate())}/${formatNum(dt.getMonth())}/${formatNum(dt.getFullYear())}`;
+        let time = `${formatNum(dt.getHours())}:${formatNum(dt.getMinutes())}:${formatNum(dt.getSeconds())}`;
+        return `${date}_${time}`;
+    }
 
     let renderDiv = $("div[id='jobOrderTaskContent']");
 

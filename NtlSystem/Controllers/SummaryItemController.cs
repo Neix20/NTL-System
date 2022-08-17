@@ -18,13 +18,14 @@ namespace NtlSystem.Controllers
 
         private static readonly HttpClient client = new HttpClient();
 
+        dbNtlSystemEntities db = new dbNtlSystemEntities();
+
         // GET: SummaryItem
         public ActionResult Index()
         {
-            return View();
+            var model = db.TNtlSummaryItems;
+            return View(model.ToList());
         }
-
-        dbNtlSystemEntities db = new dbNtlSystemEntities();
 
         [ValidateInput(false)]
         public ActionResult SummaryItemGridViewPartial()
@@ -107,6 +108,9 @@ namespace NtlSystem.Controllers
                     sku = it.First().sku,
                     qty = it.Sum(x => (x.quantity * x.width * x.height / 100 / 100))
                 }).ToList();
+
+            // Remove Product Code "FGSTSL050"
+            product = product.Where(it => !it.sku.Equals("FGSTSL050")).ToList();
 
             // Set Product List
             model.product = product;
