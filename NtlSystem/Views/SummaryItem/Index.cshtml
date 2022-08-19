@@ -92,13 +92,20 @@
 
     function completeOdooProcess()
     {
+        // Show Loading Div
+        show_loading_div();
+
         fetch("/SummaryItem/CompleteOdooProcess",
         {
             method: 'POST',
             credentials: 'same-origin'
         })
         .then(resp => resp.text())
-        .then(resp => alert(resp));
+        .then(resp => {
+            hide_loading_div();
+
+            alert(resp);
+        });
     }
 
     function downloadPDF() {

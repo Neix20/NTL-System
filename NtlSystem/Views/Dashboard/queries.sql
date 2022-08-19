@@ -142,6 +142,16 @@ FROM dbo.TNtlSeleniumLog
 WHERE type=2
 ORDER BY end_date DESC;
 
+CREATE OR ALTER VIEW VNtlDashboardProduct AS 
+	SELECT SUBSTRING(p.name, CHARINDEX(']', p.name) + 2, LEN(p.name) - CHARINDEX(']', p.name) -1) "name", 
+	CAST(SUBSTRING(p.SKU, LEN(p.SKU) - 2, 3) AS INT) "width",
+	CAST(SUBSTRING(p.description, LEN(p.description) - 2, 3) AS INT) "length",
+	si.quantity "quantity",
+	p.sell_price "price"
+	FROM dbo.TNtlProduct p
+	LEFT JOIN dbo.TNtlStockItem si
+	ON p.id = si.product_id;
+
 SELECT 
 	tab1.measurement AS measurement,
 	SUM(case when tab1.name = 'Black Silver' then tab1.quantity else 0 end) AS black_silver,
@@ -155,3 +165,10 @@ FROM (
 	FROM VNtlDashboardProduct
 ) tab1
 GROUP BY tab1.measurement, tab1.price;
+
+SELECT * FROM VNtlDashboardProduct;
+
+
+SELECT DISTINCT name FROM VNtlDashboardProduct;
+
+

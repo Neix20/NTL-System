@@ -1,0 +1,88 @@
+﻿@using NtlSystem.Models.DashboardModels
+@using System.Collections.Generic
+@model List<mDashboardProductItem>
+
+<style>
+    .bg-c-blue {
+        background: linear-gradient(45deg,#4099ff,#73b4ff);
+    }
+    
+    .bg-c-green {
+        background: linear-gradient(45deg,#2ed8b6,#59e0c5);
+    }
+    
+    .bg-c-yellow {
+        background: linear-gradient(45deg,#FFB64D,#ffcb80);
+    }
+    
+    .bg-c-pink {
+        background: linear-gradient(45deg,#FF5370,#ff869a);
+    }
+    </style>
+
+<div class="row">
+    <div class="col-md-4 col-xl-4">
+        <div class="card bg-c-blue">
+            <div class="card-body">
+                <div class="h3">Total Available Stock</div>
+                <div class="text-end">
+                    <div class="h4">@ViewData["total_available"]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xl-4">
+        <div class="card bg-c-yellow">
+            <div class="card-body">
+                <div class="h3">Total Capacity Stock</div>
+                <div class="text-end">
+                    <div class="h4">@ViewData["total_capacity"]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xl-4">
+        <div class="card bg-c-pink">
+            <div class="card-body">
+                <div class="h3">Stock Percentage</div>
+                <div class="text-end">
+                    <div class="h4">@string.Format("{0:.00}", ViewData["percentage"])%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="my-3"></div>
+
+<table class="table tablesort table-bordered table-hover text-center">
+    <thead>
+        <tr class="bg-dark">
+            <th class="text-white">Measurement</th>
+            <th class="text-white">Black Silver</th>
+            <th class="text-white">Deep Blue Silver</th>
+            <th class="text-white">Gold Silver</th>
+            <th class="text-white">Green Silver</th>
+            <th class="text-white">Silver Light</th>
+            <th class="text-white">Price</th>
+            <th class="text-white">Stock Level (%)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.measurement</td>
+                <td>@string.Format("{0:0.##}", item.black_silver)</td>
+                <td>@string.Format("{0:0.##}", item.deep_blue_silver)</td>
+                <td>@string.Format("{0:0.##}", item.gold_silver)</td>
+                <td>@string.Format("{0:0.##}", item.green_silver)</td>
+                <td>@string.Format("{0:0.##}", item.silver_light)</td>
+                <td>RM @item.price</td>
+                <td>@string.Format("{0:0.00}", item.percentage)</td>
+            </tr>
+        }
+    </tbody>
+</table>

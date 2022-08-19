@@ -642,5 +642,155 @@
     <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Delete" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Delete" />
     <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Insert" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Insert" />
     <FunctionImportMapping FunctionImportName="NSP_TNtlSummaryItem_Update" FunctionName="NTLModel.Store.NSP_TNtlSummaryItem_Update" />
+    <EntitySetMapping Name="THelpDeskAudits">
+      <EntityTypeMapping TypeName="NTLModel.THelpDeskAudit">
+        <MappingFragment StoreEntitySet="THelpDeskAudit">
+          <ScalarProperty Name="created_date" ColumnName="created_date" />
+          <ScalarProperty Name="created_by" ColumnName="created_by" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="ticket_id" ColumnName="ticket_id" />
+          <ScalarProperty Name="metadata" ColumnName="metadata" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="THelpDeskChannels">
+      <EntityTypeMapping TypeName="NTLModel.THelpDeskChannel">
+        <MappingFragment StoreEntitySet="THelpDeskChannel">
+          <ScalarProperty Name="last_updated_date" ColumnName="last_updated_date" />
+          <ScalarProperty Name="last_updated_by" ColumnName="last_updated_by" />
+          <ScalarProperty Name="created_date" ColumnName="created_date" />
+          <ScalarProperty Name="created_by" ColumnName="created_by" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="THelpDeskComments">
+      <EntityTypeMapping TypeName="NTLModel.THelpDeskComment">
+        <MappingFragment StoreEntitySet="THelpDeskComment">
+          <ScalarProperty Name="last_updated_date" ColumnName="last_updated_date" />
+          <ScalarProperty Name="last_updated_by" ColumnName="last_updated_by" />
+          <ScalarProperty Name="created_date" ColumnName="created_date" />
+          <ScalarProperty Name="created_by" ColumnName="created_by" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="metadata" ColumnName="metadata" />
+          <ScalarProperty Name="content" ColumnName="content" />
+          <ScalarProperty Name="ticket_id" ColumnName="ticket_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="THelpDeskTeams">
+      <EntityTypeMapping TypeName="NTLModel.THelpDeskTeam">
+        <MappingFragment StoreEntitySet="THelpDeskTeam">
+          <ScalarProperty Name="last_updated_date" ColumnName="last_updated_date" />
+          <ScalarProperty Name="last_updated_by" ColumnName="last_updated_by" />
+          <ScalarProperty Name="created_date" ColumnName="created_date" />
+          <ScalarProperty Name="created_by" ColumnName="created_by" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="team_member_id" ColumnName="team_member_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="THelpDeskTeamMembers">
+      <EntityTypeMapping TypeName="NTLModel.THelpDeskTeamMember">
+        <MappingFragment StoreEntitySet="THelpDeskTeamMember">
+          <ScalarProperty Name="last_updated_date" ColumnName="last_updated_date" />
+          <ScalarProperty Name="last_updated_by" ColumnName="last_updated_by" />
+          <ScalarProperty Name="created_date" ColumnName="created_date" />
+          <ScalarProperty Name="created_by" ColumnName="created_by" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="email_address" ColumnName="email_address" />
+          <ScalarProperty Name="position" ColumnName="position" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="THelpDeskTickets">
+      <EntityTypeMapping TypeName="NTLModel.THelpDeskTicket">
+        <MappingFragment StoreEntitySet="THelpDeskTicket">
+          <ScalarProperty Name="last_updated_date" ColumnName="last_updated_date" />
+          <ScalarProperty Name="last_updated_by" ColumnName="last_updated_by" />
+          <ScalarProperty Name="created_date" ColumnName="created_date" />
+          <ScalarProperty Name="created_by" ColumnName="created_by" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="metadata" ColumnName="metadata" />
+          <ScalarProperty Name="completed_date" ColumnName="completed_date" />
+          <ScalarProperty Name="deadline" ColumnName="deadline" />
+          <ScalarProperty Name="audit_id" ColumnName="audit_id" />
+          <ScalarProperty Name="comment_id" ColumnName="comment_id" />
+          <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+          <ScalarProperty Name="team_id" ColumnName="team_id" />
+          <ScalarProperty Name="ticket_status_id" ColumnName="ticket_status_id" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="ticket_type_id" ColumnName="ticket_type_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="THelpDeskTicketStatus">
+      <EntityTypeMapping TypeName="NTLModel.THelpDeskTicketStatu">
+        <MappingFragment StoreEntitySet="THelpDeskTicketStatus">
+          <ScalarProperty Name="last_updated_date" ColumnName="last_updated_date" />
+          <ScalarProperty Name="last_updated_by" ColumnName="last_updated_by" />
+          <ScalarProperty Name="created_date" ColumnName="created_date" />
+          <ScalarProperty Name="created_by" ColumnName="created_by" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="THelpDeskTicketTypes">
+      <EntityTypeMapping TypeName="NTLModel.THelpDeskTicketType">
+        <MappingFragment StoreEntitySet="THelpDeskTicketType">
+          <ScalarProperty Name="last_updated_date" ColumnName="last_updated_date" />
+          <ScalarProperty Name="last_updated_by" ColumnName="last_updated_by" />
+          <ScalarProperty Name="created_date" ColumnName="created_date" />
+          <ScalarProperty Name="created_by" ColumnName="created_by" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskAudit_Delete" FunctionName="NTLModel.Store.NSP_THelpDeskAudit_Delete" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskAudit_Insert" FunctionName="NTLModel.Store.NSP_THelpDeskAudit_Insert" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskAudit_Update" FunctionName="NTLModel.Store.NSP_THelpDeskAudit_Update" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskChannel_Delete" FunctionName="NTLModel.Store.NSP_THelpDeskChannel_Delete" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskChannel_Insert" FunctionName="NTLModel.Store.NSP_THelpDeskChannel_Insert" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskChannel_Update" FunctionName="NTLModel.Store.NSP_THelpDeskChannel_Update" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskComment_Delete" FunctionName="NTLModel.Store.NSP_THelpDeskComment_Delete" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskComment_Insert" FunctionName="NTLModel.Store.NSP_THelpDeskComment_Insert" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskComment_Update" FunctionName="NTLModel.Store.NSP_THelpDeskComment_Update" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTeam_Delete" FunctionName="NTLModel.Store.NSP_THelpDeskTeam_Delete" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTeam_Insert" FunctionName="NTLModel.Store.NSP_THelpDeskTeam_Insert" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTeam_Update" FunctionName="NTLModel.Store.NSP_THelpDeskTeam_Update" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTeamMember_Delete" FunctionName="NTLModel.Store.NSP_THelpDeskTeamMember_Delete" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTeamMember_Insert" FunctionName="NTLModel.Store.NSP_THelpDeskTeamMember_Insert" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTeamMember_Update" FunctionName="NTLModel.Store.NSP_THelpDeskTeamMember_Update" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTicket_Delete" FunctionName="NTLModel.Store.NSP_THelpDeskTicket_Delete" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTicket_Insert" FunctionName="NTLModel.Store.NSP_THelpDeskTicket_Insert" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTicket_Update" FunctionName="NTLModel.Store.NSP_THelpDeskTicket_Update" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTicketStatus_Delete" FunctionName="NTLModel.Store.NSP_THelpDeskTicketStatus_Delete" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTicketStatus_Insert" FunctionName="NTLModel.Store.NSP_THelpDeskTicketStatus_Insert" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTicketStatus_Update" FunctionName="NTLModel.Store.NSP_THelpDeskTicketStatus_Update" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTicketType_Delete" FunctionName="NTLModel.Store.NSP_THelpDeskTicketType_Delete" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTicketType_Insert" FunctionName="NTLModel.Store.NSP_THelpDeskTicketType_Insert" />
+    <FunctionImportMapping FunctionImportName="NSP_THelpDeskTicketType_Update" FunctionName="NTLModel.Store.NSP_THelpDeskTicketType_Update" />
   </EntityContainerMapping>
 </Mapping>

@@ -65,6 +65,14 @@ namespace NtlSystem.Models
         public virtual DbSet<TNtlUnit> TNtlUnits { get; set; }
         public virtual DbSet<TNtlOrderItem> TNtlOrderItems { get; set; }
         public virtual DbSet<TNtlSummaryItem> TNtlSummaryItems { get; set; }
+        public virtual DbSet<THelpDeskAudit> THelpDeskAudits { get; set; }
+        public virtual DbSet<THelpDeskChannel> THelpDeskChannels { get; set; }
+        public virtual DbSet<THelpDeskComment> THelpDeskComments { get; set; }
+        public virtual DbSet<THelpDeskTeam> THelpDeskTeams { get; set; }
+        public virtual DbSet<THelpDeskTeamMember> THelpDeskTeamMembers { get; set; }
+        public virtual DbSet<THelpDeskTicket> THelpDeskTickets { get; set; }
+        public virtual DbSet<THelpDeskTicketStatu> THelpDeskTicketStatus { get; set; }
+        public virtual DbSet<THelpDeskTicketType> THelpDeskTicketTypes { get; set; }
     
         public virtual int NSP_TNtlAttribute_Delete(Nullable<int> id)
         {
@@ -3026,6 +3034,750 @@ namespace NtlSystem.Models
                 new ObjectParameter("detail_id", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_TNtlSummaryItem_Update", idParameter, nameParameter, skuParameter, quantityParameter, usedParameter, lengthParameter, widthParameter, heightParameter, created_dateParameter, completed_dateParameter, status_idParameter, detail_idParameter);
+        }
+    
+        public virtual int NSP_THelpDeskAudit_Delete(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskAudit_Delete", idParameter);
+        }
+    
+        public virtual int NSP_THelpDeskAudit_Insert(string metadata, Nullable<int> ticket_id, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date)
+        {
+            var metadataParameter = metadata != null ?
+                new ObjectParameter("metadata", metadata) :
+                new ObjectParameter("metadata", typeof(string));
+    
+            var ticket_idParameter = ticket_id.HasValue ?
+                new ObjectParameter("ticket_id", ticket_id) :
+                new ObjectParameter("ticket_id", typeof(int));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskAudit_Insert", metadataParameter, ticket_idParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskAudit_Update(Nullable<int> id, string metadata, Nullable<int> ticket_id, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            var metadataParameter = metadata != null ?
+                new ObjectParameter("metadata", metadata) :
+                new ObjectParameter("metadata", typeof(string));
+    
+            var ticket_idParameter = ticket_id.HasValue ?
+                new ObjectParameter("ticket_id", ticket_id) :
+                new ObjectParameter("ticket_id", typeof(int));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskAudit_Update", idParameter, metadataParameter, ticket_idParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskChannel_Delete(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskChannel_Delete", idParameter);
+        }
+    
+        public virtual int NSP_THelpDeskChannel_Insert(string name, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date, string last_updated_by, Nullable<System.DateTime> last_updated_date)
+        {
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var last_updated_byParameter = last_updated_by != null ?
+                new ObjectParameter("last_updated_by", last_updated_by) :
+                new ObjectParameter("last_updated_by", typeof(string));
+    
+            var last_updated_dateParameter = last_updated_date.HasValue ?
+                new ObjectParameter("last_updated_date", last_updated_date) :
+                new ObjectParameter("last_updated_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskChannel_Insert", nameParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter, last_updated_byParameter, last_updated_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskChannel_Update(Nullable<int> id, string name, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date, string last_updated_by, Nullable<System.DateTime> last_updated_date)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var last_updated_byParameter = last_updated_by != null ?
+                new ObjectParameter("last_updated_by", last_updated_by) :
+                new ObjectParameter("last_updated_by", typeof(string));
+    
+            var last_updated_dateParameter = last_updated_date.HasValue ?
+                new ObjectParameter("last_updated_date", last_updated_date) :
+                new ObjectParameter("last_updated_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskChannel_Update", idParameter, nameParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter, last_updated_byParameter, last_updated_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskComment_Delete(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskComment_Delete", idParameter);
+        }
+    
+        public virtual int NSP_THelpDeskComment_Insert(Nullable<int> ticket_id, string content, string metadata, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date, string last_updated_by, Nullable<System.DateTime> last_updated_date)
+        {
+            var ticket_idParameter = ticket_id.HasValue ?
+                new ObjectParameter("ticket_id", ticket_id) :
+                new ObjectParameter("ticket_id", typeof(int));
+    
+            var contentParameter = content != null ?
+                new ObjectParameter("content", content) :
+                new ObjectParameter("content", typeof(string));
+    
+            var metadataParameter = metadata != null ?
+                new ObjectParameter("metadata", metadata) :
+                new ObjectParameter("metadata", typeof(string));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var last_updated_byParameter = last_updated_by != null ?
+                new ObjectParameter("last_updated_by", last_updated_by) :
+                new ObjectParameter("last_updated_by", typeof(string));
+    
+            var last_updated_dateParameter = last_updated_date.HasValue ?
+                new ObjectParameter("last_updated_date", last_updated_date) :
+                new ObjectParameter("last_updated_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskComment_Insert", ticket_idParameter, contentParameter, metadataParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter, last_updated_byParameter, last_updated_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskComment_Update(Nullable<int> id, Nullable<int> ticket_id, string content, string metadata, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date, string last_updated_by, Nullable<System.DateTime> last_updated_date)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            var ticket_idParameter = ticket_id.HasValue ?
+                new ObjectParameter("ticket_id", ticket_id) :
+                new ObjectParameter("ticket_id", typeof(int));
+    
+            var contentParameter = content != null ?
+                new ObjectParameter("content", content) :
+                new ObjectParameter("content", typeof(string));
+    
+            var metadataParameter = metadata != null ?
+                new ObjectParameter("metadata", metadata) :
+                new ObjectParameter("metadata", typeof(string));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var last_updated_byParameter = last_updated_by != null ?
+                new ObjectParameter("last_updated_by", last_updated_by) :
+                new ObjectParameter("last_updated_by", typeof(string));
+    
+            var last_updated_dateParameter = last_updated_date.HasValue ?
+                new ObjectParameter("last_updated_date", last_updated_date) :
+                new ObjectParameter("last_updated_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskComment_Update", idParameter, ticket_idParameter, contentParameter, metadataParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter, last_updated_byParameter, last_updated_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTeam_Delete(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTeam_Delete", idParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTeam_Insert(string name, Nullable<int> team_member_id, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date, string last_updated_by, Nullable<System.DateTime> last_updated_date)
+        {
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var team_member_idParameter = team_member_id.HasValue ?
+                new ObjectParameter("team_member_id", team_member_id) :
+                new ObjectParameter("team_member_id", typeof(int));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var last_updated_byParameter = last_updated_by != null ?
+                new ObjectParameter("last_updated_by", last_updated_by) :
+                new ObjectParameter("last_updated_by", typeof(string));
+    
+            var last_updated_dateParameter = last_updated_date.HasValue ?
+                new ObjectParameter("last_updated_date", last_updated_date) :
+                new ObjectParameter("last_updated_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTeam_Insert", nameParameter, team_member_idParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter, last_updated_byParameter, last_updated_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTeam_Update(Nullable<int> id, string name, Nullable<int> team_member_id, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date, string last_updated_by, Nullable<System.DateTime> last_updated_date)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var team_member_idParameter = team_member_id.HasValue ?
+                new ObjectParameter("team_member_id", team_member_id) :
+                new ObjectParameter("team_member_id", typeof(int));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var last_updated_byParameter = last_updated_by != null ?
+                new ObjectParameter("last_updated_by", last_updated_by) :
+                new ObjectParameter("last_updated_by", typeof(string));
+    
+            var last_updated_dateParameter = last_updated_date.HasValue ?
+                new ObjectParameter("last_updated_date", last_updated_date) :
+                new ObjectParameter("last_updated_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTeam_Update", idParameter, nameParameter, team_member_idParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter, last_updated_byParameter, last_updated_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTeamMember_Delete(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTeamMember_Delete", idParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTeamMember_Insert(string name, string position, string email_address, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date, string last_updated_by, Nullable<System.DateTime> last_updated_date)
+        {
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var positionParameter = position != null ?
+                new ObjectParameter("position", position) :
+                new ObjectParameter("position", typeof(string));
+    
+            var email_addressParameter = email_address != null ?
+                new ObjectParameter("email_address", email_address) :
+                new ObjectParameter("email_address", typeof(string));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var last_updated_byParameter = last_updated_by != null ?
+                new ObjectParameter("last_updated_by", last_updated_by) :
+                new ObjectParameter("last_updated_by", typeof(string));
+    
+            var last_updated_dateParameter = last_updated_date.HasValue ?
+                new ObjectParameter("last_updated_date", last_updated_date) :
+                new ObjectParameter("last_updated_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTeamMember_Insert", nameParameter, positionParameter, email_addressParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter, last_updated_byParameter, last_updated_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTeamMember_Update(Nullable<int> id, string name, string position, string email_address, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date, string last_updated_by, Nullable<System.DateTime> last_updated_date)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var positionParameter = position != null ?
+                new ObjectParameter("position", position) :
+                new ObjectParameter("position", typeof(string));
+    
+            var email_addressParameter = email_address != null ?
+                new ObjectParameter("email_address", email_address) :
+                new ObjectParameter("email_address", typeof(string));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var last_updated_byParameter = last_updated_by != null ?
+                new ObjectParameter("last_updated_by", last_updated_by) :
+                new ObjectParameter("last_updated_by", typeof(string));
+    
+            var last_updated_dateParameter = last_updated_date.HasValue ?
+                new ObjectParameter("last_updated_date", last_updated_date) :
+                new ObjectParameter("last_updated_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTeamMember_Update", idParameter, nameParameter, positionParameter, email_addressParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter, last_updated_byParameter, last_updated_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTicket_Delete(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTicket_Delete", idParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTicket_Insert(string name, Nullable<int> ticket_type_id, string description, Nullable<int> ticket_status_id, Nullable<int> team_id, Nullable<int> customer_id, Nullable<int> comment_id, Nullable<int> audit_id, Nullable<System.DateTime> deadline, Nullable<System.DateTime> completed_date, string metadata, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date, string last_updated_by, Nullable<System.DateTime> last_updated_date)
+        {
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var ticket_type_idParameter = ticket_type_id.HasValue ?
+                new ObjectParameter("ticket_type_id", ticket_type_id) :
+                new ObjectParameter("ticket_type_id", typeof(int));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("description", description) :
+                new ObjectParameter("description", typeof(string));
+    
+            var ticket_status_idParameter = ticket_status_id.HasValue ?
+                new ObjectParameter("ticket_status_id", ticket_status_id) :
+                new ObjectParameter("ticket_status_id", typeof(int));
+    
+            var team_idParameter = team_id.HasValue ?
+                new ObjectParameter("team_id", team_id) :
+                new ObjectParameter("team_id", typeof(int));
+    
+            var customer_idParameter = customer_id.HasValue ?
+                new ObjectParameter("customer_id", customer_id) :
+                new ObjectParameter("customer_id", typeof(int));
+    
+            var comment_idParameter = comment_id.HasValue ?
+                new ObjectParameter("comment_id", comment_id) :
+                new ObjectParameter("comment_id", typeof(int));
+    
+            var audit_idParameter = audit_id.HasValue ?
+                new ObjectParameter("audit_id", audit_id) :
+                new ObjectParameter("audit_id", typeof(int));
+    
+            var deadlineParameter = deadline.HasValue ?
+                new ObjectParameter("deadline", deadline) :
+                new ObjectParameter("deadline", typeof(System.DateTime));
+    
+            var completed_dateParameter = completed_date.HasValue ?
+                new ObjectParameter("completed_date", completed_date) :
+                new ObjectParameter("completed_date", typeof(System.DateTime));
+    
+            var metadataParameter = metadata != null ?
+                new ObjectParameter("metadata", metadata) :
+                new ObjectParameter("metadata", typeof(string));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var last_updated_byParameter = last_updated_by != null ?
+                new ObjectParameter("last_updated_by", last_updated_by) :
+                new ObjectParameter("last_updated_by", typeof(string));
+    
+            var last_updated_dateParameter = last_updated_date.HasValue ?
+                new ObjectParameter("last_updated_date", last_updated_date) :
+                new ObjectParameter("last_updated_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTicket_Insert", nameParameter, ticket_type_idParameter, descriptionParameter, ticket_status_idParameter, team_idParameter, customer_idParameter, comment_idParameter, audit_idParameter, deadlineParameter, completed_dateParameter, metadataParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter, last_updated_byParameter, last_updated_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTicket_Update(Nullable<int> id, string name, Nullable<int> ticket_type_id, string description, Nullable<int> ticket_status_id, Nullable<int> team_id, Nullable<int> customer_id, Nullable<int> comment_id, Nullable<int> audit_id, Nullable<System.DateTime> deadline, Nullable<System.DateTime> completed_date, string metadata, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date, string last_updated_by, Nullable<System.DateTime> last_updated_date)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var ticket_type_idParameter = ticket_type_id.HasValue ?
+                new ObjectParameter("ticket_type_id", ticket_type_id) :
+                new ObjectParameter("ticket_type_id", typeof(int));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("description", description) :
+                new ObjectParameter("description", typeof(string));
+    
+            var ticket_status_idParameter = ticket_status_id.HasValue ?
+                new ObjectParameter("ticket_status_id", ticket_status_id) :
+                new ObjectParameter("ticket_status_id", typeof(int));
+    
+            var team_idParameter = team_id.HasValue ?
+                new ObjectParameter("team_id", team_id) :
+                new ObjectParameter("team_id", typeof(int));
+    
+            var customer_idParameter = customer_id.HasValue ?
+                new ObjectParameter("customer_id", customer_id) :
+                new ObjectParameter("customer_id", typeof(int));
+    
+            var comment_idParameter = comment_id.HasValue ?
+                new ObjectParameter("comment_id", comment_id) :
+                new ObjectParameter("comment_id", typeof(int));
+    
+            var audit_idParameter = audit_id.HasValue ?
+                new ObjectParameter("audit_id", audit_id) :
+                new ObjectParameter("audit_id", typeof(int));
+    
+            var deadlineParameter = deadline.HasValue ?
+                new ObjectParameter("deadline", deadline) :
+                new ObjectParameter("deadline", typeof(System.DateTime));
+    
+            var completed_dateParameter = completed_date.HasValue ?
+                new ObjectParameter("completed_date", completed_date) :
+                new ObjectParameter("completed_date", typeof(System.DateTime));
+    
+            var metadataParameter = metadata != null ?
+                new ObjectParameter("metadata", metadata) :
+                new ObjectParameter("metadata", typeof(string));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var last_updated_byParameter = last_updated_by != null ?
+                new ObjectParameter("last_updated_by", last_updated_by) :
+                new ObjectParameter("last_updated_by", typeof(string));
+    
+            var last_updated_dateParameter = last_updated_date.HasValue ?
+                new ObjectParameter("last_updated_date", last_updated_date) :
+                new ObjectParameter("last_updated_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTicket_Update", idParameter, nameParameter, ticket_type_idParameter, descriptionParameter, ticket_status_idParameter, team_idParameter, customer_idParameter, comment_idParameter, audit_idParameter, deadlineParameter, completed_dateParameter, metadataParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter, last_updated_byParameter, last_updated_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTicketStatus_Delete(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTicketStatus_Delete", idParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTicketStatus_Insert(string name, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date, string last_updated_by, Nullable<System.DateTime> last_updated_date)
+        {
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var last_updated_byParameter = last_updated_by != null ?
+                new ObjectParameter("last_updated_by", last_updated_by) :
+                new ObjectParameter("last_updated_by", typeof(string));
+    
+            var last_updated_dateParameter = last_updated_date.HasValue ?
+                new ObjectParameter("last_updated_date", last_updated_date) :
+                new ObjectParameter("last_updated_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTicketStatus_Insert", nameParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter, last_updated_byParameter, last_updated_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTicketStatus_Update(Nullable<int> id, string name, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date, string last_updated_by, Nullable<System.DateTime> last_updated_date)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var last_updated_byParameter = last_updated_by != null ?
+                new ObjectParameter("last_updated_by", last_updated_by) :
+                new ObjectParameter("last_updated_by", typeof(string));
+    
+            var last_updated_dateParameter = last_updated_date.HasValue ?
+                new ObjectParameter("last_updated_date", last_updated_date) :
+                new ObjectParameter("last_updated_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTicketStatus_Update", idParameter, nameParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter, last_updated_byParameter, last_updated_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTicketType_Delete(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTicketType_Delete", idParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTicketType_Insert(string name, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date, string last_updated_by, Nullable<System.DateTime> last_updated_date)
+        {
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var last_updated_byParameter = last_updated_by != null ?
+                new ObjectParameter("last_updated_by", last_updated_by) :
+                new ObjectParameter("last_updated_by", typeof(string));
+    
+            var last_updated_dateParameter = last_updated_date.HasValue ?
+                new ObjectParameter("last_updated_date", last_updated_date) :
+                new ObjectParameter("last_updated_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTicketType_Insert", nameParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter, last_updated_byParameter, last_updated_dateParameter);
+        }
+    
+        public virtual int NSP_THelpDeskTicketType_Update(Nullable<int> id, string name, Nullable<int> status_id, string remark, string created_by, Nullable<System.DateTime> created_date, string last_updated_by, Nullable<System.DateTime> last_updated_date)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var status_idParameter = status_id.HasValue ?
+                new ObjectParameter("status_id", status_id) :
+                new ObjectParameter("status_id", typeof(int));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("remark", remark) :
+                new ObjectParameter("remark", typeof(string));
+    
+            var created_byParameter = created_by != null ?
+                new ObjectParameter("created_by", created_by) :
+                new ObjectParameter("created_by", typeof(string));
+    
+            var created_dateParameter = created_date.HasValue ?
+                new ObjectParameter("created_date", created_date) :
+                new ObjectParameter("created_date", typeof(System.DateTime));
+    
+            var last_updated_byParameter = last_updated_by != null ?
+                new ObjectParameter("last_updated_by", last_updated_by) :
+                new ObjectParameter("last_updated_by", typeof(string));
+    
+            var last_updated_dateParameter = last_updated_date.HasValue ?
+                new ObjectParameter("last_updated_date", last_updated_date) :
+                new ObjectParameter("last_updated_date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NSP_THelpDeskTicketType_Update", idParameter, nameParameter, status_idParameter, remarkParameter, created_byParameter, created_dateParameter, last_updated_byParameter, last_updated_dateParameter);
         }
     }
 }

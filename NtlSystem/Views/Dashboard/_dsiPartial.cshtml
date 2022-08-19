@@ -1,0 +1,39 @@
+﻿@using NtlSystem.Models.DashboardModels
+@using System.Collections.Generic
+@model List<mDashboardSaleItem>
+
+<table class="table table-bordered table-hover text-center tablsort">
+    <thead>
+        <tr class="bg-dark">
+            <th class="text-white">Platform</th>
+            <th class="text-white">Total Runtime</th>
+            <th class="text-white">Ntl Sales</th>
+            <th class="text-white">Odoo Sales</th>
+            <th class="text-white">Selenium Sales</th>
+            <th class="text-white">Cancellation</th>
+            <th class="text-white">LMD Sales</th>
+            <th class="text-white">MTD Sales</th>
+            <th class="text-white">L5 Sales</th>
+            <th class="text-white">Status</th>
+            <th class="text-white">Last Runtime</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var obj in Model)
+        {
+            <tr>
+                <td>@obj.platform</td>
+                <td>@obj.totalRuntime</td>
+                <td>@obj.totalSales</td>
+                <td>@obj.totalSales</td>
+                <td>@obj.totalSales</td>
+                <td>0</td>
+                <td>@obj.LMDSales</td>
+                <td>@obj.MTDSales</td>
+                <td>@obj.L5Sales</td>
+                <td>@obj.status</td>
+                <td>@obj.lastRuntime</td>
+            </tr>
+        }
+    </tbody>
+</table>

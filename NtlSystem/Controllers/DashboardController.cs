@@ -15,12 +15,6 @@ namespace NtlSystem.Controllers
 {
     public class DashboardController : AdminController
     {
-        // GET: Dashboard
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         // Global Variables
         string psql_dbHost = "localhost";
         string psql_dbName = "odoo_new";
@@ -34,8 +28,14 @@ namespace NtlSystem.Controllers
 
         dbNtlSystemEntities db = new dbNtlSystemEntities();
 
+        // GET: Dashboard
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         [ValidateInput(false)]
-        public ActionResult dsiGridViewPartial() {
+        public ActionResult dsiPartial() {
 
             // Microsoft SQL
             string MicrosoftSqlConn = $"Data Source={mssql_dbHost};Initial Catalog={mssql_dbName};Persist Security Info=True;User ID={mssql_dbUsername};Password={mssql_dbPassword};";
@@ -102,11 +102,11 @@ namespace NtlSystem.Controllers
 
             List<mDashboardSaleItem> model = new List<mDashboardSaleItem>();
             model.Add(item);
-            return PartialView("_dsiGridViewPartial", model);
+            return PartialView("_dsiPartial", model);
         }
 
         [ValidateInput(false)]
-        public ActionResult mdpiGridViewPartial() {
+        public ActionResult mdpiPartial() {
             // Microsoft SQL
             string MicrosoftSqlConn = $"Data Source={mssql_dbHost};Initial Catalog={mssql_dbName};Persist Security Info=True;User ID={mssql_dbUsername};Password={mssql_dbPassword};";
             DAL MicrosoftDal = new MicrosoftSqlDAL(MicrosoftSqlConn);
@@ -130,23 +130,51 @@ namespace NtlSystem.Controllers
                     "GROUP BY tab1.measurement, tab1.price; ";
             ls = dao.GetAllClsDataQuery(MicrosoftDal, query);
 
+            // List<mDashboardProductItem> model = ls.Select(it => new mDashboardProductItem(it.data)).ToList();
             List<mDashboardProductItem> model = new List<mDashboardProductItem>();
 
-            foreach(var obj in ls)
+            foreach(var it in ls)
             {
-                mDashboardProductItem item = new mDashboardProductItem();
-                item.GenProduct(obj.data);
-                model.Add(item);
+                mDashboardProductItem obj = new mDashboardProductItem(it.data);
+
+                obj.used = 0;
+                obj.quantity = 0;
+                obj.percentage = 0;
+
+                foreach(var sItem in db.TNtlSummaryItems)
+                {
+                    string key = $"{Convert.ToInt32(sItem.width)} x {Convert.ToInt32(sItem.height)}";
+                    
+                    if(key.Equals(obj.measurement))
+                    {
+                        obj.used = sItem.used;
+                        obj.quantity = sItem.quantity;
+                        obj.percentage = Convert.ToDecimal(((double) obj.quantity - (double) obj.used) * 100.0 / (double) obj.quantity);
+                        break;
+                    }
+                }
+
+                model.Add(obj);
             }
 
             // Sort By Width
             model = model.OrderBy(x => x.width).ThenBy(x => x.height).ToList();
 
-            return PartialView("_mdpiGridViewPartial", model);
+            // SQL
+            int total_capacity = Convert.ToInt32(db.TNtlSummaryItems.Select(it => it.quantity).Sum());
+            int total_available = total_capacity - Convert.ToInt32(db.TNtlSummaryItems.Select(it => it.used).Sum());
+            double percentage = total_available * 100.0 / total_capacity;
+
+            // Card Data
+            ViewData["total_capacity"] = total_capacity;
+            ViewData["total_available"] = total_available;
+            ViewData["percentage"] = percentage;
+
+            return PartialView("_mdpiPartial", model);
         }
 
         [ValidateInput(false)]
-        public ActionResult mswiGridViewPartial() {
+        public ActionResult mswiPartial() {
             // Create Postgres Connection and Get List of Products
             string PostGreSQLConn = $"Host={psql_dbHost};Port=5432;Username={psql_dbUsername};Password={psql_dbPassword};Database={psql_dbName}";
             DAL PostgresDal = new PostgreSqlDAL(PostGreSQLConn);
@@ -161,22 +189,15 @@ namespace NtlSystem.Controllers
                     "ON a.sku = b.sku; ";
             ls = dao.GetAllClsDataQuery(PostgresDal, query);
 
-            List<mDashboardOdooStockItem> model = new List<mDashboardOdooStockItem>();
+            List<mDashboardOdooStockItem> model = ls.Select(
+                it => new mDashboardOdooStockItem(it.data)
+            ).ToList();
 
-            foreach(var obj in ls)
-            {
-                mDashboardOdooStockItem item = new mDashboardOdooStockItem();
-                item.GenStock(obj.data);
-                model.Add(item);
-            }
-
-            return PartialView("_mswiGridViewPartial", model);
+            return PartialView("_mswiPartial", model);
         }
 
-
         [ValidateInput(false)]
-        public ActionResult mciGridViewPartial() {
-            Random rand = new Random();
+        public ActionResult mciPartial() {
             mDashboardChatItem item = new mDashboardChatItem();
             item.platform = "Shopee";
             item.todayRuntime = 2;
@@ -190,7 +211,7 @@ namespace NtlSystem.Controllers
             
             List<mDashboardChatItem> model = new List<mDashboardChatItem>();
             model.Add(item);
-            return PartialView("_mciGridViewPartial", model);
+            return PartialView("_mciPartial", model);
         }
     }
 }

@@ -43,6 +43,14 @@
         <EntityTypeShape EntityType="NTLModel.TNtlUnit" Width="1.5" PointX="17.375" PointY="4.75" />
         <EntityTypeShape EntityType="NTLModel.TNtlOrderItem" Width="1.5" PointX="17.375" PointY="15.75" />
         <EntityTypeShape EntityType="NTLModel.TNtlSummaryItem" Width="1.5" PointX="13.375" PointY="18.75" />
+        <EntityTypeShape EntityType="NTLModel.THelpDeskAudit" Width="1.5" PointX="17.375" PointY="0.75" />
+        <EntityTypeShape EntityType="NTLModel.THelpDeskChannel" Width="1.5" PointX="19.375" PointY="0.75" />
+        <EntityTypeShape EntityType="NTLModel.THelpDeskComment" Width="1.5" PointX="3.375" PointY="19.75" />
+        <EntityTypeShape EntityType="NTLModel.THelpDeskTeam" Width="1.5" PointX="19.375" PointY="4.75" />
+        <EntityTypeShape EntityType="NTLModel.THelpDeskTeamMember" Width="1.5" PointX="5.375" PointY="19.75" />
+        <EntityTypeShape EntityType="NTLModel.THelpDeskTicket" Width="1.5" PointX="19.375" PointY="8.75" />
+        <EntityTypeShape EntityType="NTLModel.THelpDeskTicketStatu" Width="1.5" PointX="19.375" PointY="14.75" />
+        <EntityTypeShape EntityType="NTLModel.THelpDeskTicketType" Width="1.5" PointX="19.375" PointY="18.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

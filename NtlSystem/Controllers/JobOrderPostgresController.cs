@@ -64,11 +64,11 @@ namespace NtlSystem.Controllers
             else
             {
                 // If there no incomplete Job Batch
-                query = "SELECT * FROM VNtlJobOrderItem WHERE item_description LIKE '%|%';";
+                query = "SELECT * FROM VNtlJobOrderItem;";
                 ls = dao.GetAllClsDataQuery(PostgresDal, query);
 
                 // Generate List of mJobOrder item List
-                var tmpItemList = ls.Select(obj => GeneralFunc.GenerateSummaryListing(obj.data)).ToList();
+                List<TNtlSummaryItem> tmpItemList = ls.Select(obj => GeneralFunc.GenerateSummaryListing(obj.data)).ToList();
                 summaryItemList.AddRange(tmpItemList);
 
                 // Add Job Batch
@@ -90,9 +90,12 @@ namespace NtlSystem.Controllers
 
                 foreach (var obj in ls)
                 {
-                    var item = (new mJobOrder(obj.data)).GenJobOrder();
+                    mJobOrder joItem = new mJobOrder(obj.data);
+
+                    TNtlJobOrder item = joItem.GenJobOrder();
                     item.batch_id = batch_id;
                     item.status_id = jo_inc_sta_id;
+
                     DbStoredProcedure.JobOrderInsert(item, username);
                 }
 
@@ -100,12 +103,10 @@ namespace NtlSystem.Controllers
                 query = $"SELECT * FROM VNtlJobOrderItem;";
                 ls = dao.GetAllClsDataQuery(PostgresDal, query);
 
-                for (int i = 0; i < ls.Count; i += 2)
+                foreach(var it in ls)
                 {
-                    mJobOrderItem obj = new mJobOrderItem();
-                    obj.PackageListing(ls.ElementAt(i).data);
-                    if (i + 1 < ls.Count) obj.SummaryListing(ls.ElementAt(i + 1).data);
-                    var item = obj.GenJobOrderItem();
+                    mJobOrderItem obj = new mJobOrderItem(it.data);
+                    TNtlJobOrderItem item = obj.GenJobOrderItem();
                     DbStoredProcedure.JobOrderItemInsert(item, username);
                 }
 
@@ -124,6 +125,7 @@ namespace NtlSystem.Controllers
                     {
                         summaryItemDict[key] = obj;
                     }
+
                 }
 
                 summaryItemList = new List<TNtlSummaryItem>();
@@ -135,11 +137,11 @@ namespace NtlSystem.Controllers
                 // Create Dictionary of Summary Item With Unique Key
                 summaryItemDict = new Dictionary<string, TNtlSummaryItem>();
 
-
+                // Issue: Code Refactoring Required
+                // Add to Existing TNtlSummaryItem If Unique Key Already Exists
                 db.TNtlSummaryItems.ToList().ForEach(it =>
                 {
                     string key = GeneralFunc.GenSummaryItemKey(it);
-                    Debug.WriteLine(key);
                     summaryItemDict[key] = it;
                 });
 
@@ -163,36 +165,6 @@ namespace NtlSystem.Controllers
 
                 });
             }
-
-            // // Create Manufacturing Orders
-            // mOdooMan model = new mOdooMan();
-
-            // // Set Stock Name
-            // model.stock_name = "Stock";
-
-            // // Set Company Name
-            // model.company_name = "YourCompany";
-
-            // List<mOdooManProduct> product = summaryItemList
-            //     .Where(it => it.status_id == si_inc_sta_id)
-            //     .GroupBy(it => it.sku)
-            //     .Select(it => new mOdooManProduct()
-            //     {
-            //         sku = it.First().sku,
-            //         qty = it.Sum(x => (x.quantity * x.width * x.height / 100 / 100))
-            //     }).ToList();
-
-            // // Remove Product Code 'FGSTSB150'
-            // // product = product.Where(it => !it.sku.Equals("FGSTSB150")).ToList();
-
-            // // Set Product List
-            // model.product = product;
-
-            // // Call Manufacture Order API
-            // string json = JsonConvert.SerializeObject(model);
-
-            // var content = new StringContent(json, Encoding.UTF8, "application/json");
-            // var result = client.PostAsync("http://localhost:8069/odoo_controller/addMO", content).Result;
 
             return PartialView("_SummaryListingPartial", summaryItemList);
         }
@@ -243,22 +215,12 @@ namespace NtlSystem.Controllers
             query = $"SELECT * FROM VNtlJobOrder WHERE id={order_id};";
             ls = dao.GetAllClsDataQuery(PostgresDal, query);
 
-            Debug.WriteLine(ls.ToList().Count);
-
             List<mJobOrder> orderList = ls.Select(obj => new mJobOrder(obj.data)).ToList();
 
             query = $"SELECT * FROM VNtlJobOrderItem WHERE order_id={order_id};";
             ls = dao.GetAllClsDataQuery(PostgresDal, query);
 
-            List<mJobOrderItem> itemList = new List<mJobOrderItem>();
-
-            for(int i = 0; i < ls.Count; i+=2)
-            {
-                mJobOrderItem item = new mJobOrderItem();
-                item.PackageListing(ls.ElementAt(i).data);
-                item.SummaryListing(ls.ElementAt(i + 1).data);
-                itemList.Add(item);
-            }
+            List<mJobOrderItem> itemList = ls.Select(it => new mJobOrderItem(it.data)).ToList();
 
             mPackageListing model = new mPackageListing();
             model.order = orderList.FirstOrDefault(it => it.id == order_id);

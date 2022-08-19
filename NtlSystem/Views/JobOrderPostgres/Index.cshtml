@@ -79,21 +79,29 @@
     let renderDiv = $("div[id='jobOrderTaskContent']");
 
     $("#genPackageBtn").on("click", e => {
+        // Show Loading Div
+        show_loading_div();
+
         $.ajax({
             type: "get",
             url: "/jobOrderPostgres/PackageIdListingPartial",
             success: resp => {
                 renderDiv.html(resp);
+                hide_loading_div();
             }
         });
     });
 
     $("#genSummaryBtn").on("click", e => {
+        // Show Loading Div
+        show_loading_div();
+
         $.ajax({
             type: "post",
             url: "/jobOrderPostgres/SummaryListingPartial",
             success: resp => {
                 renderDiv.html(resp);
+                hide_loading_div();
             }
         });
     });

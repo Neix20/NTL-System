@@ -18,8 +18,6 @@ namespace NtlSystem.Models.JobOrderModels
         {
             dataDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonData);
 
-            Debug.WriteLine(JsonData);
-
             id = Convert.ToInt32(dataDict["id"]);
             name = dataDict["name"];
             code = dataDict["code"];

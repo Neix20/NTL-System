@@ -1,0 +1,35 @@
+﻿@using NtlSystem.Models.DashboardModels
+@using System.Collections.Generic
+@model List<mDashboardOdooStockItem>
+
+<table class="table table-bordered tablesort table-hover text-center">
+    <thead>
+        <tr class="bg-dark">
+            <th class="text-white">Model</th>
+            <th class="text-white">Description</th>
+            <th class="text-white">SKU</th>
+            <th class="text-white">w50</th>
+            <th class="text-white">w60</th>
+            <th class="text-white">w70</th>
+            <th class="text-white">w80</th>
+            <th class="text-white">w90</th>
+            <th class="text-white">w150</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var obj in Model)
+        {
+            <tr>
+                <td>@obj.model</td>
+                <td>@obj.description</td>
+                <td>@obj.sku</td>
+                <td>@string.Format("{0:0.00}", obj.w50)</td>
+                <td>@string.Format("{0:0.00}", obj.w60)</td>
+                <td>@string.Format("{0:0.00}", obj.w70)</td>
+                <td>@string.Format("{0:0.00}", obj.w80)</td>
+                <td>@string.Format("{0:0.00}", obj.w90)</td>
+                <td>@string.Format("{0:0.00}", obj.w150)</td>
+            </tr>
+        }
+    </tbody>
+</table>

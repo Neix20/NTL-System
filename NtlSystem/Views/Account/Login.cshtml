@@ -102,11 +102,16 @@
 
         loginForm.submit(e => {
             e.preventDefault();
+
+            show_loading_div();
+
             $.ajax({
                 url: loginForm_actionLink,
                 type: loginForm_methodType,
                 data: loginForm.serialize(),
                 success: response => {
+                    hide_loading_div();
+
                     $(`${loginFormStr} input[name='username']`).val("");
                     $(`${loginFormStr} input[name='password']`).val("");
                     if (response.includes("Error")) {

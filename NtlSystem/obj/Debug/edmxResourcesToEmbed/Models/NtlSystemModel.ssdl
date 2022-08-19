@@ -1,5 +1,123 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="NTLModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="THelpDeskAudit">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="metadata" Type="varchar(max)" />
+    <Property Name="ticket_id" Type="int" />
+    <Property Name="status_id" Type="int" />
+    <Property Name="remark" Type="varchar(max)" />
+    <Property Name="created_by" Type="varchar" MaxLength="100" />
+    <Property Name="created_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="THelpDeskChannel">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="100" />
+    <Property Name="status_id" Type="int" />
+    <Property Name="remark" Type="varchar(max)" />
+    <Property Name="created_by" Type="varchar" MaxLength="100" />
+    <Property Name="created_date" Type="datetime" />
+    <Property Name="last_updated_by" Type="varchar" MaxLength="100" />
+    <Property Name="last_updated_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="THelpDeskComment">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ticket_id" Type="int" />
+    <Property Name="content" Type="varchar(max)" />
+    <Property Name="metadata" Type="varchar(max)" />
+    <Property Name="status_id" Type="int" />
+    <Property Name="remark" Type="varchar(max)" />
+    <Property Name="created_by" Type="varchar" MaxLength="100" />
+    <Property Name="created_date" Type="datetime" />
+    <Property Name="last_updated_by" Type="varchar" MaxLength="100" />
+    <Property Name="last_updated_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="THelpDeskTeam">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="100" />
+    <Property Name="team_member_id" Type="int" />
+    <Property Name="status_id" Type="int" />
+    <Property Name="remark" Type="varchar(max)" />
+    <Property Name="created_by" Type="varchar" MaxLength="100" />
+    <Property Name="created_date" Type="datetime" />
+    <Property Name="last_updated_by" Type="varchar" MaxLength="100" />
+    <Property Name="last_updated_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="THelpDeskTeamMember">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar(max)" />
+    <Property Name="position" Type="varchar" MaxLength="50" />
+    <Property Name="email_address" Type="varchar(max)" />
+    <Property Name="status_id" Type="int" />
+    <Property Name="remark" Type="varchar(max)" />
+    <Property Name="created_by" Type="varchar" MaxLength="100" />
+    <Property Name="created_date" Type="datetime" />
+    <Property Name="last_updated_by" Type="varchar" MaxLength="100" />
+    <Property Name="last_updated_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="THelpDeskTicket">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="255" />
+    <Property Name="ticket_type_id" Type="int" />
+    <Property Name="description" Type="varchar(max)" />
+    <Property Name="ticket_status_id" Type="int" />
+    <Property Name="team_id" Type="int" />
+    <Property Name="customer_id" Type="int" />
+    <Property Name="comment_id" Type="int" />
+    <Property Name="audit_id" Type="int" />
+    <Property Name="deadline" Type="datetime" />
+    <Property Name="completed_date" Type="datetime" />
+    <Property Name="metadata" Type="varchar(max)" />
+    <Property Name="status_id" Type="int" />
+    <Property Name="remark" Type="varchar(max)" />
+    <Property Name="created_by" Type="varchar" MaxLength="100" />
+    <Property Name="created_date" Type="datetime" />
+    <Property Name="last_updated_by" Type="varchar" MaxLength="100" />
+    <Property Name="last_updated_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="THelpDeskTicketStatus">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="100" />
+    <Property Name="status_id" Type="int" />
+    <Property Name="remark" Type="varchar(max)" />
+    <Property Name="created_by" Type="varchar" MaxLength="100" />
+    <Property Name="created_date" Type="datetime" />
+    <Property Name="last_updated_by" Type="varchar" MaxLength="100" />
+    <Property Name="last_updated_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="THelpDeskTicketType">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="100" />
+    <Property Name="status_id" Type="int" />
+    <Property Name="remark" Type="varchar(max)" />
+    <Property Name="created_by" Type="varchar" MaxLength="100" />
+    <Property Name="created_date" Type="datetime" />
+    <Property Name="last_updated_by" Type="varchar" MaxLength="100" />
+    <Property Name="last_updated_date" Type="datetime" />
+  </EntityType>
   <EntityType Name="TNtlAttribute">
     <Key>
       <PropertyRef Name="id" />
@@ -489,6 +607,210 @@
     <Property Name="total_usage" Type="decimal" Precision="10" Scale="6" />
     <Property Name="detail_id" Type="int" />
   </EntityType>
+  <Function Name="NSP_THelpDeskAudit_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskAudit_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="metadata" Type="varchar(max)" Mode="In" />
+    <Parameter Name="ticket_id" Type="int" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskAudit_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <Parameter Name="metadata" Type="varchar(max)" Mode="In" />
+    <Parameter Name="ticket_id" Type="int" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskChannel_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskChannel_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="name" Type="varchar" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+    <Parameter Name="last_updated_by" Type="varchar" Mode="In" />
+    <Parameter Name="last_updated_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskChannel_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <Parameter Name="name" Type="varchar" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+    <Parameter Name="last_updated_by" Type="varchar" Mode="In" />
+    <Parameter Name="last_updated_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskComment_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskComment_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ticket_id" Type="int" Mode="In" />
+    <Parameter Name="content" Type="varchar(max)" Mode="In" />
+    <Parameter Name="metadata" Type="varchar(max)" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+    <Parameter Name="last_updated_by" Type="varchar" Mode="In" />
+    <Parameter Name="last_updated_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskComment_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <Parameter Name="ticket_id" Type="int" Mode="In" />
+    <Parameter Name="content" Type="varchar(max)" Mode="In" />
+    <Parameter Name="metadata" Type="varchar(max)" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+    <Parameter Name="last_updated_by" Type="varchar" Mode="In" />
+    <Parameter Name="last_updated_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTeam_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTeam_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="name" Type="varchar" Mode="In" />
+    <Parameter Name="team_member_id" Type="int" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+    <Parameter Name="last_updated_by" Type="varchar" Mode="In" />
+    <Parameter Name="last_updated_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTeam_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <Parameter Name="name" Type="varchar" Mode="In" />
+    <Parameter Name="team_member_id" Type="int" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+    <Parameter Name="last_updated_by" Type="varchar" Mode="In" />
+    <Parameter Name="last_updated_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTeamMember_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTeamMember_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="name" Type="varchar(max)" Mode="In" />
+    <Parameter Name="position" Type="varchar" Mode="In" />
+    <Parameter Name="email_address" Type="varchar(max)" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+    <Parameter Name="last_updated_by" Type="varchar" Mode="In" />
+    <Parameter Name="last_updated_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTeamMember_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <Parameter Name="name" Type="varchar(max)" Mode="In" />
+    <Parameter Name="position" Type="varchar" Mode="In" />
+    <Parameter Name="email_address" Type="varchar(max)" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+    <Parameter Name="last_updated_by" Type="varchar" Mode="In" />
+    <Parameter Name="last_updated_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTicket_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTicket_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="name" Type="varchar" Mode="In" />
+    <Parameter Name="ticket_type_id" Type="int" Mode="In" />
+    <Parameter Name="description" Type="varchar(max)" Mode="In" />
+    <Parameter Name="ticket_status_id" Type="int" Mode="In" />
+    <Parameter Name="team_id" Type="int" Mode="In" />
+    <Parameter Name="customer_id" Type="int" Mode="In" />
+    <Parameter Name="comment_id" Type="int" Mode="In" />
+    <Parameter Name="audit_id" Type="int" Mode="In" />
+    <Parameter Name="deadline" Type="datetime" Mode="In" />
+    <Parameter Name="completed_date" Type="datetime" Mode="In" />
+    <Parameter Name="metadata" Type="varchar(max)" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+    <Parameter Name="last_updated_by" Type="varchar" Mode="In" />
+    <Parameter Name="last_updated_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTicket_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <Parameter Name="name" Type="varchar" Mode="In" />
+    <Parameter Name="ticket_type_id" Type="int" Mode="In" />
+    <Parameter Name="description" Type="varchar(max)" Mode="In" />
+    <Parameter Name="ticket_status_id" Type="int" Mode="In" />
+    <Parameter Name="team_id" Type="int" Mode="In" />
+    <Parameter Name="customer_id" Type="int" Mode="In" />
+    <Parameter Name="comment_id" Type="int" Mode="In" />
+    <Parameter Name="audit_id" Type="int" Mode="In" />
+    <Parameter Name="deadline" Type="datetime" Mode="In" />
+    <Parameter Name="completed_date" Type="datetime" Mode="In" />
+    <Parameter Name="metadata" Type="varchar(max)" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+    <Parameter Name="last_updated_by" Type="varchar" Mode="In" />
+    <Parameter Name="last_updated_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTicketStatus_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTicketStatus_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="name" Type="varchar" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+    <Parameter Name="last_updated_by" Type="varchar" Mode="In" />
+    <Parameter Name="last_updated_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTicketStatus_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <Parameter Name="name" Type="varchar" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+    <Parameter Name="last_updated_by" Type="varchar" Mode="In" />
+    <Parameter Name="last_updated_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTicketType_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTicketType_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="name" Type="varchar" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+    <Parameter Name="last_updated_by" Type="varchar" Mode="In" />
+    <Parameter Name="last_updated_date" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="NSP_THelpDeskTicketType_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <Parameter Name="name" Type="varchar" Mode="In" />
+    <Parameter Name="status_id" Type="int" Mode="In" />
+    <Parameter Name="remark" Type="varchar(max)" Mode="In" />
+    <Parameter Name="created_by" Type="varchar" Mode="In" />
+    <Parameter Name="created_date" Type="datetime" Mode="In" />
+    <Parameter Name="last_updated_by" Type="varchar" Mode="In" />
+    <Parameter Name="last_updated_date" Type="datetime" Mode="In" />
+  </Function>
   <Function Name="NSP_TNtlAttribute_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="id" Type="int" Mode="In" />
   </Function>
@@ -1316,6 +1638,14 @@
     <Parameter Name="detail_id" Type="int" Mode="In" />
   </Function>
   <EntityContainer Name="NTLModelStoreContainer">
+    <EntitySet Name="THelpDeskAudit" EntityType="Self.THelpDeskAudit" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="THelpDeskChannel" EntityType="Self.THelpDeskChannel" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="THelpDeskComment" EntityType="Self.THelpDeskComment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="THelpDeskTeam" EntityType="Self.THelpDeskTeam" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="THelpDeskTeamMember" EntityType="Self.THelpDeskTeamMember" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="THelpDeskTicket" EntityType="Self.THelpDeskTicket" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="THelpDeskTicketStatus" EntityType="Self.THelpDeskTicketStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="THelpDeskTicketType" EntityType="Self.THelpDeskTicketType" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TNtlAttribute" EntityType="Self.TNtlAttribute" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TNtlAttributeValue" EntityType="Self.TNtlAttributeValue" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TNtlCarrier" EntityType="Self.TNtlCarrier" Schema="dbo" store:Type="Tables" />

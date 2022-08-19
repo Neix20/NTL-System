@@ -43,25 +43,17 @@ namespace NtlSystem.Models
             var item = new TNtlSummaryItem();
 
             Dictionary<string, string> dataDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonData);
+
             item.id = Convert.ToInt32(dataDict["id"]);
-
-            string itemDescription = dataDict["item_description"];
-
-            if (itemDescription.Contains("["))
-            {
-                string rgx = @"\[(.*)\] (([A-Za-z -]*)((\d+)cm)?)(\|(\d+)cm)?(\|(\d+))?";
-                item.sku = Regex.Replace(itemDescription, rgx, "$1");
-                item.name = Regex.Replace(itemDescription, rgx, "$2");
-                item.width = Convert.ToDecimal(Regex.Replace(itemDescription, rgx, "$5"));
-                item.height = Convert.ToDecimal(Regex.Replace(itemDescription, rgx, "$7"));
-                item.quantity = Convert.ToDecimal(Regex.Replace(itemDescription, rgx, "$9"));
-            }
+            item.sku = dataDict["sku"];
+            item.name = dataDict["name"];
+            item.width = Convert.ToDecimal(dataDict["width"]);
+            item.height = Convert.ToDecimal(dataDict["height"]);
+            item.quantity = Convert.ToDecimal(dataDict["quantity"]);
 
             int inc_sta_id = DbStoredProcedure.GetStatusID("incomplete", "Summary Item");
             item.status_id = inc_sta_id;
-
             item.used = 0;
-
             item.created_date = DateTime.Today;
 
             return item;

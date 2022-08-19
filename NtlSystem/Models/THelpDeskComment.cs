@@ -12,19 +12,17 @@ namespace NtlSystem.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TNtlSummaryItem
+    public partial class THelpDeskComment
     {
         public int id { get; set; }
-        public string name { get; set; }
-        public string sku { get; set; }
-        public Nullable<decimal> quantity { get; set; }
-        public Nullable<decimal> used { get; set; }
-        public Nullable<decimal> length { get; set; }
-        public Nullable<decimal> width { get; set; }
-        public Nullable<decimal> height { get; set; }
-        public Nullable<System.DateTime> created_date { get; set; }
-        public Nullable<System.DateTime> completed_date { get; set; }
+        public Nullable<int> ticket_id { get; set; }
+        public string content { get; set; }
+        public string metadata { get; set; }
         public Nullable<int> status_id { get; set; }
-        public Nullable<int> detail_id { get; set; }
+        public string remark { get; set; }
+        public string created_by { get; set; }
+        public Nullable<System.DateTime> created_date { get; set; }
+        public string last_updated_by { get; set; }
+        public Nullable<System.DateTime> last_updated_date { get; set; }
     }
 }

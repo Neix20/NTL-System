@@ -13,7 +13,7 @@ namespace NtlSystem.Models.DashboardModels
             dataDict = new Dictionary<string, string>();
         }
 
-        public void GenStock(string JsonData)
+        public mDashboardOdooStockItem(string JsonData)
         {
             dataDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonData);
 

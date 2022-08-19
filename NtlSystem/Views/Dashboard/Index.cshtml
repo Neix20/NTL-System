@@ -16,12 +16,15 @@
         ViewContext.Writer.Write(
             "<div class='px-3'>" +
                 "<div class='h4 fw-bold text-decoration-underline'>Chat Automation</div>" +
+
                 "<div class='my-3' id='ChatAutomationFormContent'>" +
-                @Html.Action("mciGridViewPartial") +
+                    @Html.Action("mciPartial") +
                 "</div>" +
+
                 "<div class='h4 fw-bold text-decoration-underline'>Sales Order</div>" +
+
                 "<div id='SaleOrderListingFormContent'>" +
-                    @Html.Action("dsiGridViewPartial") +
+                    @Html.Action("dsiPartial") +
                 "</div>" +
             "</div>"
         );
@@ -32,7 +35,7 @@
             "<div class='px-3'>" +
                 "<div class='h4 fw-bold text-decoration-underline'>Product Listing</div>" +
                 "<div id='ProductItemFormContent'> " +
-                    @Html.Action("mdpiGridViewPartial") +
+                    @Html.Action("mdpiPartial") +
                 "</div>" +
             "</div>"
         );
@@ -43,7 +46,7 @@
             "<div class='px-3'>" +
                 "<div class='h4 fw-bold text-decoration-underline'>Warehouse Stock</div>" +
                 "<div id='OdooStockItemFormContent'> " +
-                    @Html.Action("mswiGridViewPartial") +
+                    @Html.Action("mswiPartial") +
                 "</div>" +
             "</div>"
         );

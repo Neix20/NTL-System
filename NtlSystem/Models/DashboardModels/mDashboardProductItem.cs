@@ -14,7 +14,7 @@ namespace NtlSystem.Models.DashboardModels
             dataDict = new Dictionary<string, string>();
         }
 
-        public void GenProduct(string JsonData)
+        public mDashboardProductItem(string JsonData)
         {
             dataDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonData);
 
@@ -32,14 +32,18 @@ namespace NtlSystem.Models.DashboardModels
         }
 
         public string measurement { get; set; }
-        public decimal black_silver { get; set; }
-        public decimal deep_blue_silver { get; set; }
-        public decimal gold_silver { get; set; }
-        public decimal green_silver { get; set; }
-        public decimal silver_light { get; set; }
-        public decimal price { get; set; }
-        public decimal width { get; set; }
-        public decimal height { get; set; }
+        public decimal? black_silver { get; set; }
+        public decimal? deep_blue_silver { get; set; }
+        public decimal? gold_silver { get; set; }
+        public decimal? green_silver { get; set; }
+        public decimal? silver_light { get; set; }
+        public decimal? price { get; set; }
+        public decimal? width { get; set; }
+        public decimal? height { get; set; }
+
+        public decimal? quantity { get; set; }
+        public decimal? used { get; set; }
+        public decimal? percentage { get; set; } 
 
         public Dictionary<string, string> dataDict { get; set; }
     }

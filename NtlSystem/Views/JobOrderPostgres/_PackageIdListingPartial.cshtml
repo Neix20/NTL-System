@@ -32,6 +32,9 @@
     genPackageListingForm_methodType = genPackageListingForm.attr("method");
 
     function downloadPdf(order_id) {
+        // Show Loading Div
+        show_loading_div();
+
         $.ajax({
             url: genPackageListingForm_actionLink,
             type: genPackageListingForm_methodType,
@@ -43,6 +46,8 @@
                 let fileName = `Package_Listing_${getDate()}`;
 
                 createPDF("package_pdf", fileName);
+
+                hide_loading_div();
 
                 console.log(`Successfully Generated Package Listing for Order ${order_id}!`);
             }

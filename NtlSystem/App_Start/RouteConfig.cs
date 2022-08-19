@@ -14,7 +14,7 @@ namespace NtlSystem {
             routes.MapRoute(
                 name: "Default", // Route name
                 url: "{controller}/{action}/{id}", // URL with parameters
-                defaults: new { controller = "Dashboard", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+                defaults: new { controller = "Homepage", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
         }
     }

@@ -17,6 +17,8 @@ namespace NtlSystem.App_Start
 
             bundles.Add(new ScriptBundle("~/bundles/jsPDF").Include("~/Scripts/jspdf.min.js", "~/Scripts/html2PDF.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/auto-table").Include("~/Scripts/auto-tables.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/fontAwesome").Include("~/Scripts/fontawesome/all.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css/layout").Include("~/Content/ample-layout.css"));

@@ -286,6 +286,7 @@
       <DependentUpon>NtlSystemModel.edmx</DependentUpon>
       <LastGenOutput>NtlSystemModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\auto-tables.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -449,10 +450,11 @@
     <Content Include="Views\Log\Index.cshtml" />
     <Content Include="Views\Log\GetLog.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
-    <Content Include="Views\Dashboard\_dsiGridViewPartial.cshtml" />
-    <Content Include="Views\Dashboard\_mdpiGridViewPartial.cshtml" />
-    <Content Include="Views\Dashboard\_mswiGridViewPartial.cshtml" />
     <Content Include="Views\Dashboard\_mciGridViewPartial.cshtml" />
+    <Content Include="Views\Dashboard\_mdpiPartial.cshtml" />
+    <Content Include="Views\Dashboard\_mswiPartial.cshtml" />
+    <Content Include="Views\Dashboard\_dsiPartial.cshtml" />
+    <Content Include="Views\Dashboard\_mciPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -539,6 +541,30 @@
     <Compile Include="Models\SqlModels\PostgreSqlDAL.cs" />
     <Compile Include="Models\SqlModels\Service\ClsDataDAO.cs" />
     <Compile Include="Models\SqlModels\Service\Impl\ClsDataDAOImpl.cs" />
+    <Compile Include="Models\THelpDeskAudit.cs">
+      <DependentUpon>NtlSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\THelpDeskChannel.cs">
+      <DependentUpon>NtlSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\THelpDeskComment.cs">
+      <DependentUpon>NtlSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\THelpDeskTeam.cs">
+      <DependentUpon>NtlSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\THelpDeskTeamMember.cs">
+      <DependentUpon>NtlSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\THelpDeskTicket.cs">
+      <DependentUpon>NtlSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\THelpDeskTicketStatu.cs">
+      <DependentUpon>NtlSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\THelpDeskTicketType.cs">
+      <DependentUpon>NtlSystemModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TNtlAttribute.cs">
       <DependentUpon>NtlSystemModel.tt</DependentUpon>
     </Compile>

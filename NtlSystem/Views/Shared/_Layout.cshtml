@@ -22,6 +22,8 @@
 
     @Styles.Render("~/Content/css/layout")
 
+    @Scripts.Render("~/bundles/auto-table")
+
 
     @Html.DevExpress().GetStyleSheets(
         new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
@@ -111,12 +113,32 @@
             // Set Mini SideBar by Default
             $("#main-wrapper").attr("data-sidebartype", "mini-sidebar");
         });
+
+        function hide_loading_div() {
+            let div = document.querySelector("div[id='loading_div']");
+            div.style.display = "none";
+        }
+
+        function show_loading_div() {
+            let div = document.querySelector("div[id='loading_div']");
+            div.style.display = "block";
+        }
     </script>
 </head>
 
 <body>
+    <div id="loading_div" style="position: fixed; top: 0; left: 0; height: 100%; width: 100%; background-color: white; opacity: 0.5; z-index: 2">
+        <div style="display: flex; justify-content: center; align-items: center; height: 100%;" >
+            <img src="~/Content/Images/loading-load.gif" alt="" style="height: 35%; width: 35%;" />
+        </div>
+    </div>
+
    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5">
         @RenderBody()
     </div>
+
+    <script>
+        hide_loading_div();
+    </script>
 </body>
 </html>

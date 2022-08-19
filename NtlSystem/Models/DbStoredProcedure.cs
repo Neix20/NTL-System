@@ -917,5 +917,7 @@ namespace NtlSystem.Models
             db.NSP_TNtlUnit_Delete(id);
             db.SaveChanges();
         }
+
+
     }
 }
