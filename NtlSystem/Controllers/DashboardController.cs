@@ -102,6 +102,34 @@ namespace NtlSystem.Controllers
             return View();
         }
 
+        public JsonResult DownTimeChatChart()
+        {
+            string query = "";
+            List<ClsData> ls;
+            ClsDataDAOImpl dao = new ClsDataDAOImpl();
+
+            // Microsoft SQL
+            string MicrosoftSqlConn = $"Data Source={mssql_dbHost};Initial Catalog={mssql_dbName};Persist Security Info=True;User ID={mssql_dbUsername};Password={mssql_dbPassword};";
+            DAL MicrosoftDal = new MicrosoftSqlDAL(MicrosoftSqlConn);
+
+            query = "SELECT datepart(hour,start_date) as X , sum(downtime) AS Y " +
+                "FROM [NTL].[dbo].[TNTLSeleniumChatDownTime]	" +
+                "WHERE cast(start_date as date) = '2022-08-24' " +
+                "GROUP BY cast(start_date as date)  , datepart(hour,start_date) " +
+                "ORDER BY cast(start_date as date)  , datepart(hour,start_date)";
+            ls = dao.GetAllClsDataQuery(MicrosoftDal, query);
+
+            List<mChartModel> coordsList = ls.Select(it => new mChartModel(it.dataDict["X"], it.dataDict["Y"])).ToList();
+            Dictionary<string, string> tmpDict = new Dictionary<string, string>()
+            {
+                {"coords", JsonConvert.SerializeObject(coordsList) }
+            };
+
+            Response.StatusCode = 200;
+            Response.ContentType = "application/json";
+            return Json(JsonConvert.SerializeObject(tmpDict), JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult PopulateDummyChatModels()
         {
             Random rand = new Random();
@@ -114,7 +142,7 @@ namespace NtlSystem.Controllers
             DateTime endDt = GeneralFunc.ConvertStrToDateTime("2022-08-22");
 
             int chatCount = rand.Next(50, 101);
-            for(int i = 0; i < chatCount; i++)
+            for (int i = 0; i < chatCount; i++)
             {
                 TNtlCustomerChat chat = new Faker<TNtlCustomerChat>()
                     .RuleFor(t => t.message, f => f.Lorem.Sentence())
@@ -139,9 +167,9 @@ namespace NtlSystem.Controllers
             List<mChartModel> coordsList = new List<mChartModel>();
             mChartModel coords;
 
-            List<int> platformIds = db.TNtlCustomerChats.Select(it => (int) it.platform_id).Distinct().ToList();
-    
-            foreach(var platform_id in platformIds)
+            List<int> platformIds = db.TNtlCustomerChats.Select(it => (int)it.platform_id).Distinct().ToList();
+
+            foreach (var platform_id in platformIds)
             {
                 int totalMsg = db.TNtlCustomerChats.Where(it => it.platform_id == platform_id).ToList().Count;
                 TNtlPlatform platform = db.TNtlPlatforms.Where(it => it.id == platform_id).FirstOrDefault();
@@ -168,13 +196,13 @@ namespace NtlSystem.Controllers
             DateTime endDt = GeneralFunc.ConvertStrToDateTime("2022-08-22");
 
             // 24 Hours
-            for(int i = 0; i < 24; i++)
+            for (int i = 0; i < 24; i++)
             {
                 DateTime curDate = endDt.AddHours(-1 * i);
 
                 int chatCount = 0;
 
-                foreach(var chat in db.TNtlCustomerChats)
+                foreach (var chat in db.TNtlCustomerChats)
                 {
                     double hour = ((DateTime)chat.created_date - curDate).TotalHours;
                     hour = Math.Floor(Math.Abs(hour));
@@ -199,7 +227,7 @@ namespace NtlSystem.Controllers
         public JsonResult PopulateDummyOrderModels()
         {
             // List of Product SKU
-            List<string> productSkus = new List<string>(){ "FGSTSB060", "FGSTSB150030", "FGSTSL050", "FGSTSL050110" };
+            List<string> productSkus = new List<string>() { "FGSTSB060", "FGSTSB150030", "FGSTSL050", "FGSTSL050110" };
             List<int> productIds = productSkus.Select(it => DbStoredProcedure.GetProductID(it)).ToList();
 
             Random rand = new Random();
@@ -211,7 +239,8 @@ namespace NtlSystem.Controllers
 
             int customer_id = DbStoredProcedure.GetCustomerId("Matthew Ting");
 
-            for(int i = 1; i < 61; i++){
+            for (int i = 1; i < 61; i++)
+            {
                 TNtlOrder order = new Faker<TNtlOrder>()
                     .RuleFor(t => t.name, f => $"O{f.Lorem.Letter(6)}")
                     .RuleFor(t => t.created_date, f => f.Date.Between(startDt, endDt));
@@ -224,7 +253,7 @@ namespace NtlSystem.Controllers
 
                 order.id = DbStoredProcedure.GetID("TNtlOrder");
 
-                for(int j = 0; j < productIds.Count; j++)
+                for (int j = 0; j < productIds.Count; j++)
                 {
                     int random = rand.Next(1, 3);
 
@@ -267,11 +296,11 @@ namespace NtlSystem.Controllers
             List<mChartModel> coordsList = new List<mChartModel>();
             mChartModel coords;
 
-            List<int> productIds = db.TNtlOrderItems.Select(it => (int) it.product_id).Distinct().ToList();
+            List<int> productIds = db.TNtlOrderItems.Select(it => (int)it.product_id).Distinct().ToList();
 
             foreach (var productId in productIds)
             {
-                decimal totalRevenue = (decimal) db.TNtlOrderItems.Where(it => it.product_id == productId).Select(it => it.total_price).Sum();
+                decimal totalRevenue = (decimal)db.TNtlOrderItems.Where(it => it.product_id == productId).Select(it => it.total_price).Sum();
 
                 TNtlProduct product = db.TNtlProducts.Where(it => it.id == productId).FirstOrDefault();
 
@@ -299,13 +328,13 @@ namespace NtlSystem.Controllers
             DateTime endDt = GeneralFunc.ConvertStrToDateTime("2022-08-22");
 
             // 24 Hours
-            for(int i = 0; i < 24; i++)
+            for (int i = 0; i < 24; i++)
             {
                 DateTime curDate = endDt.AddHours(-1 * i);
 
                 int orderCount = 0;
 
-                foreach(var order in db.TNtlOrders)
+                foreach (var order in db.TNtlOrders)
                 {
                     double hour = ((DateTime)order.created_date - curDate).TotalHours;
                     hour = Math.Floor(Math.Abs(hour));
@@ -329,12 +358,19 @@ namespace NtlSystem.Controllers
 
         public ActionResult OrderSalesTablePartial()
         {
-            List<TNtlOrder> model = db.TNtlOrders.OrderByDescending(it => it.total_price).ToList().GetRange(0, 5);
-            return PartialView("_dostPartial",model);
+            List<TNtlOrder> model = db.TNtlOrders.OrderByDescending(it => it.total_price).ToList();
+
+            if (model.Count > 5)
+            {
+                model = model.GetRange(0, 5);
+            }
+
+            return PartialView("_dostPartial", model);
         }
 
         [ValidateInput(false)]
-        public ActionResult dsiPartial() {
+        public ActionResult dsiPartial()
+        {
 
             string query = "";
             List<ClsData> ls;
@@ -388,7 +424,8 @@ namespace NtlSystem.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult mdpiPartial() {
+        public ActionResult mdpiPartial()
+        {
 
             // SQL
             int total_capacity = Convert.ToInt32(db.TNtlSummaryItems.Select(it => it.quantity).Sum());
@@ -428,7 +465,7 @@ namespace NtlSystem.Controllers
             // List<mDashboardProductItem> model = ls.Select(it => new mDashboardProductItem(it.data)).ToList();
             List<mDashboardProductItem> model = new List<mDashboardProductItem>();
 
-            foreach(var it in ls)
+            foreach (var it in ls)
             {
                 mDashboardProductItem obj = new mDashboardProductItem(it.data);
 
@@ -436,15 +473,15 @@ namespace NtlSystem.Controllers
                 obj.quantity = 0;
                 obj.percentage = 0;
 
-                foreach(var sItem in db.TNtlSummaryItems)
+                foreach (var sItem in db.TNtlSummaryItems)
                 {
                     string key = $"{Convert.ToInt32(sItem.width)} x {Convert.ToInt32(sItem.height)}";
-                    
-                    if(key.Equals(obj.measurement))
+
+                    if (key.Equals(obj.measurement))
                     {
                         obj.used = sItem.used;
                         obj.quantity = sItem.quantity;
-                        obj.percentage = Convert.ToDecimal(((double) obj.quantity - (double) obj.used) * 100.0 / (double) obj.quantity);
+                        obj.percentage = Convert.ToDecimal(((double)obj.quantity - (double)obj.used) * 100.0 / (double)obj.quantity);
                         break;
                     }
                 }
@@ -458,7 +495,8 @@ namespace NtlSystem.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult mswiPartial() {
+        public ActionResult mswiPartial()
+        {
             // Create Postgres Connection and Get List of Products
             string PostGreSQLConn = $"Host={psql_dbHost};Port=5432;Username={psql_dbUsername};Password={psql_dbPassword};Database={psql_dbName}";
             DAL PostgresDal = new PostgreSqlDAL(PostGreSQLConn);
@@ -481,7 +519,8 @@ namespace NtlSystem.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult mciPartial() {
+        public ActionResult mciPartial()
+        {
             mDashboardChatItem item = new mDashboardChatItem();
             item.platform = "Shopee";
             item.todayRuntime = 2;
@@ -492,7 +531,7 @@ namespace NtlSystem.Controllers
             item.status = "Online";
             item.lastMessageTime = DateTime.Today;
             item.lastRuntime = DateTime.Today;
-            
+
             List<mDashboardChatItem> model = new List<mDashboardChatItem>();
             model.Add(item);
             return PartialView("_mciPartial", model);

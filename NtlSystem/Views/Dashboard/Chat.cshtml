@@ -79,7 +79,12 @@
     
     <div class="row" style="height: 400px;">
         <div class="col p-3 center" style="width: 100%">
-            <div id="DashboardChatChart" style="height: 400px; width: 600px;">
+            <div id="DashboardChatChart" style="height: 400px; width: 300px;">
+                <canvas style="height: 100%; width:100%;"></canvas>
+            </div>
+        </div>
+        <div class="col p-3 center" style="width: 100%">
+            <div id="DashboardDownTimeChatChart" style="height: 400px; width: 300px;">
                 <canvas style="height: 100%; width:100%;"></canvas>
             </div>
         </div>
@@ -162,6 +167,43 @@
                     title: {
                         display: true,
                         text: "Real Time Chat Messages"
+                    }
+                }
+            }
+        });
+
+        coords = await getCoords("/Dashboard/DownTimeChatChart");
+                
+        lineCtx = document.querySelector("div[id='DashboardDownTimeChatChart'] canvas").getContext("2d");
+                
+        lineChart = new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: coords.map(it => it.x),
+                datasets: [
+                {
+                    label: 'Shopee',
+                    data: coords.map(it => it.y),
+                    borderColor: 'rgba(255, 0, 0, 1)',
+                    backgroundColor: 'rgba(255, 99, 71, 1)'
+                },
+                {
+                    label: 'Lazada',
+                    data: coords.map(it => it.y * getRandomInt(15, 99)),
+                    borderColor: 'rgba(45, 85, 225, 1)',
+                    backgroundColor: 'rgba(3, 138, 255, 1)'
+                },
+                ]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: "bottom"
+                    },
+                    title: {
+                        display: true,
+                        text: "Down Time Chat Messages"
                     }
                 }
             }
