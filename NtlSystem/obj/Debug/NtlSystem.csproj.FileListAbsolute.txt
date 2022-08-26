@@ -301,3 +301,7 @@ D:\ASP-dotNet-Projects\NtlSystem\NtlSystem\bin\ru\DevExpress.XtraTreeList.v15.1.
 D:\ASP-dotNet-Projects\NtlSystem\NtlSystem\obj\Debug\NtlSystem.dll
 D:\ASP-dotNet-Projects\NtlSystem\NtlSystem\obj\Debug\NtlSystem.pdb
 D:\ASP-dotNet-Projects\NtlSystem\NtlSystem\obj\Debug\NtlSystem.csprojResolveAssemblyReference.cache
+D:\ASP-dotNet-Projects\NtlSystem\NtlSystem\bin\Bogus.dll
+D:\ASP-dotNet-Projects\NtlSystem\NtlSystem\bin\Faker.Net.4.5.dll
+D:\ASP-dotNet-Projects\NtlSystem\NtlSystem\bin\Bogus.xml
+D:\ASP-dotNet-Projects\NtlSystem\NtlSystem\bin\de-DE\Faker.Net.4.5.resources.dll

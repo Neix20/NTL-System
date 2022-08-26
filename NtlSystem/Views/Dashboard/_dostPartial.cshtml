@@ -1,0 +1,54 @@
+﻿@using NtlSystem.Models
+@using System.Collections.Generic
+@model List<TNtlOrder>
+
+@{ 
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+
+    Dictionary<int, TNtlCustomer> customerDict = new Dictionary<int, TNtlCustomer>();
+    foreach(var customer in db.TNtlCustomers)
+    {
+        customerDict.Add(customer.id, customer);
+    }
+
+    Dictionary<int, TNtlPlatform> platformDict = new Dictionary<int, TNtlPlatform>();
+    foreach(var platform in db.TNtlPlatforms)
+    {
+        platformDict.Add(platform.id, platform);
+    }
+
+    Dictionary<int, TNtlStatu> statusDict = new Dictionary<int, TNtlStatu>();
+    foreach(var status in db.TNtlStatus)
+    {
+        statusDict.Add(status.id, status);
+    }
+}
+
+<table class="table table-bordered table-hover text-center tablesort">
+    <thead>
+        <tr class="bg-dark">
+            <th class="text-white">Id</th>
+            <th class="text-white">Name</th>
+            <th class="text-white">Total Price</th>
+            <th class="text-white">Created Date</th>
+            <th class="text-white">Customer</th>
+            <th class="text-white">Platform</th>
+            <th class="text-white">Status </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var obj in Model)
+        {
+            string dtStr = ((DateTime)obj.created_date).ToString("yyyy-MM-dd");
+            <tr>
+                <td>@obj.id</td>
+                <td>@obj.name</td>
+                <td>@obj.total_price</td>
+                <td>@dtStr</td>
+                <td>@customerDict[(int) obj.customer_id].name</td>
+                <td>@platformDict[(int) customerDict[(int) obj.customer_id].platform_id].name</td>
+                <td>@statusDict[(int) obj.status_id].name</td>
+            </tr>
+        }
+    </tbody>
+</table>

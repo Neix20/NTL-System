@@ -51,6 +51,10 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Bogus, Version=34.0.2.0, Culture=neutral, PublicKeyToken=fa1bb3f3f218129a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bogus.34.0.2\lib\net40\Bogus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="DotNetOpenAuth.AspNet, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetOpenAuth.AspNet.4.1.4.12333\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
       <Private>True</Private>
@@ -81,6 +85,10 @@
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Faker.Net.4.5, Version=2.0.154.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Faker.Net.2.0.154\lib\net452\Faker.Net.4.5.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -293,6 +301,8 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\chart.js" />
+    <Content Include="Scripts\chart.min.js" />
     <Content Include="Scripts\fontawesome\all.js" />
     <Content Include="Scripts\fontawesome\all.min.js" />
     <Content Include="Scripts\fontawesome\brands.js" />
@@ -450,11 +460,15 @@
     <Content Include="Views\Log\Index.cshtml" />
     <Content Include="Views\Log\GetLog.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
-    <Content Include="Views\Dashboard\_mciGridViewPartial.cshtml" />
     <Content Include="Views\Dashboard\_mdpiPartial.cshtml" />
     <Content Include="Views\Dashboard\_mswiPartial.cshtml" />
     <Content Include="Views\Dashboard\_dsiPartial.cshtml" />
     <Content Include="Views\Dashboard\_mciPartial.cshtml" />
+    <Content Include="Views\Dashboard\Order.cshtml" />
+    <Content Include="Views\Dashboard\_dostPartial.cshtml" />
+    <Content Include="Views\Dashboard\Chat.cshtml" />
+    <Content Include="Views\Dashboard\ShopeeProductListing.cshtml" />
+    <Content Include="Views\Dashboard\OdooStockListing.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -510,6 +524,7 @@
     <Compile Include="Models\DashboardModels\mDashboardOdooStockItem.cs" />
     <Compile Include="Models\DashboardModels\mDashboardProductItem.cs" />
     <Compile Include="Models\DashboardModels\mDashboardSaleItem.cs" />
+    <Compile Include="Models\mChartModel.cs" />
     <Compile Include="Models\mCustomerMsg.cs" />
     <Compile Include="Models\NtlSystemModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -686,6 +701,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\ProductImages\" />
     <Folder Include="Content\StockWarehouseImages\" />
+    <Folder Include="Models\DashboardModels\Order\" />
     <Folder Include="Views\Admin\" />
     <Folder Include="Views\Invoice\" />
     <Folder Include="Views\ProductCategory\" />

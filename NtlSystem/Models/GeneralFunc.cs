@@ -108,5 +108,11 @@ namespace NtlSystem.Models
 	    	return startDate <= date && date < endDate;
 	    }
 
+        public static DateTime GenRandomDate(DateTime startDate, DateTime endDate) {
+            Random rand = new Random();
+            int range = (endDate - startDate).Seconds;
+            return startDate.AddSeconds(rand.Next(range));
+        }
+
     }
 }

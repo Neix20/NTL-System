@@ -82,65 +82,153 @@ LEFT JOIN VWarehouseStockCT b
 ON a.sku = b.sku;
 
 -- MSSQL Queries
-SELECT COUNT(*) "Sales"
-FROM dbo.TNtlOrder
-WHERE 1=1
-AND created_date >= '2022-07-01 00:00:00' AND created_date < '2022-07-02 00:00:00';
-
-SELECT COUNT(*) "LMD"
-FROM dbo.TNtlOrder 
-WHERE 1=1
-AND created_date >= '2022-07-01' AND created_date <= '2022-07-31';
-
-SELECT COUNT(*) "MTD"
-FROM dbo.TNtlOrder 
-WHERE 1=1
-AND created_date >= '2022-08-01' AND created_date <= '2022-08-31';
-
-SELECT COUNT(*) "L5"
-FROM dbo.TNtlOrder
-WHERE 1=1
-AND created_date >= '2022-08-11' AND created_date <= '2022-08-16';
-
-SELECT COUNT(*) "Sales"
-FROM dbo.TNtlOrder;
-
-SELECT p.name "Platform", COUNT(*) "Sales",
-(SELECT COUNT(*)
-FROM dbo.TNtlOrder 
-WHERE 1=1
-AND created_date >= '2022-07-01' AND created_date <= '2022-07-31') "LMD",
-(SELECT COUNT(*)
-FROM dbo.TNtlOrder 
-WHERE 1=1
-AND created_date >= '2022-08-01' AND created_date <= '2022-08-31') "MTD",
-(SELECT COUNT(*)
-FROM dbo.TNtlOrder
-WHERE 1=1
-AND created_date >= '2022-08-11' AND created_date <= '2022-08-16') "L5"
-FROM dbo.TNtlOrder o
-LEFT JOIN dbo.TNtlCustomer c
-ON o.customer_id = c.id
-LEFT JOIN dbo.TNtlPlatform p
-ON c.platform_id = p.id
-GROUP BY p.name;
-
-SELECT COUNT(*) "Total Runtime",
+SELECT TOP 1 p.name AS platform,
 (
-    SELECT TOP 1 end_date
+    SELECT COUNT(*) AS today_runtime
     FROM dbo.TNtlSeleniumLog
-    WHERE 1=1 
-    AND type=2
-    ORDER BY end_date DESC
-) "Last Runtime"
-FROM dbo.TNtlSeleniumLog
-WHERE 1=1
-AND type=2;
+    WHERE 1 = 1
+    AND type = 2
+    AND end_date >= '2022-08-19 00:00:00' AND end_date < '2022-08-19 23:59:59'
+) AS today_runtime,
+(
+    SELECT COUNT(*)
+    FROM dbo.TNtlOrder 
+    WHERE 1=1
+    AND created_date >= '2022-08-19 00:00:00' AND created_date < '2022-08-19 23:59:59'
+) AS ntl_sale,
+(
+    SELECT COUNT(*)
+    FROM dbo.TNtlOrder 
+    WHERE 1=1
+    AND created_date >= '2022-07-01' AND created_date <= '2022-07-31'
+) AS lmd_sale,
+(
+    SELECT COUNT(*)
+    FROM dbo.TNtlOrder 
+    WHERE 1=1
+    AND created_date >= '2022-08-01' AND created_date <= '2022-08-31'
+) AS mtd_sale,
+(
+    SELECT COUNT(*)
+    FROM dbo.TNtlOrder
+    WHERE 1=1
+    AND created_date >= '2022-08-11' AND created_date <= '2022-08-16'
+) AS l5_sale,
+sl.status,
+sl.end_date AS last_runtime
+FROM dbo.TNtlSeleniumLog sl
+LEFT JOIN dbo.TNtlPlatform p
+ON sl.platform_id = p.id
+WHERE 1 = 1
+AND sl.type = 2;
 
-SELECT TOP 1 end_date
+-- Platform, Status, Last Runtime
+SELECT TOP 1 p.name AS platform,
+sl.status,
+sl.end_date AS last_runtime
+FROM dbo.TNtlSeleniumLog sl
+LEFT JOIN dbo.TNtlPlatform p
+ON sl.platform_id = p.id
+WHERE 1 = 1
+AND sl.type = 2;
+
+-- Today Runtime
+SELECT COUNT(*) AS today_runtime
 FROM dbo.TNtlSeleniumLog
-WHERE type=2
-ORDER BY end_date DESC;
+WHERE 1 = 1
+AND type = 2
+AND end_date >= '2022-08-19 00:00:00' AND end_date < '2022-08-19 23:59:59'
+
+-- NTL Sales
+SELECT COUNT(*)
+FROM dbo.TNtlOrder 
+WHERE 1=1
+AND created_date >= '2022-08-19 00:00:00' AND created_date < '2022-08-19 23:59:59'
+
+-- LMD
+SELECT COUNT(*)
+FROM dbo.TNtlOrder 
+WHERE 1=1
+AND created_date >= '2022-07-01' AND created_date <= '2022-07-31'
+
+-- MTD
+SELECT COUNT(*)
+FROM dbo.TNtlOrder 
+WHERE 1=1
+AND created_date >= '2022-08-01' AND created_date <= '2022-08-31'
+
+-- L5
+SELECT COUNT(*)
+FROM dbo.TNtlOrder
+WHERE 1=1
+AND created_date >= '2022-08-11' AND created_date <= '2022-08-16'
+
+-- Procedure
+CREATE OR ALTER PROCEDURE dbo.NSP_TNtlOrderAutomation_View
+(
+    @td_start_dt AS DATETIME,
+    @td_end_dt AS DATETIME,
+    @lm_start_dt AS DATETIME,
+    @lm_end_dt AS DATETIME,
+    @tm_start_dt AS DATETIME,
+    @tm_end_dt AS DATETIME,
+    @l5_start_dt AS DATETIME,
+    @l5_end_dt AS DATETIME
+)
+AS
+BEGIN
+    SELECT TOP 1 p.name AS platform,
+    (
+        SELECT COUNT(*) AS today_runtime
+        FROM dbo.TNtlSeleniumLog
+        WHERE 1 = 1
+        AND type = 2
+        AND end_date >= @td_start_dt AND end_date < @td_end_dt
+    ) AS today_runtime,
+    (
+        SELECT COUNT(*)
+        FROM dbo.TNtlOrder 
+        WHERE 1=1
+        AND created_date >= @td_start_dt AND created_date < @td_end_dt
+    ) AS ntl_sale,
+    (
+        SELECT COUNT(*)
+        FROM dbo.TNtlOrder 
+        WHERE 1=1
+        AND created_date >= @lm_start_dt AND created_date <= @lm_end_dt
+    ) AS lmd_sale,
+    (
+        SELECT COUNT(*)
+        FROM dbo.TNtlOrder 
+        WHERE 1=1
+        AND created_date >= @tm_start_dt AND created_date <= @tm_end_dt
+    ) AS mtd_sale,
+    (
+        SELECT COUNT(*)
+        FROM dbo.TNtlOrder
+        WHERE 1=1
+        AND created_date >= @l5_start_dt AND created_date <= @l5_end_dt
+    ) AS l5_sale,
+    sl.status,
+    sl.end_date AS last_runtime
+    FROM dbo.TNtlSeleniumLog sl
+    LEFT JOIN dbo.TNtlPlatform p
+    ON sl.platform_id = p.id
+    WHERE 1 = 1
+    AND sl.type = 2;
+END
+
+EXEC dbo.NSP_TNtlOrderAutomation_View
+'2022-08-19 00:00:00', '2022-08-19 23:59:59',
+'2022-07-01', '2022-07-31',
+'2022-08-01', '2022-08-31',
+'2022-08-11', '2022-08-16';
+
+-- Postgres
+SELECT COUNT(*) AS odoo_sales
+FROM public.sale_order
+WHERE 1 = 1
+AND create_date >= '2022-08-19 00:00:00' AND create_date < '2022-08-19 23:59:59';
 
 CREATE OR ALTER VIEW VNtlDashboardProduct AS 
 	SELECT SUBSTRING(p.name, CHARINDEX(']', p.name) + 2, LEN(p.name) - CHARINDEX(']', p.name) -1) "name", 

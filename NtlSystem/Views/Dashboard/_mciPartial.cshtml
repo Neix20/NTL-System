@@ -7,26 +7,21 @@
         <tr class="bg-dark">
             <th class="text-white">Platform</th>
             <th class="text-white">Today Runtime</th>
-            <th class="text-white">Unread Message</th>
-            <th class="text-white">Total Message</th>
-            <th class="text-white">Opening Ticket</th>
             <th class="text-white">Status</th>
             <th class="text-white">Last Run Time</th>
             <th class="text-white">Last Message Time</th>
         </tr>
     </thead>
     <tbody>
-        @foreach(var obj in Model)
-        {
+        @foreach(var obj in Model) {
+            string lastRtDtStr = obj.lastRuntime.ToString("yyyy-MM-dd");
+            string lastMsgDtStr = obj.lastMessageTime.ToString("yyyy-MM-dd");
             <tr>
                 <td>@obj.platform</td>
                 <td>@obj.todayRuntime</td>
-                <td>@obj.unread_msg</td>
-                <td>@obj.total_msg</td>
-                <td>@obj.opening_ticket</td>
                 <td>@obj.status</td>
-                <td>@obj.lastRuntime</td>
-                <td>@obj.lastMessageTime</td>
+                <td>@lastRtDtStr</td>
+                <td>@lastMsgDtStr</td>
             </tr>
         }
     </tbody>

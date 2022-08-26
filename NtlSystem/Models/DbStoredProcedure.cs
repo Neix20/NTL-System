@@ -24,10 +24,19 @@ namespace NtlSystem.Models
             return db.TNtlPlatforms.Where(it => it.name.ToLower().Equals(val.ToLower())).FirstOrDefault().id;
         }
 
+        public static int GetProductID(string sku)
+        {
+            return db.TNtlProducts.Where(it => it.SKU.Equals(sku)).FirstOrDefault().id;
+        }
+
+        public static int GetCustomerId(string val)
+        {
+            return db.TNtlCustomers.Where(it => it.name.Equals(val)).FirstOrDefault().id;
+        }
+
         public static int GetUnitTypeID(string val)
         {
             return db.TNtlUnitTypes.Where(it => it.name.ToLower().Equals(val.ToLower())).FirstOrDefault().id;
-
         }
 
         public static void DetailInsert(string name, string remark, string created_by, string last_updated_by)
