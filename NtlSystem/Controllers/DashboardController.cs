@@ -194,7 +194,7 @@ namespace NtlSystem.Controllers
             DateTime startDt = (start_date == null) ? DateTime.Today : (DateTime) start_date;
             List<mChartModel> current = CummulativeSalesList(startDt, platform_name);
 
-            int pastDay = Convert.ToInt32(past_day);
+            int pastDay = Convert.ToInt32(GeneralFunc.ReturnZero(past_day));
             DateTime pastDt = startDt.AddDays(-1 * pastDay);
 
             List<mChartModel> past = CummulativeSalesList(pastDt, platform_name);

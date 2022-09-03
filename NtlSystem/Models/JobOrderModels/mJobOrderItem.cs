@@ -24,15 +24,15 @@ namespace NtlSystem.Models.JobOrderModels
             name = dataDict["name"];
             sku = dataDict["sku"];
 
-            width = Convert.ToDecimal(dataDict["width"]);
-            height = Convert.ToDecimal(dataDict["height"]);
-            quantity = Convert.ToDecimal(dataDict["quantity"]);
+            width = Convert.ToDecimal(GeneralFunc.ReturnZero(dataDict["width"]));
+            height = Convert.ToDecimal(GeneralFunc.ReturnZero(dataDict["height"]));
+            quantity = Convert.ToDecimal(GeneralFunc.ReturnZero(dataDict["quantity"]));
 
             uom = dataDict["uom"];
 
-            unit_price = Convert.ToDecimal(dataDict["unit_price"]);
-            tax_price = Convert.ToDecimal(dataDict["tax_price"]);
-            total_price = Convert.ToDecimal(dataDict["total_price"]);
+            unit_price = Convert.ToDecimal(GeneralFunc.ReturnZero(dataDict["unit_price"]));
+            tax_price = Convert.ToDecimal(GeneralFunc.ReturnZero(dataDict["tax_price"]));
+            total_price = Convert.ToDecimal(GeneralFunc.ReturnZero(dataDict["total_price"]));
 
             order_id = Convert.ToInt32(dataDict["order_id"]);
         }

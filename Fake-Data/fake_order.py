@@ -130,7 +130,7 @@ def get_col(tbl_name):
         elif dtype in ['int']:
             obj_dict[col] = 0
         else:
-            obj_dict[col] = 0.0
+            obj_dict[col] = Decimal( 0.000001 )
 
     return obj_dict
 
@@ -173,11 +173,11 @@ def create_order_item(product):
     obj["sku"] = product["SKU"]
 
     # Sub Total Price
-    obj["sub_total_price"] = float(obj["quantity"]) * float(obj["unit_price"]) 
-    obj["sub_total_price"] = round(obj["sub_total_price"], 2)
+    obj["sub_total_price"] = Decimal(obj["quantity"]) * Decimal(obj["unit_price"]) 
+    obj["sub_total_price"] = round(obj["sub_total_price"], 6) + Decimal(0.000001)
 
     # Total Price
-    obj["total_price"] = obj["sub_total_price"]
+    obj["total_price"] = obj["sub_total_price"] + Decimal(0.000001)
 
     # Order ID
     obj["order_id"] = "@order_id"
@@ -203,10 +203,10 @@ def create_order():
     obj["code"] = obj["name"]
 
     # Sub Total Price
-    obj["sub_total_price"] = 0
+    obj["sub_total_price"] = Decimal(0.000001)
 
     # Total Price
-    obj["total_price"] = 0
+    obj["total_price"] = Decimal(0.000001)
 
     # Status ID
     obj["status_id"] = fake.ntl_status()["id"]
@@ -229,13 +229,15 @@ def create_detail(username):
 
     return obj
 
-def insert_stmt_name(table_name):
-    return f"NSP_{table_name}_Insert"
+def stmt_name(table_name, function):
+    return f"NSP_{table_name}_{function}"
 
-def insert_stmt_elem_value(elem):
+def stmt_elem_value(elem):
     _str = ""
-    if isinstance(elem, Decimal) or isinstance(elem, int) or isinstance(elem, float):
-        elem = round(elem, 2)
+    if isinstance(elem, Decimal) or isinstance(elem, float):
+        elem = round(elem, 6)
+        _str = f"{elem}"
+    elif isinstance(elem, int):
         _str = f"{elem}"
     elif isinstance(elem, str) and '@' in elem:
         _str = f"{elem}"
@@ -244,13 +246,13 @@ def insert_stmt_elem_value(elem):
     return _str
 
 
-def insert_stmt_value(obj):
+def stmt_value(obj):
     arr = list(obj.values())
 
     # Remove First Column
     arr = arr[1:]
 
-    arr = [insert_stmt_elem_value(elem) for elem in arr]
+    arr = [stmt_elem_value(elem) for elem in arr]
 
     return ", ".join(arr)
 
@@ -260,14 +262,23 @@ def exec_stmt(stmt1, stmt2):
 def genDummyNtlOrder():
     _str = ""
 
+    stmt, stmt2 = "", ""
+
     # Create Order
     order = create_order()
     
     detail = create_detail("Admin")
-    _str += insert_stmt("TNtlDetail", detail) + "\n"
-    _str += "SET @detail_id = (SELECT IDENT_CURRENT('TNtlDetail'));" + "\n"
-    _str += insert_stmt("TNtlOrder", order) + "\n"
+
+    stmt = stmt_name("TNtlDetail", "Insert")
+    stmt2 = stmt_value(detail)
     
+    _str += exec_stmt(stmt, stmt2) + "\n"
+    _str += "SET @detail_id = (SELECT IDENT_CURRENT('TNtlDetail'));" + "\n"
+
+    stmt = stmt_name("TNtlOrder", "Insert")
+    stmt2 = stmt_value(order)
+
+    _str += exec_stmt(stmt, stmt2) + "\n"
     _str += "\nSET @order_id = (SELECT IDENT_CURRENT('TNtlOrder'));\n" 
 
     sub_total_price = 0
@@ -283,17 +294,31 @@ def genDummyNtlOrder():
         detail = create_detail("Admin")
 
         _str += "\n"
-        _str += insert_stmt("TNtlDetail", detail) + "\n"
+        stmt = stmt_name("TNtlDetail", "Insert")
+        stmt2 = stmt_value(detail)
+        
+        _str += exec_stmt(stmt, stmt2) + "\n"
         _str += "SET @detail_id = (SELECT IDENT_CURRENT('TNtlDetail'));" + "\n"
-        _str += insert_stmt("TNtlOrderItem", orderItem) + "\n"
 
-    order["sub_total_price"] = round(sub_total_price, 2)
-    order["total_price"] = round(sub_total_price, 2)
+        stmt = stmt_name("TNtlOrderItem", "Insert")
+        stmt2 = stmt_value(orderItem)
 
+        _str += exec_stmt(stmt, stmt2) + "\n"
 
-    return _str
+    _str += "\n"
 
-numOfOrder = 15
+    order["sub_total_price"] = round(sub_total_price, 6)
+    order["total_price"] = round(sub_total_price, 6)
+
+    # Update Order Total Price
+    stmt = stmt_name("TNtlOrder", "Update")
+    stmt2 = f"@order_id, " + stmt_value(order)
+
+    _str += exec_stmt(stmt, stmt2) + "\n"
+
+    return _str + "\n"
+
+numOfOrder = 300
 
 print("DECLARE @detail_id INT;")
 print("DECLARE @order_id INT;")
@@ -301,3 +326,4 @@ print()
 
 for i in range(numOfOrder):
     stmt = genDummyNtlOrder()
+    print(stmt, end="")

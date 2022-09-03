@@ -38,6 +38,11 @@ namespace NtlSystem.Models
             return (num == 0) ? "" : num.ToString();
         }
 
+        public static string ReturnZero(string str)
+        {
+            return (str.Equals("")) ? "0" : str;
+        }
+
         public static TNtlSummaryItem GenerateSummaryListing(string JsonData)
         {
             var item = new TNtlSummaryItem();
@@ -47,9 +52,9 @@ namespace NtlSystem.Models
             item.id = Convert.ToInt32(dataDict["id"]);
             item.sku = dataDict["sku"];
             item.name = dataDict["name"];
-            item.width = Convert.ToDecimal(dataDict["width"]);
-            item.height = Convert.ToDecimal(dataDict["height"]);
-            item.quantity = Convert.ToDecimal(dataDict["quantity"]);
+            item.width = Convert.ToDecimal(ReturnZero(dataDict["width"]));
+            item.height = Convert.ToDecimal(ReturnZero(dataDict["height"]));
+            item.quantity = Convert.ToDecimal(ReturnZero(dataDict["quantity"]));
 
             int inc_sta_id = DbStoredProcedure.GetStatusID("incomplete", "Summary Item");
             item.status_id = inc_sta_id;
