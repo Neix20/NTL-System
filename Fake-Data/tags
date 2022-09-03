@@ -1,0 +1,38 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	/952bd1e9/
+conn	fake_order.py	/^conn = pyodbc.connect($/;"	v
+convert_str_to_datetime	fake_order.py	/^def convert_str_to_datetime(dtStr):$/;"	f
+create_detail	fake_order.py	/^def create_detail(username):$/;"	f
+create_order	fake_order.py	/^def create_order():$/;"	f
+create_order_item	fake_order.py	/^def create_order_item(order_id, product):$/;"	f
+customerLs	fake_order.py	/^customerLs = get_customer()$/;"	v
+db_ssms_driver	fake_order.py	/^db_ssms_driver = "SQL Server Native Client 11.0"$/;"	v
+db_ssms_host	fake_order.py	/^db_ssms_host = "47.254.234.86"$/;"	v
+db_ssms_name	fake_order.py	/^db_ssms_name = "NTL" $/;"	v
+db_ssms_pwd	fake_order.py	/^db_ssms_pwd = "ILoveVigtech88!"$/;"	v
+db_ssms_username	fake_order.py	/^db_ssms_username = "NTL"$/;"	v
+dt	fake_order.py	/^dt = convert_str_to_datetime("2022-08-29")$/;"	v
+fake	fake_order.py	/^fake = Faker()$/;"	v
+get_col	fake_order.py	/^def get_col(tbl_name):$/;"	f
+get_customer	fake_order.py	/^def get_customer():$/;"	f
+get_latest_id	fake_order.py	/^def get_latest_id(tblName):$/;"	f
+get_obj	fake_order.py	/^def get_obj(stmt):$/;"	f
+get_product	fake_order.py	/^def get_product(sku):$/;"	f
+get_status	fake_order.py	/^def get_status():$/;"	f
+insert_stmt	fake_order.py	/^def insert_stmt(table_name, obj):$/;"	f
+insert_stmt_name	fake_order.py	/^def insert_stmt_name(table_name):$/;"	f
+insert_stmt_value	fake_order.py	/^def insert_stmt_value(obj):$/;"	f
+ntl_customer_provider	fake_order.py	/^ntl_customer_provider = DynamicProvider($/;"	v
+ntl_product_provider	fake_order.py	/^ntl_product_provider = DynamicProvider($/;"	v
+ntl_status_provider	fake_order.py	/^ntl_status_provider = DynamicProvider($/;"	v
+order	fake_order.py	/^order = create_order()$/;"	v
+productLs	fake_order.py	/^productLs = [get_product(sku) for sku in skuLs]$/;"	v
+skuLs	fake_order.py	/^skuLs = [ "FGSTSB060", "FGSTSB150030", "FGSTSL050", "FGSTSL050110" ];$/;"	v
+statusLs	fake_order.py	/^statusLs = get_status()$/;"	v

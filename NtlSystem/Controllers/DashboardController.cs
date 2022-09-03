@@ -130,6 +130,91 @@ namespace NtlSystem.Controllers
             return Json(JsonConvert.SerializeObject(tmpDict), JsonRequestBehavior.AllowGet);
         }
 
+        public List<mChartModel> CummulativeSalesList(DateTime startDt, string platformName)
+        {
+            string query = "";
+            List<ClsData> ls;
+            ClsDataDAOImpl dao = new ClsDataDAOImpl();
+
+            // Microsoft SQL
+            string MicrosoftSqlConn = $"Data Source={mssql_dbHost};Initial Catalog={mssql_dbName};Persist Security Info=True;User ID={mssql_dbUsername};Password={mssql_dbPassword};";
+            DAL MicrosoftDal = new MicrosoftSqlDAL(MicrosoftSqlConn);
+
+            DateTime endDt = startDt.AddDays(1);
+
+            query = "SELECT DATEPART(hour, created_date) as H,  " +
+                "ROUND(SUM(total_price), 2) AS total_sales " +
+                "FROM dbo.TNtlOrder o " +
+                "LEFT JOIN dbo.TNtlCustomer c " +
+                "ON o.customer_id = c.id " +
+                "LEFT JOIN dbo.TNtlPlatform p " +
+                "ON c.platform_id = p.id " +
+                "WHERE 1 = 1 " +
+                $"AND (o.created_date >= '{startDt.ToString("yyyy-MM-dd")}' AND o.created_date < '{endDt.ToString("yyyy-MM-dd")}') " +
+                $"AND p.name = '{platformName}' " +
+                "GROUP BY DATEPART(HOUR, created_date); ";
+            ls = dao.GetAllClsDataQuery(MicrosoftDal, query);
+
+            Dictionary<string, decimal> timeDict = new Dictionary<string, decimal>();
+
+            ls.ForEach(it =>
+            {
+                string hr = it.dataDict["H"];
+                decimal total_sales = Convert.ToDecimal(it.dataDict["total_sales"]);
+
+                timeDict.Add(hr, total_sales);
+            });
+
+            List<mChartModel> coordsList = new List<mChartModel>();
+            mChartModel coords;
+
+            decimal cur_sales = 0;
+
+            // 24 Hours
+            for (int i = 0; i < 24; i++)
+            {
+                decimal sales = 0;
+
+                if(timeDict.ContainsKey(i + "")) { sales = timeDict[i + ""]; }
+
+                cur_sales += sales;
+
+                coords = new mChartModel(GeneralFunc.FormatNum(i), string.Format("{0:0.00}", cur_sales));
+
+                coordsList.Add(coords);
+            }
+
+            return coordsList;
+        }
+
+        [HttpPost]
+        public JsonResult CummulativeSalesChart(DateTime? start_date, string platform_name, string past_day)
+        {
+            Debug.WriteLine($"{start_date}, {platform_name}, {past_day}");
+            DateTime startDt = (start_date == null) ? DateTime.Today : (DateTime) start_date;
+            List<mChartModel> current = CummulativeSalesList(startDt, platform_name);
+
+            int pastDay = Convert.ToInt32(past_day);
+            DateTime pastDt = startDt.AddDays(-1 * pastDay);
+
+            List<mChartModel> past = CummulativeSalesList(pastDt, platform_name);
+
+            Dictionary<string, string> tmpDict = new Dictionary<string, string>()
+            {
+                {"Current", JsonConvert.SerializeObject(current) },
+                {$"Past (+{past_day})", JsonConvert.SerializeObject(past) }
+            };
+
+            Response.StatusCode = 200;
+            Response.ContentType = "application/json";
+            return Json(JsonConvert.SerializeObject(tmpDict), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult CummulativeSales()
+        {
+            return View();
+        }
+
         public JsonResult PopulateDummyChatModels()
         {
             Random rand = new Random();
@@ -234,10 +319,10 @@ namespace NtlSystem.Controllers
 
             List<decimal> productPrice = productSkus.Select(it => Convert.ToDecimal(rand.Next(1, 7))).ToList();
 
-            DateTime startDt = GeneralFunc.ConvertStrToDateTime("2022-08-21");
-            DateTime endDt = GeneralFunc.ConvertStrToDateTime("2022-08-22");
+            DateTime startDt = GeneralFunc.ConvertStrToDateTime("2022-08-26");
+            DateTime endDt = GeneralFunc.ConvertStrToDateTime("2022-08-29");
 
-            int customer_id = DbStoredProcedure.GetCustomerId("Matthew Ting");
+            List<int> customerIds = new List<int>() { 100, 102, 103 };
 
             for (int i = 1; i < 61; i++)
             {
@@ -247,7 +332,7 @@ namespace NtlSystem.Controllers
 
                 order.code = order.name;
                 order.status_id = rand.Next(13, 17);
-                order.customer_id = customer_id;
+                order.customer_id = customerIds[rand.Next(0, 3)];
 
                 DbStoredProcedure.OrderInsert(order, "Admin");
 
@@ -281,7 +366,7 @@ namespace NtlSystem.Controllers
                 }
 
                 // Update Total Price
-                decimal total_price = (decimal)db.TNtlOrderItems.Where(it => it.order_id == order.id).Select(it => it.total_price).Sum();
+                decimal total_price = (decimal) db.TNtlOrderItems.Where(it => it.order_id == order.id).Select(it => it.total_price).Sum();
                 order.sub_total_price = total_price;
                 order.total_price = total_price;
 
@@ -371,7 +456,6 @@ namespace NtlSystem.Controllers
         [ValidateInput(false)]
         public ActionResult dsiPartial()
         {
-
             string query = "";
             List<ClsData> ls;
             ClsDataDAOImpl dao = new ClsDataDAOImpl();
@@ -426,7 +510,6 @@ namespace NtlSystem.Controllers
         [ValidateInput(false)]
         public ActionResult mdpiPartial()
         {
-
             // SQL
             int total_capacity = Convert.ToInt32(db.TNtlSummaryItems.Select(it => it.quantity).Sum());
             total_capacity = (total_capacity == 0) ? 1 : total_capacity;

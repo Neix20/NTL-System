@@ -9,6 +9,7 @@
     List<string> permissionList = DbStoredProcedure.GetPermissionFromUser(uName);
 
     IDictionary<string, string> titleDict = new Dictionary<string, string>();
+
     foreach(var permission in permissionList)
     {
         titleDict.Add(permission, Regex.Replace(permission, @"([A-Z])", " $1"));

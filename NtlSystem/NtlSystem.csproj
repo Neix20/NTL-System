@@ -303,6 +303,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\chart.js" />
     <Content Include="Scripts\chart.min.js" />
+    <Content Include="Scripts\chartjs-plugin-datalabels.min.js" />
     <Content Include="Scripts\fontawesome\all.js" />
     <Content Include="Scripts\fontawesome\all.min.js" />
     <Content Include="Scripts\fontawesome\brands.js" />
@@ -469,6 +470,7 @@
     <Content Include="Views\Dashboard\Chat.cshtml" />
     <Content Include="Views\Dashboard\ShopeeProductListing.cshtml" />
     <Content Include="Views\Dashboard\OdooStockListing.cshtml" />
+    <Content Include="Views\Dashboard\CummulativeSales.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

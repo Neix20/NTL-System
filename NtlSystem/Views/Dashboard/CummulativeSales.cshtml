@@ -1,0 +1,161 @@
+﻿@using NtlSystem.Models
+
+@{
+    ViewBag.Title = "CummulativeSales";
+    Layout = "~/Views/Shared/_NavLayout.cshtml";
+
+    dbNtlSystemEntities db = new dbNtlSystemEntities();
+}
+
+<div class="white-box">
+    @using (Html.BeginForm("CummulativeSalesChart", "Dashboard", FormMethod.Post, new { @Id = "CummulativeSalesChartForm" }))
+    {
+        @Html.AntiForgeryToken()
+    
+        <div class="row">
+            <div class="col p-3">
+                <label for="platform_name" class="col-form-label">Platform: </label>
+                @Html.DevExpress().ComboBox(settings => {
+                    settings.Name = "platform_name";
+                    settings.Width = Unit.Percentage(100);
+                    settings.SelectedIndex = 0;
+                    settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                    settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+                    settings.Properties.TextField = "name";
+                    settings.Properties.ValueField = "name";
+                    settings.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.OnHover;
+                    settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                }).BindList(db.TNtlPlatforms.ToList()).GetHtml()
+            </div>
+            <div class="col p-3">
+                <label for="start_date" class="col-form-label">Search Date: </label>
+                @Html.DevExpress().DateEdit(settings => {
+                    settings.Name = "start_date";
+                    settings.Properties.DisplayFormatString = "yyyy-MM-dd";
+                    settings.Width = Unit.Percentage(100);
+                }).GetHtml()
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <label for="past_day" class="col-form-lable">Past Day: </label>
+            @Html.TextBox("past_day", "", new { @Class = "form-control", @Type = "text" })
+        </div>
+    
+        <button class="btn btn-primary">
+            Submit
+        </button>
+    }
+
+    <div class="my-3"></div>
+
+    <div id="CummulativeSalesChart">
+        <canvas></canvas>
+    </div>
+</div>
+
+<script>
+    function addChart(data) {
+        let canvas = document.querySelector("div[id='CummulativeSalesChart'] canvas");
+        canvas.remove();
+
+        let chart = document.createElement("canvas");
+        document.querySelector("div[id='CummulativeSalesChart']").appendChild(chart);
+
+        console.log(data);
+
+        let keys = Object.keys(data);
+
+        console.log(keys);
+
+        let chartCtx = document.querySelector("div[id='CummulativeSalesChart'] canvas").getContext("2d");
+
+        let orderChart = new Chart(chartCtx, {
+            plugins: [ChartDataLabels],
+            type: "line",
+            data: {
+                labels: JSON.parse(data[keys[0]]).map(it => it.x),
+                datasets: [
+                    {
+                        label: keys[0],
+                        data: JSON.parse(data[keys[0]]).map(it => it.y),
+                        borderColor: 'rgba(255, 0, 0, 1)',
+                        backgroundColor: 'rgba(255, 99, 71, 1)',
+                    },
+                    {
+                        label: keys[1],
+                        data: JSON.parse(data[keys[1]]).map(it => it.y),
+                        borderColor: 'rgba(45, 85, 225, 1)',
+                        backgroundColor: 'rgba(3, 138, 255, 1)',
+                    },
+                ]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: "right",
+                        labels: {
+                            usePointStyle: true,
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: "Cummulative Sales Order",
+                        font: {
+                            size: "20"
+                        }
+                    },
+                    datalabels: {
+                        backgroundColor: function (context) {
+                            return context.dataset.backgroundColor;
+                        },
+                        borderRadius: 4,
+                        color: 'white',
+                        font: {
+                            weight: 'bold'
+                        },
+                        formatter: Math.round,
+                        padding: 6
+                    }
+                }
+            }
+        });
+    }
+
+    let form = document.querySelector("form[id='CummulativeSalesChartForm']");
+    let action = form.getAttribute("action");
+    let method = form.getAttribute("method");
+
+    let initData = {
+            "platform_name": "Shopee",
+            "start_date": "2022-08-28",
+            "past_day": "1"
+    }
+
+    $.ajax({
+        url: action,
+        type: method,
+        data: initData,
+        success: res => {
+            let data = JSON.parse(res);
+            addChart(data);
+        }
+    });
+
+
+    form.addEventListener("submit", e => {
+        e.preventDefault();
+
+        fetch(action, {
+            method: method,
+            body: new FormData(form)
+        })
+        .then(res => res.json())
+        .then(res => {
+            let data = JSON.parse(res);
+            addChart(data);
+        });
+
+    });
+</script>
