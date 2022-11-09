@@ -30,6 +30,7 @@
                             <th>No.</th>
                             <th>SKU</th>
                             <th>Name</th>
+                            <th>Width</th>
                             <th>Height</th>
                             <th>Quantity</th>
                             <th>Done ?</th>
@@ -44,6 +45,7 @@
                                 <td>@no</td>
                                 <td>@summaryItem.sku</td>
                                 <td>@summaryItem.name</td>
+                                <td>@Convert.ToInt32(summaryItem.width)cm</td>
                                 <td>@Convert.ToInt32(summaryItem.height)cm</td>
                                 <td>@Convert.ToInt32(summaryItem.quantity)</td>
                                 <td></td>

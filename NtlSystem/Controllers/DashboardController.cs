@@ -320,11 +320,12 @@ namespace NtlSystem.Controllers
             List<decimal> productPrice = productSkus.Select(it => Convert.ToDecimal(rand.Next(1, 7))).ToList();
 
             DateTime startDt = GeneralFunc.ConvertStrToDateTime("2022-08-26");
-            DateTime endDt = GeneralFunc.ConvertStrToDateTime("2022-08-29");
+            DateTime endDt = startDt.AddDays(14);
 
             List<int> customerIds = new List<int>() { 100, 102, 103 };
 
-            for (int i = 1; i < 61; i++)
+            int numOfOrders = 1000;
+            for (int i = 1; i < numOfOrders; i++)
             {
                 TNtlOrder order = new Faker<TNtlOrder>()
                     .RuleFor(t => t.name, f => $"O{f.Lorem.Letter(6)}")
